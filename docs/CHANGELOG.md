@@ -8,13 +8,15 @@
 - 完整分类指标/覆盖、开发冻结 winner/参数、独立 Holdout 及每折审计；不择优隐藏结果。
 - 可选信号入口复用旧回测引擎，与 Cash/Buy-Hold/Equal-weight/Momentum 公平合成净值及成本比较。
 - prd ml run / config validate --kind ml、不可覆盖 JSON/CSV/HTML、快照/账本/代码依赖指纹。
-- ml extra 与 uv.lock 正式解析，CI/双 wheel 源码外验证扩展；远端 Phase 4 CI 尚未运行。
+- ml extra 与 uv.lock 正式解析，CI/双 wheel 源码外验证扩展；真实双平台CI在05d1900通过。
 - 合成 USD 实现验证；无真实 PIT/OOS 认证，不用 Phase 3 事后因子，不进入 Phase 5。
-- 全量 419 passed（保留原330，新增89）；Ruff/锁/构建/sdist重建/双wheel干净安装通过。
+- 开发期419 passed；最终补测后425 passed（保留原330，新增95），Ruff/锁/构建/sdist重建/双wheel干净安装通过。
 - 独立审查无可操作P1/P2/P3发现，144组合/3024 folds/906990训练行及五模型未来扰动验证通过。
 - 最终验收核实生产36文件与原审查SHA一致；补6项外层标签/Holdout特征与标签隔离测试，全量425 passed。
 - 用户授权正式Commit/快进合并/Private Push和双平台真实CI检查；实际Git/CI结果按验收报告后续实测记录。
 - 保留Holdout治理限制：程序冻结仅支持合成验证，不宣称真实研究未触碰测试集或校准上涨概率。
+- 正式功能提交05d1900已快进合并main、普通原子Push main/Phase4；仓库仍Private，历史分支保留。
+- 真实CI40602662692（准确SHA05d1900）Ubuntu/Windows各425测试与全部安装检查通过，使用workflow_dispatch。
 
 ## 0.4.0 — Phase 3（2026-10-27，已通过用户验收）
 

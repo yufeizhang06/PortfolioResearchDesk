@@ -1,6 +1,6 @@
 # Phase 0 架构决策
 
-## Phase 4 — 合成 ML 与时序验证（最终本地技术验收通过）
+## Phase 4 — 合成 ML 与时序验证（合成范围验收、独立审查和双平台CI通过）
 
 `ml_config → ml_data → ml_validation → ml_models → ml_workflow → ml_reporting`。
 CLI 只调用服务；无供应商/UI 进入模型、组合或执行核心。

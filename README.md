@@ -7,7 +7,7 @@ stock screening, strategy simulation, and portfolio analysis. Its long-term goal
 is a reproducible workflow from universe selection to research signals,
 portfolio construction, backtesting, and paper portfolio review.
 
-**Development version: 0.5.0. Phase 4 final local validation has passed.**
+**Development version: 0.5.0. Phase 4 final acceptance has passed.**
 Phases 0–3 remain accepted; Phase 4 acceptance covers synthetic USD software validation only.
 Phase 3 is accepted for ex-post descriptive factor research after independent
 verification of fixes R1–R5. This is not certification of a PIT trading strategy
@@ -295,8 +295,12 @@ The R5 fix adds 32 time-alignment cases, bringing the suite to **330 tests**;
 all original tests are retained.
 
 Phase 4 final verification and independent review evidence are recorded in
-[Phase 4 acceptance](docs/PHASE_4_REPORT.md). The user has authorized its commit,
-safe merge, private push and CI verification; actual remote results are recorded there after execution.
+[Phase 4 acceptance](docs/PHASE_4_REPORT.md). Functional commit `05d1900` is merged
+and pushed to the existing private repository. Its
+[verified Ubuntu/Windows CI](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40602662692)
+passed 425 tests per platform, Ruff, CLI, build, sdist rebuild and both isolated
+wheel installations. This run used `workflow_dispatch`; push-triggered execution
+was not observed. Later documentation commits require their own CI status.
 The local suite passes **425 tests** (the original 330 plus 95 Phase 4 cases).
 Independent review found no actionable defects within synthetic USD validation.
 Its 3,024 fold checks cover 144 combinations of label horizon 1–12, gap 0/2/10,
@@ -400,13 +404,15 @@ local integration evidence.
 | 1 | Synthetic universe-to-execution vertical slice | Completed locally |
 | 2 | Real-data research adapters, cache, universe modes, screening | Completed locally |
 | 3 | Kenneth French factors, FF3/FF4, OLS, rolling beta | Accepted for ex-post descriptive research |
-| 4 | Baselines, ML, purged time-series validation, OOS comparison | Passed final local synthetic validation and independent review |
+| 4 | Baselines, ML, purged time-series validation, OOS comparison | Accepted for synthetic USD software validation; independent review and dual-platform CI passed |
 | 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Planned |
 | 6 | Dashboard, documentation, product validation, V1.0 release | Planned |
 
-`main` holds accepted Phases 0–3; `phase-2-data-universe` retains Phase 2
+`main` holds Phases 0–4; `phase-2-data-universe` retains Phase 2
 history, and `codex/phase-3-factor-diagnostics` retains Phase 3 history.
-Phase 4 uses `codex/phase-4-ml-walk-forward`; final Git/CI evidence is in its acceptance report.
+Phase 4 commit `05d1900` was fast-forwarded to `main` and both branches were pushed
+to the existing private repository. The Phase 4 branch is retained; actual CI
+evidence is recorded in its acceptance report.
 Future phases use separate feature branches and require
 explicit acceptance. The initial GitHub upload is a development checkpoint,
 not a V1.0 release.

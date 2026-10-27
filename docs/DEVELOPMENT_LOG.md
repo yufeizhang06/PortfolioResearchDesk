@@ -1,5 +1,27 @@
 # Development Log
 
+## 2026-10-27 — Phase 4 最终验收通过，真实双平台 CI 成功
+
+- 功能提交05d190070ddd695c5fa1f72f316a601609c63db5已安全快进main并普通原子Push main/Phase4，完整历史保留。
+- 真实运行40602662692，headSha精确05d1900、conclusion=success：
+  https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40602662692。
+- Ubuntu/Python3.12.15：425 passed in65.61s；Windows/Python3.12.10：425 passed in81.29s。
+- 两平台Ruff/76文件format、锁/配置/CLI、构建、sdist重建、两个wheel干净环境源码外Phase0–4全部通过。
+- Push未观察到自动运行，沿用现有workflow_dispatch实测；不声称Push自动触发已验证。无CI失败或业务修复。
+- 独立审查36生产源码SHA一致，144组合/3024边界fold与未来扰动证据核实；6项补测只扩展验证，不改算法。
+- 本阶段正式验收范围仅合成USD软件正确性，无真实PIT/OOS、校准概率或策略盈利认证。
+- 验收/README/AGENTS/架构/CHANGELOG补记实际提交与CI；该文档提交后再核对其自身CI和Git状态。
+- Private、Phase2/3历史保留；不Force Push、不创建Release、不进入Phase5，完成后停止。
+
+## 2026-10-27 — Phase 4 正式提交、快进合并及 Private Push
+
+- 正式提交05d190070ddd695c5fa1f72f316a601609c63db5，feat: add leak-safe ML and walk-forward validation。
+- 26文件，425本地测试与审查核实/针对性补测/安装验收全部通过后创建；未改生产数学或时间算法。
+- Phase4安全快进合并main，main/Phase4普通原子Push成功；远端/本地指针一致，工作区当时干净。
+- 实际核对Private、默认main；Phase3仍65f1bca、Phase2仍ba26bea。未Force Push、公开仓库或创建Release。
+- Push后未观察到自动CI，沿用workflow_dispatch实际运行40602662692，准确SHA05d1900；结果后补。
+- 原独立审查文件SHA已记录在验收报告，未重写其结论或证据，不将3024边界检查混称市场实验。
+
 ## 2026-10-27 — Phase 4 最终验收收尾获授权
 
 - 用户授权核实审查证据、必要补测、正式Commit、安全合并main、普通Private Push及Ubuntu/Windows真实CI检查/修复。

@@ -213,3 +213,43 @@ SHA-256 与原审查记录逐项一致，没有生产算法变化；不重新进
 
 后续Phase5仅为计划：组合风险/行业集中度、历史USD/CAD与换汇成本、CAD账本、Paper状态持久化、
 幂等模拟订单与重启重放；须另行授权，本轮不开始。真实PIT/历史成员/退市/公司行为和日历缺口仍保留。
+
+### 正式提交与 Private 同步
+
+- 功能提交：`05d190070ddd695c5fa1f72f316a601609c63db5`，
+  `feat: add leak-safe ML and walk-forward validation`。
+- 26文件的正式提交已从Phase4分支快进合并到main；两个分支普通原子Push成功，远端指针均为该SHA。
+- 实际核对仓库仍Private、默认main；Phase3仍65f1bca、Phase2仍ba26bea，完整历史保留，无Force Push/Release。
+- Push后两次未观察到自动运行，使用已有workflow_dispatch实测；
+  [Phase4 CI 40602662692](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40602662692)
+  的准确headSha为05d1900、conclusion=success；不混称为Push自动触发验证。
+
+原独立审查材料保持不变，仅留本地。完整性SHA-256：
+
+| 材料 | SHA-256 |
+|---|---|
+| REVIEW.md | 5b29608db44749a47ca17eb67ee0a5aafee6871a043078932c580cb318176c3e |
+| probe_review.py | 4e4c7329db45a825a7b03a2362898de2dd8c05caec08079dbf1c780d798424c8 |
+| results.json | e564223d42e094ec9a8ab5d52c4a8e480bd02aa9d5f6eb8d3e23af92f133f617 |
+
+### 真实双平台 CI 与最终验收结论
+
+已读取运行元数据、两个完整job日志并核对准确SHA05d1900，不把本机通过或旧Phase3结果当成Phase4 CI。
+
+| 平台 | 实际结果 |
+|---|---|
+| Ubuntu / Python3.12.15 | 425 passed in65.61s；Ruff、76文件format、锁/配置/CLI、构建、sdist重建和双wheel干净安装全部通过 |
+| Windows / Python3.12.10 | 425 passed in81.29s；同上全部通过 |
+
+链接：[40602662692](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40602662692)。
+元数据ci-result.json、job日志ci-ubuntu.log/ci-windows.log保存在work/phase4-closeout/。
+本次没有CI失败或需删除/放松测试的情况，未改业务算法或锁版本。
+上游Node20迁移及Ubuntu runner镜像变更提示保留，不影响本次结果；macOS仍未实机验证。
+
+**Phase 4 最终验收通过，范围仅合成USD软件验证。** 原330测试/Phase0–3功能保留；
+真实数据来源/PIT、历史成员/退市、公司行为/日历、未校准score、重叠标签相关性和真实Holdout治理限制不变。
+没有通过本报告声称真实市场策略有效。Phase5只记录计划，不实施。
+
+本节记录的是功能提交05d1900的实际CI。后续仅文档提交不改生产/测试/依赖；
+仍须独立核对该最新SHA的Actions，不将本节结果冒充任意后续提交结果。
+最终收尾会确认main/Phase4与远端一致、工作区干净，保留Phase2/3历史、不Force Push、不发布Release。

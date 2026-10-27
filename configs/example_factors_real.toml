@@ -1,0 +1,17 @@
+# Descriptive US/USD research. Downloads remain local; no historical signal claim.
+schema_version = 3
+frequency = "daily"
+factor_source = "french"
+expected_kind = "real"
+start = "2024-01-01"
+end = "2026-10-01"
+return_basis = "adjusted_close"
+research_config = "example_factor_market_data.toml"
+asset_symbol = "AAPL"
+min_obs = 60
+rolling_window = 126
+covariance = "HC3"
+confidence = 0.95
+offline = false
+cache_dir = "../data/cache/factors"
+output_dir = "../outputs/factors"

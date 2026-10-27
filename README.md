@@ -7,9 +7,10 @@ stock screening, strategy simulation, and portfolio analysis. Its long-term goal
 is a reproducible workflow from universe selection to research signals,
 portfolio construction, backtesting, and paper portfolio review.
 
-**Development version: 0.3.0.** Phases 0–2 have passed local acceptance. This
-initial repository version is a foundation for continued development. Factor
-models, machine learning, and persistent paper accounts remain planned.
+**Development version: 0.4.0.** Phases 0–3 have passed user acceptance.
+Phase 3 is accepted for ex-post descriptive factor research after independent
+verification of fixes R1–R5. This is not certification of a PIT trading strategy
+or OOS performance. Machine learning and persistent paper accounts remain planned.
 The system does not connect to brokers or execute real orders.
 
 ## Key Features
@@ -29,10 +30,13 @@ The system does not connect to brokers or execute real orders.
   integer shares, next-session execution, fees, slippage, cash, and NAV accounting.
 - **Auditable Outputs:** configuration, data/code fingerprints, quality and
   screening reports; JSON/CSV research exports and JSON/CSV/HTML backtest reports.
+- **Factor Diagnostics:** US French daily/monthly factors, same-sample FF3/Carhart
+  FF4 OLS, classical or HC3 inference, residual/collinearity diagnostics, trailing
+  exposures, and JSON/CSV/HTML/SVG/PNG reports.
 
 ## Current Development Status
 
-| Area | Status in v0.3.0 |
+| Area | Status in v0.4.0 |
 |---|---|
 | Installable package, CLI, strict TOML configuration | Implemented and locally tested |
 | Custom / Market / Screening and combined modes | Implemented and locally tested |
@@ -40,14 +44,15 @@ The system does not connect to brokers or execute real orders.
 | Execution and portfolio accounting | Validated on fixed synthetic USD fixtures |
 | Backtesting with real market data | Not enabled; data and execution assumptions need further validation |
 | Historical membership and delisted-security coverage | Not available; survivorship bias remains unresolved |
-| FF3/FF4, OLS, rolling beta | Planned for Phase 3 |
+| FF3/FF4, OLS, rolling beta | Accepted for descriptive attribution; R1–R5 independently verified |
 | ML and purged walk-forward OOS evaluation | Planned for Phase 4 |
 | CAD/FX and persistent paper portfolios | Planned for Phase 5 |
 | Dashboard and V1.0 release | Planned for Phase 6 |
 
-Current work is repository preparation and verification of accepted Phase 2
-work. No Phase 3 implementation is in progress. Check the repository's Actions
-page for actual remote CI results; local success alone does not establish them.
+Phase 3 is accepted locally; its approved changes are being committed and merged
+from the separate development branch into `main`. The updated Phase 3 CI is
+pending remote execution. Check the repository's Actions page for actual remote
+results; local success alone does not establish them.
 The [initial verified CI run](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40544579916)
 passed on both Ubuntu and Windows after the fresh-checkout test configuration fix.
 
@@ -64,6 +69,10 @@ flowchart TD
     U --> R[Research Workflow]
     A[yfinance or Native CSV / Parquet] --> H[History / Observation]
     H --> Q[Cache and Quality Checks]
+    H --> FR[Period Returns and Common Sample]
+    FF[French FF3 and Mom Snapshot] --> FR
+    FR --> FA[OLS and Trailing Factor Diagnostics]
+    FA --> FO[Descriptive Factor Audit Reports]
     Q --> R
     R --> S[Optional Rule Screening]
     S --> O[Universe and Audit Reports]
@@ -91,14 +100,14 @@ Windows PowerShell:
 
 ```powershell
 py -3.12 -m pip install uv==0.13.6
-py -3.12 -m uv sync --locked --extra data --python 3.12
+py -3.12 -m uv sync --locked --extra data --extra factors --python 3.12
 ```
 
 macOS / Linux:
 
 ```bash
 python3.12 -m pip install uv==0.13.6
-python3.12 -m uv sync --locked --extra data --python 3.12
+python3.12 -m uv sync --locked --extra data --extra factors --python 3.12
 ```
 
 Commands below assume `uv` is on PATH. Otherwise use `py -3.12 -m uv` on Windows
@@ -109,9 +118,37 @@ if your system restricts global tool installation.
 The `data` extra installs yfinance and PyArrow, with dependencies fixed in
 `uv.lock`. The base package supports synthetic examples and native CSV research
 using the standard library. Full adapter tests, live data, and Parquet need the
-extra. With dependencies cached, use `uv sync --locked --extra data --offline`.
+extra. The `factors` extra installs locked NumPy, SciPy, statsmodels and matplotlib.
+With dependencies cached, use `uv sync --locked --extra data --extra factors --offline`.
 
 ## Quick Start
+
+Run offline synthetic factor research (96 known-answer observations):
+
+```bash
+uv run --locked --offline prd config validate --kind factors --config configs/example_factors.toml
+uv run --locked --offline prd research run --config configs/example_factors.toml
+```
+
+Open `report.html` in the returned `report_directory`. It includes common-sample
+FF3/FF4 estimates, standard errors, t/p values, confidence intervals, R², adjusted
+R², AIC/BIC, diagnostics, a beta heatmap and trailing exposure charts. JSON contains
+input snapshots, exclusions and every rolling-window result. Alpha is a decimal
+return per observation period; no automatic annualized alpha is claimed.
+
+For live **descriptive** AAPL research, review dates and sources, then run:
+
+```bash
+uv run --locked --offline prd research run --config configs/example_factors_real.toml
+uv run --locked --offline prd research run --config configs/example_factors_real.toml --offline
+```
+
+The first command can access French and Yahoo; the second requires their valid
+caches. French percent returns are divided by 100 once. Response = stock return
+minus same-period RF; `Mkt-RF` is already market excess return. FF4 adds French Mom,
+not an individual stock's momentum score. Both models use identical complete cases.
+No factors or rolling coefficients enter backtest decisions. See
+[Factor methodology and configuration](docs/FACTOR_RESEARCH.md).
 
 Run the packaged, explicitly **synthetic** research workflow:
 
@@ -192,7 +229,7 @@ usable data remains; review failures and quarantined observations.
 
 ## Testing
 
-Install the locked environment with the `data` extra, then run:
+Install the locked environment with the `data` and `factors` extras, then run:
 
 ```bash
 uv lock --check --offline
@@ -200,12 +237,14 @@ uv run --locked --offline pytest -q
 uv run --locked --offline ruff check .
 uv run --locked --offline ruff format --check .
 uv run --locked --offline prd config validate --kind research --config configs/example_research_offline.toml
-uv build --offline --no-build-isolation --out-dir dist/phase2
-uv run --locked --offline python scripts/verify_distribution.py dist/phase2
+uv run --locked --offline prd config validate --kind factors --config configs/example_factors.toml
+uv run --locked --offline prd research run
+uv build --offline --no-build-isolation --out-dir dist/phase3
+uv run --locked --offline python scripts/verify_distribution.py dist/phase3 --with-factors
 ```
 
-Phase 2 local acceptance recorded **208 passing tests**, including Phase 0–1
-regressions. The verified Ubuntu and Windows CI jobs each also passed all 208
+Phase 2 acceptance recorded **208 passing tests**, including Phase 0–1
+regressions. The verified Phase 2 Ubuntu and Windows CI jobs each also passed all 208
 tests, lint, CLI, build, and isolated installation checks. Tests use fixed
 fixtures and injected transports; pytest-socket
 blocks sockets in the test process. Live source checks are separate manual
@@ -218,6 +257,12 @@ a clean environment, and runs Phase 0–2 commands outside the source tree. CI
 targets Python 3.12 on Ubuntu and Windows. Checkout and dependency installation
 need network access; test and example execution is offline. Remote status is
 established only by actual GitHub Actions runs.
+
+Phase 3 local results and limitations are recorded in
+[Phase 3 acceptance](docs/PHASE_3_REPORT.md); Phase 3 remote CI is unverified.
+The initial Phase 3 suite passed 270 tests; R1–R4 added 28 regression cases.
+The R5 fix adds 32 time-alignment cases, bringing the suite to **330 tests**;
+all original tests are retained.
 
 ## Project Structure
 
@@ -233,6 +278,11 @@ src/portfolio_research_desk/
     portfolio.py, execution.py,
     backtest.py                         Synthetic simulation pipeline
     research_workflow.py, reporting.py   Orchestration and audit output
+    factor_data.py, factor_returns.py    French snapshots, returns and alignment
+    factor_analysis.py                  OLS, diagnostics and trailing windows
+    factor_config.py, factor_cli.py,
+    factor_workflow.py,
+    factor_reporting.py                 Factor service, CLI and audit reports
     resources/                          Fixed synthetic data and defaults
 configs/                                Editable Phase 0–2 TOML examples
 tests/                                  Offline unit/integration/regression tests
@@ -261,7 +311,11 @@ artifacts are excluded from Git. Downloaded real market data is not distributed.
 - **Time availability:** Yahoo daily `event_time` is unknown.
   `observation_end` is an explicitly labelled local-date upper bound;
   `available_at` is actual retrieval time. Historical publication times are not
-  invented.
+  invented. Known events must match the supported exchange's local session date.
+  Contradictory time labels are quarantined and factor research rejects them
+  before regression. Unknown event/source/timezone evidence is explicitly marked
+  descriptive-only and ineligible for strict historical use. Late downloading
+  of a correctly dated historical snapshot remains supported.
 - **Prices and corporate actions:** automatic adjustment, back adjustment, and
   repair are disabled. Provider OHLC, adjusted close, dividends, and splits are
   stored separately. This does not prove historical tradable raw prices.
@@ -275,6 +329,15 @@ artifacts are excluded from Git. Downloaded real market data is not distributed.
   volatility is the sample standard deviation of simple daily returns multiplied
   by `sqrt(252)`. These are assumptions, not trade-level turnover or a verified
   exchange calendar.
+- **Factor attribution:** current French history is a retrieved, possibly revised
+  vintage, not verified historical publication information. Adjusted-close ratios
+  are a provider total-return proxy. Plain-close research excludes dividends and
+  refuses action periods. Monthly returns require an explicit session calendar
+  including the prior month; missing endpoints are never silently substituted.
+  Price/session conflicts are rejected. Monthly rolling windows retain completely
+  missing calendar months. Declared provider-adjusted Close cannot be labelled as
+  price-only returns. French normalization is independent of Decimal context;
+  its v2 factor cache requires one new online fetch before offline replay.
 
 See [Data Policy](docs/DATA_POLICY.md),
 [Backtest Assumptions](docs/BACKTEST_ASSUMPTIONS.md), and
@@ -288,7 +351,7 @@ local integration evidence.
 | 0 | Packaging, configuration, fixtures, engineering checks | Completed locally |
 | 1 | Synthetic universe-to-execution vertical slice | Completed locally |
 | 2 | Real-data research adapters, cache, universe modes, screening | Completed locally |
-| 3 | Kenneth French factors, FF3/FF4, OLS, rolling beta | Planned; not started |
+| 3 | Kenneth French factors, FF3/FF4, OLS, rolling beta | Accepted for ex-post descriptive research |
 | 4 | Baselines, ML, purged time-series validation, OOS comparison | Planned |
 | 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Planned |
 | 6 | Dashboard, documentation, product validation, V1.0 release | Planned |

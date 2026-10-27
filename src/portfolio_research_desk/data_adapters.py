@@ -7,7 +7,7 @@ import json
 import logging
 import math
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, replace
 from datetime import UTC, date, datetime, timedelta
 from datetime import time as daytime
@@ -212,7 +212,7 @@ class YFinanceAdapter:
                 ) from exc
             if frame is None or frame.empty:
                 raise ProviderError("EMPTY", f"No rows for {asset.symbol}; coverage is unknown.")
-            if not isinstance(metadata, dict):
+            if not isinstance(metadata, Mapping):
                 raise ProviderError("SCHEMA", "Provider identity metadata is unavailable.")
             exchange_map = {
                 "NMS": "XNAS",

@@ -158,6 +158,51 @@ def test_provider_identity_mismatch_fails_closed(tmp_path):
         adapter.fetch(AssetId("US", "XNAS", "AAPL", "USD"), date(2024, 1, 1), date(2024, 1, 3))
 
 
+def test_lazy_metadata_mapping_preserves_identity_checks_without_loading_other_keys(tmp_path):
+    from collections.abc import Mapping
+
+    pd = pytest.importorskip("pandas")
+    required = {
+        "currency": "USD",
+        "exchangeName": "NMS",
+        "exchangeTimezoneName": "America/New_York",
+    }
+
+    class LazyMetadata(Mapping):
+        def __getitem__(self, key):
+            if key == "tradingPeriods":
+                raise AssertionError("Unneeded lazy metadata must not trigger another request.")
+            return required[key]
+
+        def __iter__(self):
+            return iter([*required, "tradingPeriods"])
+
+        def __len__(self):
+            return 4
+
+    class Ticker:
+        def history(self, **kwargs):
+            return pd.DataFrame(
+                {
+                    "Open": [10],
+                    "High": [11],
+                    "Low": [9],
+                    "Close": [10],
+                    "Volume": [1000],
+                    "Adj Close": [10],
+                },
+                index=pd.DatetimeIndex(["2024-01-02"], tz="America/New_York"),
+            )
+
+        def get_history_metadata(self):
+            return LazyMetadata()
+
+    data = YFinanceAdapter(
+        tmp_path, factory=lambda _: Ticker(), clock=lambda: datetime(2024, 2, 1, tzinfo=UTC)
+    ).fetch(AssetId("US", "XNAS", "AAPL", "USD"), date(2024, 1, 1), date(2024, 1, 3))
+    assert len(data.rows) == 1 and data.rows[0].asset.currency == "USD"
+
+
 @pytest.mark.parametrize(("status", "retryable"), [(429, True), (503, True), (404, False)])
 def test_http_failures_are_classified_without_logging_response_secrets(
     monkeypatch, status, retryable

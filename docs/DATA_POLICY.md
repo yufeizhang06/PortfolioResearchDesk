@@ -40,6 +40,29 @@ Git 和发行包只包含程序、配置及自建合成 fixture，不包含本�
   股票池本身也必须在该时点可得。未来扰动测试检查未来数据不能影响过去筛选。
 - Phase 2 不产生订单或成交时间；Phase 1 原有 `decision_at < execution_at` 规则继续保留。
 
+### R5：日线事件与交易日标签的一致性
+
+`session_date` 是交易所本地日标签；`event_time` 是已知的行情事件时刻；
+`observation_end` 是观测覆盖结束或来源明确声明的保守上界；`retrieved_at` 是当前版本下载时间；
+`available_at` 是声明的信息可用时间。下载可以比行情事件晚数年，这本身不是时间矛盾。
+retrieved_snapshot 的 available_at 仍等于实际下载时间；不回写为历史收盘时间。
+
+- 当前支持 XNAS/XNYS/XASE/ARCX/BATS 的 America/New_York 本地日期，按 IANA 夏令时转换。
+  已知事件须落在该本地日的 `[00:00, 次日00:00)`；不要求 UTC 日期相同，不在这里认证真实交易时段或节假日。
+- `explicit_source_timestamps`：观测结束须在该本地日内，允许其端点恰为次日本地零点。
+  `exchange_local_date_upper_bound`：观测结束必须恰为次日本地零点；Yahoo 的 null event_time 继续保留。
+- 已知事件或可解释的观测上界与标签矛盾，产生 `SESSION_TIME_MISMATCH` 并隔离。
+  因子研究遇到此错误明确退出 2，回归及 Rolling 之前停止；不自动改日期、选另一条报价或填补收益。
+- 事件未知、来源契约未知、交易所不支持或 IANA 数据不可用，产生 `SESSION_TIME_UNVERIFIED` 警告，
+  明确仅供描述性研究、不可用于需要严格历史时点的流程。因子 CLI/HTML 也保留此警告，历史信号入口继续阻断。
+  即使无法精确转换时区，相差超过一个 UTC 日期的已知日线矛盾仍拒绝，不因缺失证据而放行此类反例。
+- 基础包保持标准库运行；ZoneInfo 使用系统 IANA 或现有可选依赖中的 tzdata，缺失时不猜固定 UTC 偏移。
+  [Python ZoneInfo](https://docs.python.org/3.12/library/zoneinfo.html)说明了这两种数据库来源；
+  [NYSE 时段说明](https://www.nyse.com/markets/hours-calendars)使用 Eastern Time。
+
+这验证声明的时间字段是否一致，不证明供应商价格真实、完整、精确对应收盘，或历史版本已经公开。
+已全部错写成自洽的价格/日期/时间不能仅凭这些字段识别；PIT、日历、公司行为和来源授权限制继续保留。
+
 Yahoo 请求明确设置 `interval=1d, auto_adjust=false, back_adjust=false, repair=false,
 actions=true, keepna=true, rounding=false, raise_errors=true`；end 日期为**不包含**边界。
 OHLC 为 `provider_ohlc`，Adj Close 单独保留，分红/拆股另列。
@@ -91,5 +114,20 @@ Market + Custom additions + Screening 均支持。没有随机抽样或静默截
 2026-10-27 已实际访问 Yahoo 和 Nasdaq 目录，验证 AAPL/MSFT 下载、三项缓存全命中、
 真实 native CSV/Parquet 无损回放。测试使用固定本地数据及注入 transport，socket 被禁止，
 不依赖 API Key、动态日期或外部服务；其中模拟响应只验证错误路径，不当成真实数据验证。
-远端 GitHub Actions、Linux/macOS、完整市场批量、历史指数和退市覆盖尚未实测。
+后续 Phase 2 的 GitHub Actions 已在 Ubuntu/Windows 实测通过；macOS、完整市场批量、
+历史指数和退市覆盖仍未实测。Phase 3 远端 CI 尚未执行。
 完整命令及结果见 `PHASE_2_REPORT.md`。
+
+## Phase 3 增量
+
+French 官方 US FF3 和 Mom 的日频/月频文件作为事后归因输入，百分数一次转换为小数，RF 使用
+同期收益口径。保存来源、读取时间与原始/规范化指纹；没有经过验证的历史发布版本。
+所有回归和 Rolling Exposure 均 `historical_signal_eligible=false`，不能直接接入交易决策。
+
+股票 Adj Close 比率仅为供应商总收益代理，不再加现金分红；provider_adjusted + close 拒绝，
+未调整 Close 按声明解释，provider_ohlc 保留调整规则不确定性。Close 路径剔除公司行为期间。
+月频股票收益要求完整的显式 session 清单和前月端点，清单本身不被系统自动认证。
+清单覆盖月份内与报价日期冲突时阻断；月频名义网格保留双边缺月，不向过去扩大窗口。
+因子归一化不继承 Decimal context；旧 v1 因子缓存保留但不复用，首次须重新获取 v2。
+只在共同有效样本比较 FF3/FF4，不填补价格/因子、不把幸存者偏差或当前下载快照冒充 PIT。
+原始真实数据与研究输出继续只保存在 Git 忽略目录。详细定义与统计限制见 FACTOR_RESEARCH.md。

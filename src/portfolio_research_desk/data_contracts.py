@@ -2,9 +2,10 @@
 
 from collections import Counter
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
 from typing import Any
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from portfolio_research_desk.domain import AssetId, fingerprint, require_utc
 from portfolio_research_desk.errors import DataError
@@ -96,6 +97,64 @@ class QualityReport:
     expected_calendar_verified: bool
 
 
+def _session_time_issue(history: History, row: Observation) -> QualityIssue | None:
+    """Check daily labels, never equate event time with download/publication time.
+
+    Only the existing explicit-event and local-midnight-bound source contracts
+    are understood. Exchange-local dates include extended hours, not a certified
+    exchange trading calendar or proof of a historically published vintage.
+    """
+    explicit = history.timestamp_basis == "explicit_source_timestamps"
+    upper_bound = history.timestamp_basis == "exchange_local_date_upper_bound"
+
+    def mismatch(message):
+        return QualityIssue(row.asset, row.session_date, "SESSION_TIME_MISMATCH", "ERROR", message)
+
+    def unverified(message):
+        return QualityIssue(
+            row.asset,
+            row.session_date,
+            "SESSION_TIME_UNVERIFIED",
+            "WARNING",
+            message + " Descriptive only; ineligible for strict historical use.",
+        )
+
+    # A gap of more than one UTC date cannot represent this local daily session.
+    # Preserve that rejection even if timezone data/source semantics are unavailable.
+    stamps = [row.event_time] if row.event_time is not None else []
+    if explicit or upper_bound:
+        stamps.append(row.observation_end)
+    if any(abs((stamp.date() - row.session_date).days) > 1 for stamp in stamps):
+        return mismatch("Known daily timestamp contradicts the session date.")
+    if row.asset.market != "US" or row.asset.exchange not in {
+        "XNAS",
+        "XNYS",
+        "XASE",
+        "ARCX",
+        "BATS",
+    }:
+        return unverified("Exchange-local daily date semantics are unsupported.")
+    try:
+        zone = ZoneInfo("America/New_York")
+    except ZoneInfoNotFoundError:
+        return unverified("IANA timezone data unavailable; session alignment not verified.")
+    start = datetime.combine(row.session_date, time(), zone).astimezone(UTC)
+    end = datetime.combine(row.session_date + timedelta(days=1), time(), zone).astimezone(UTC)
+    if row.event_time is not None and not start <= row.event_time < end:
+        return mismatch("Known event is outside its exchange-local session date.")
+    if upper_bound:
+        if row.observation_end != end:
+            return mismatch("Daily observation bound is not the declared next local midnight.")
+    elif explicit:
+        if not start <= row.observation_end <= end:
+            return mismatch("Explicit daily observation end contradicts the session date.")
+    else:
+        return unverified("Source timestamp_basis is not a supported daily contract.")
+    if row.event_time is None:
+        return unverified("Daily date bound checked; exact event time remains unknown.")
+    return None
+
+
 def validate_quality(
     history: History, expected_sessions: tuple[date, ...] | None = None
 ) -> QualityReport:
@@ -121,6 +180,12 @@ def validate_quality(
             row.event_time and row.event_time > row.observation_end
         ):
             problems.append(("TIME_ORDER", "Observation period not complete at available_at."))
+        time_issue = _session_time_issue(history, row)
+        if time_issue:
+            if time_issue.severity == "ERROR":
+                problems.append((time_issue.code, time_issue.message))
+            else:
+                issues.append(time_issue)
         if row.adj_close is not None and (not row.adj_close.is_finite() or row.adj_close <= 0):
             problems.append(("ADJUSTED_PRICE", "Invalid supplied adjusted close."))
         if any(

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "history": {
+    "data_kind": "synthetic",
+    "provider": "PortfolioResearchDesk theoretical orthogonal factor fixture",
+    "price_basis": "synthetic_raw",
+    "availability_basis": "declared",
+    "retrieved_at": "2024-06-01T00:00:00+00:00",
+    "limitations": [],
+    "timestamp_basis": "explicit_source_timestamps",
+    "content_sha256": "e584fc5336cb099950f1df0ab77dd69f98623cabd9dbdc33e3696ed1714144aa"
+  }
+}

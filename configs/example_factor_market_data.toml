@@ -1,0 +1,14 @@
+schema_version = 2
+[universe]
+mode = "custom"
+assets = [{market="US", exchange="XNAS", symbol="AAPL", currency="USD"}]
+[data]
+adapter = "yfinance"
+expected_kind = "real"
+start = "2023-12-01"
+end = "2026-10-01"
+max_assets = 1
+[storage]
+cache_dir = "../data/cache/factor-prices"
+ttl_hours = 24
+output_dir = "../outputs/research"

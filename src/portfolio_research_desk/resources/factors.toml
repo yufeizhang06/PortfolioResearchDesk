@@ -1,0 +1,12 @@
+schema_version = 3
+frequency = "daily"
+factor_source = "synthetic"
+expected_kind = "synthetic"
+start = "2024-01-02"
+end = "2024-06-01"
+return_basis = "adjusted_close"
+min_obs = 20
+rolling_window = 32
+covariance = "HC3"
+confidence = 0.95
+offline = true

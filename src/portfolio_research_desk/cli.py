@@ -12,6 +12,8 @@ from portfolio_research_desk.config import load_config
 from portfolio_research_desk.data_cli import execute_data_command, register_data_commands
 from portfolio_research_desk.domain import jsonable
 from portfolio_research_desk.errors import ProjectError
+from portfolio_research_desk.factor_cli import execute_factor_command, register_factor_commands
+from portfolio_research_desk.factor_config import load_factor_config
 from portfolio_research_desk.reporting import write_report
 from portfolio_research_desk.research_config import load_research_config
 from portfolio_research_desk.sample import summarize_sample
@@ -23,7 +25,10 @@ def main(argv: list[str] | None = None) -> int:
     """Print JSON to stdout, diagnostic logs to stderr, expected errors as exit 2."""
     parser = argparse.ArgumentParser(
         prog="prd",
-        description="PortfolioResearchDesk: Phase 0 inspection; Phase 1 simulation; Phase 2 data.",
+        description=(
+            "PortfolioResearchDesk: Phase 0 inspection; Phase 1 simulation; "
+            "Phase 2 data; Phase 3 factors."
+        ),
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -37,7 +42,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     validate.add_argument(
         "--kind",
-        choices=("offline", "backtest", "research"),
+        choices=("offline", "backtest", "research", "factors"),
         default="offline",
         help="Configuration schema; default: offline (Phase 0).",
     )
@@ -60,8 +65,22 @@ def main(argv: list[str] | None = None) -> int:
         "--run-id", help="Optional unique run identifier; existing runs are never overwritten."
     )
     register_data_commands(commands)
+    register_factor_commands(commands)
     args = parser.parse_args(argv)
     try:
+        if args.command == "research":
+            payload, exit_code = execute_factor_command(args)
+            print(json.dumps(jsonable(payload), indent=2, sort_keys=True, ensure_ascii=True))
+            return exit_code
+        if args.command == "config" and args.kind == "factors":
+            print(
+                json.dumps(
+                    {"phase": 3, "config": load_factor_config(args.config).snapshot()},
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
+            return 0
         if args.command in {"data", "universe"}:
             logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
             payload, exit_code = execute_data_command(args)

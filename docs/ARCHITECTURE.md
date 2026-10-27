@@ -1,5 +1,32 @@
 # Phase 0 架构决策
 
+> Phase 3 已通过用户验收，仅限事后描述性因子研究；R1–R5 均已独立复核。以下文字保留阶段上下文。
+
+## Phase 3 — 因子诊断服务
+
+`factor_config → factor_workflow → factor_data / Phase 2 History → factor_returns →
+factor_analysis → factor_reporting`，CLI 仅调用同一服务，不复制数学或取数逻辑。
+
+- 独立 FactorData/ReturnData/AlignedSample；同频日/月期间、百分数一次转换、四因子共同样本。
+- FrenchAdapter 复用现有有界 HTTP/重试和不可变缓存；保存读取版本，不创建虚假发布时间。
+- NumPy/SciPy/statsmodels/matplotlib 属于可选 factors extra，延迟导入；基础包仍能运行 Phase 0–2。
+- OLS 显式截距、秩/条件数/VIF、经典或 HC3 协方差、完整推断与残差诊断；统计失败可审计。
+- Rolling 先按名义期间定界再取有效样本，每窗单独拟合；缺失不扩大窗口，未来不改变过去估计。
+- 月频按请求边界补齐完整日历月，Rolling 入口也补齐内部缺月；清单与已知报价冲突则阻断。
+- 调用方 Decimal 精度不能改变收益/超额收益；固定 28 位上下文。真实 Adj Close 仅为总收益代理。
+- 因子单位转换通过精确指数移位独立于 context；v2 缓存不复用旧精度相关值。
+  provider_adjusted + close 明确拒绝，provider_ohlc 只标收益代理；OLS 数学函数保持原样。
+- JSON/CSV/HTML 与 SVG/PNG、运行目录不可覆盖、最后完成标记，复用 collect_provenance。
+- 因子始终为事后描述；交易信号入口明确阻断未验证历史可得性，不改变 Phase 1 执行契约。
+- R5：共享质量层按支持的美国交易所本地日及 timestamp_basis 检查日线时间标签；
+  已知矛盾隔离，因子收益入口明确拒绝，早于 OLS/Rolling。事件、下载与可用时间各自保留。
+  未知事件/来源契约/时区数据库显示 SESSION_TIME_UNVERIFIED，只允许描述性解释；
+  不新增供应商依赖、行情 schema 或历史可用性认证。使用现有 ZoneInfo；基础环境缺 IANA 数据时明确降级。
+- 真实验收发现 yfinance 惰性 Mapping 元数据；将 dict 检查改为 Mapping，并仅读取身份必需键。
+  不枚举可能额外请求的惰性键，不放宽交易所/币种/时区验证。
+
+方法、数值边界及月末日历契约见 FACTOR_RESEARCH.md；不实现 Phase 4 的标签或模型训练。
+
 日期：2026-10-27。单一 Python 可安装项目，目标架构见 `PROJECT_PLAN.md`。
 下列 Phase 0–1 决策保留为历史记录；用户现已授权 Phase 2，新增决策见末节。
 

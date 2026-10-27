@@ -20,6 +20,7 @@ def main() -> None:
         help="Install locked factor extra and verify Phase 3.",
     )
     args = parser.parse_args()
+    project = Path(__file__).resolve().parents[1]
     archives = list(args.dist.resolve().glob("*.tar.gz"))
     wheels = list(args.dist.resolve().glob("*.whl"))
     if len(archives) != 1 or len(wheels) != 1:
@@ -44,24 +45,6 @@ def main() -> None:
         rebuilt = list((root / "rebuilt").glob("*.whl"))
         if len(rebuilt) != 1:
             raise RuntimeError("Expected one wheel rebuilt from the sdist.")
-        requirements = root / "factor-requirements.txt"
-        if args.with_factors:
-            subprocess.run(
-                [
-                    args.uv,
-                    "export",
-                    "--locked",
-                    "--offline",
-                    "--extra",
-                    "factors",
-                    "--no-dev",
-                    "--no-emit-project",
-                    "--output-file",
-                    str(requirements),
-                ],
-                check=True,
-                capture_output=True,
-            )
         # Check both the directly built wheel and the sdist-rebuilt wheel.
         for index, wheel in enumerate((wheels[0], rebuilt[0])):
             environment = root / f"venv-{index}"
@@ -147,18 +130,43 @@ def main() -> None:
                     f"exit={missing.returncode}, stderr={missing.stderr}"
                 )
             if args.with_factors:
+                # Reuse the exact locked wheel URLs populated by the initial sync.
+                # A requirements export would need separate registry-index metadata
+                # that a cold CI cache need not contain. Keep the installed wheel;
+                # never replace it with an editable source-tree installation.
                 subprocess.run(
                     [
                         args.uv,
-                        "pip",
-                        "install",
+                        "sync",
+                        "--project",
+                        str(project),
+                        "--locked",
                         "--offline",
-                        "--no-deps",
+                        "--extra",
+                        "factors",
+                        "--no-dev",
+                        "--no-install-project",
+                        "--inexact",
                         "--python",
                         str(python),
-                        "-r",
-                        str(requirements),
                     ],
+                    check=True,
+                    env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(environment)},
+                )
+                subprocess.run(
+                    [
+                        str(python),
+                        "-I",
+                        "-c",
+                        "import importlib.metadata as m, json, pathlib, sys; "
+                        "import portfolio_research_desk as package; "
+                        "direct=json.loads(m.distribution('portfolio-research-desk')"
+                        ".read_text('direct_url.json')); "
+                        "assert 'archive_info' in direct and direct['url'].endswith('.whl'); "
+                        "assert pathlib.Path(package.__file__).resolve().is_relative_to("
+                        "pathlib.Path(sys.prefix).resolve())",
+                    ],
+                    cwd=root,
                     check=True,
                 )
                 factor_run = subprocess.run(

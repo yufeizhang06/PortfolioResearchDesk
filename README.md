@@ -253,7 +253,10 @@ Pytest uses the platform's default temporary directory; tests do not require a
 pre-existing local work directory.
 
 The distribution check rebuilds a wheel from the sdist, installs both wheels in
-a clean environment, and runs Phase 0–2 commands outside the source tree. CI
+a clean environment, and runs Phase 0–3 commands outside the source tree when
+`--with-factors` is selected. Factor dependencies use the existing lockfile and
+offline wheel cache directly; the checker verifies that the installed wheel
+remains in the isolated environment. CI
 targets Python 3.12 on Ubuntu and Windows. Checkout and dependency installation
 need network access; test and example execution is offline. Remote status is
 established only by actual GitHub Actions runs.

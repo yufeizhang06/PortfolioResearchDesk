@@ -1,5 +1,15 @@
 # Development Log
 
+## 2026-10-27 — Phase 3 首次 Push 与真实 CI 安装修复
+
+- 正式功能提交b929b8f29ca2e0126112241c907dc0b44ddb11a0已创建；main快进合并，main与Phase3分支普通Push成功。
+- 仓库仍Private、Phase2分支和原历史保留；没有Force Push。Push未观察到自动运行，显式调度已有CI。
+- 首次真实运行40597082932：两平台330测试及Ruff/CLI/构建通过，但都在独立wheel安装的离线依赖解析失败。
+- 根因是requirements按包名解析需要独立registry缓存；初始锁定sync的直接wheel URL缓存不足以保证这一点。
+- 全新本地缓存重现旧流程contourpy缺失；修复验证脚本直接按lock给隔离venv离线sync依赖，保留被测wheel。
+- 增加isolated Python的wheel来源与venv位置断言；不改业务/测试/依赖版本，不移除任何检查。
+- 同一冷缓存下两个wheel、sdist重建及Phase0–3验证通过；日志保留，后续继续验证实际远端CI。
+
 ## 2026-10-27 — 用户正式验收 Phase 3，授权提交与私有仓库同步
 
 - 最终独立复核确认 R1–R5 全部PASS，330测试通过；用户正式验收范围仅为事后描述性因子研究。

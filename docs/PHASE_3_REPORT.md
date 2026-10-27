@@ -340,3 +340,23 @@ historical_signal_eligible=false；下载时间不能伪装成历史公开时间
 Ruff lint/63文件format、锁一致性、wheel/sdist、sdist重建、双wheel干净安装与源码外Phase0–3验证通过。
 37个候选文件敏感模式检查未检出；原有业务Python及测试50文件保持最终复审版本。
 候选/索引清单和命令日志仅在本地 `work/phase3-closeout/`；远端CI通过后另补真实运行链接。
+
+### 首次真实 Phase 3 CI 与冷缓存安装修复
+
+功能提交 `b929b8f29ca2e0126112241c907dc0b44ddb11a0` 已快进合并 main，并与开发分支普通 Push 至原 Private 仓库。
+Push 后未观察到自动运行；显式 workflow_dispatch 的真实运行：
+https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40597082932。
+
+首次两平台均在发行包干净安装步骤失败；此前 Ubuntu 330 passed in 19.35s，Windows 330 passed in 26.05s，
+Ruff、CLI与构建均通过。失败不是因子数学或时间校验：锁定sync按wheel URL下载了依赖，
+随后导出的requirements按包名重新解析，冷缓存没有对应registry索引元数据，离线解析报contourpy未缓存。
+早先本地长期使用的缓存包含这些额外元数据，掩盖了此环境差异。保留失败日志，不把首次运行重写为成功。
+
+修复仅限 `scripts/verify_distribution.py`：在临时环境直接运行锁定离线sync安装factors依赖，
+`--no-install-project --inexact`保留刚安装的wheel；额外通过隔离Python断言包位于临时venv且具有wheel来源元数据，
+防止源码editable安装掩盖问题。没有删除验证步骤、改测试预期或变更锁定版本。
+参考 [uv sync/partial installation](https://docs.astral.sh/uv/concepts/projects/sync/) 的官方语义。
+
+以全新任务专用缓存重新锁定安装后，旧验证流程实际失败于同一contourpy错误；同一冷缓存下修复流程完整通过
+sdist重建、两个wheel的干净安装及源码外Phase0–3检查，依然全部离线。证据：
+`work/phase3-closeout/cold-sync.log`、`cold-before.log`、`cold-after.log`。远端修复结果继续按实际运行补记。

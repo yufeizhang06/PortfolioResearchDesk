@@ -180,3 +180,23 @@ Screening。接入前逐项核实来源是否官方、授权、时间可得性�
   lint/format、默认研究流程全部通过；uv.lock 检查仍通过。未创建额外业务模块或放宽测试。
 - 本机旧系统 pytest 临时目录有权限残留，验证用任务专用短临时根目录（PYTEST_DEBUG_TEMPROOT），
   不改系统权限、不删除其他目录，也不在项目配置里写入本机绝对路径；远端使用平台默认目录。
+
+## 2026-10-27 — GitHub Private 初版与跨平台 CI 验证完成
+
+- 仓库：https://github.com/yufeizhang06/PortfolioResearchDesk，Visibility 为 PRIVATE，默认分支 main。
+  Description 按用户原文设置；没有配置或改动其他仓库，没有创建产品 Release。
+- 业务阶段提交 `471b6a253246dd7daa2a326a503c7c02faca00cf`；CI 修复提交
+  `1a4dfaefe2c5fc1a213fc2acd7bbcd277e411abf`；首次提交及两个阶段分支的历史均完整保留。
+- 修复后的真实 CI：
+  https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40544579916，conclusion=success。
+  Ubuntu/Python 3.12.15：208 passed；Windows/Python 3.12.10：208 passed。
+  两平台均完成 Ruff、帮助/配置/离线研究/合成回测、构建、sdist 重建及独立 wheel 安装检查。
+- 本次使用现有 workflow_dispatch 入口实测；首次 Push 后未观察到自动运行，不宣称已验证 push 触发链路。
+- CI 保留了上游 Node.js 20 弃用与 Ubuntu runner 镜像迁移提示，未导致失败；后续可单独维护 Actions
+  版本，不为隐藏警告随意调整已锁定 Python 依赖。macOS 仍未实机验证。
+- 原始计划 SHA-256 保持不变；英文 README 十个要求章节及相对文档链接均通过检查。
+- 上传前审核 69 个版本文件、35 个 Phase 2 改动与首次提交的 46 个历史文件版本，敏感模式未检出。
+  .env/密钥、venv、行情、缓存、输出、便携工具和构建产物均未进入版本树。
+- README、AGENTS、CHANGELOG 和验收报告补充真实远程状态；作为独立文档提交收尾，保持 0.3.0。
+- main 与 phase-2-data-universe 保留并同步发布；不 force push、不重置、不执行真实交易。
+- 下一阶段建议仍为 Phase 3 因子诊断；当前没有开始，等待用户确认。

@@ -48,6 +48,8 @@ The system does not connect to brokers or execute real orders.
 Current work is repository preparation and verification of accepted Phase 2
 work. No Phase 3 implementation is in progress. Check the repository's Actions
 page for actual remote CI results; local success alone does not establish them.
+The [initial verified CI run](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40544579916)
+passed on both Ubuntu and Windows after the fresh-checkout test configuration fix.
 
 ## Architecture Overview
 
@@ -203,7 +205,9 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase2
 ```
 
 Phase 2 local acceptance recorded **208 passing tests**, including Phase 0–1
-regressions. Tests use fixed fixtures and injected transports; pytest-socket
+regressions. The verified Ubuntu and Windows CI jobs each also passed all 208
+tests, lint, CLI, build, and isolated installation checks. Tests use fixed
+fixtures and injected transports; pytest-socket
 blocks sockets in the test process. Live source checks are separate manual
 integration checks, not a dependency of CI.
 Pytest uses the platform's default temporary directory; tests do not require a

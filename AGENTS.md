@@ -2,7 +2,8 @@
 
 ## 当前范围
 
-- 用户已验收 Phase 0–2；当前仅授权 Phase 2 Commit、英文 README 与首次 GitHub Private 上传。
+- 用户已验收 Phase 0–2，已授权本轮 Commit、英文 README 与首次 GitHub Private 上传及 CI 修复。
+- Private 仓库为 yufeizhang06/PortfolioResearchDesk；main 与 Phase 2 已上传，Ubuntu/Windows CI 已实测通过。
 - 保留已有历史，将已验收成果纳入 main，并保留 phase-2-data-universe；不 force push 或改其他仓库。
 - 本轮完成后停止；用户再次明确确认前禁止进入 Phase 3–6，也不创建正式产品 Release。
 - 开始先完整阅读 `docs/PROJECT_PLAN.md`、README、本文件及相关已有代码。

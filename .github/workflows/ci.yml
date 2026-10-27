@@ -1,4 +1,4 @@
-name: Offline engineering, backtest and factor checks
+name: Offline engineering, backtest, factor and ML checks
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
       - name: Install the selected uv version
         run: python -m pip install uv==0.13.6
       - name: Install locked project and developer tools
-        run: uv sync --locked --extra data --extra factors --python "$(python -c 'import sys; print(sys.executable)')"
+        run: uv sync --locked --extra data --extra factors --extra ml --python "$(python -c 'import sys; print(sys.executable)')"
       - name: Verify lock
         run: uv lock --check --offline
       - name: Lint and formatting
@@ -51,7 +51,9 @@ jobs:
           uv run --locked --offline prd data fetch
           uv run --locked --offline prd config validate --kind factors --config configs/example_factors.toml
           uv run --locked --offline prd research run --run-id ci-factors
+          uv run --locked --offline prd config validate --kind ml --config configs/example_ml.toml
+          uv run --locked --offline prd ml run --run-id ci-ml
       - name: Build distributions with locked backend
-        run: uv build --offline --no-build-isolation --out-dir dist/phase3
+        run: uv build --offline --no-build-isolation --out-dir dist/phase4
       - name: Rebuild sdist and check installed wheel outside source tree
-        run: uv run --locked --offline python scripts/verify_distribution.py dist/phase3 --with-factors
+        run: uv run --locked --offline python scripts/verify_distribution.py dist/phase4 --with-factors --with-ml

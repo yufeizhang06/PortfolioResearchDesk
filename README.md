@@ -7,10 +7,11 @@ stock screening, strategy simulation, and portfolio analysis. Its long-term goal
 is a reproducible workflow from universe selection to research signals,
 portfolio construction, backtesting, and paper portfolio review.
 
-**Development version: 0.4.0.** Phases 0–3 have passed user acceptance.
+**Development version: 0.5.0. Phase 4 final local validation has passed.**
+Phases 0–3 remain accepted; Phase 4 acceptance covers synthetic USD software validation only.
 Phase 3 is accepted for ex-post descriptive factor research after independent
 verification of fixes R1–R5. This is not certification of a PIT trading strategy
-or OOS performance. Machine learning and persistent paper accounts remain planned.
+or OOS performance. Phase 4 adds synthetic ML validation; persistent paper accounts remain planned.
 The system does not connect to brokers or execute real orders.
 
 ## Key Features
@@ -33,10 +34,13 @@ The system does not connect to brokers or execute real orders.
 - **Factor Diagnostics:** US French daily/monthly factors, same-sample FF3/Carhart
   FF4 OLS, classical or HC3 inference, residual/collinearity diagnostics, trailing
   exposures, and JSON/CSV/HTML/SVG/PNG reports.
+- **Synthetic ML Validation:** prior/Logistic/Lasso/Random Forest/XGBoost models,
+  training-only pipelines, nested date-grouped purged walk-forward tuning, frozen
+  final holdout, classification metrics and shared-engine net portfolio comparisons.
 
 ## Current Development Status
 
-| Area | Status in v0.4.0 |
+| Area | Status in v0.5.0 development |
 |---|---|
 | Installable package, CLI, strict TOML configuration | Implemented and locally tested |
 | Custom / Market / Screening and combined modes | Implemented and locally tested |
@@ -45,7 +49,7 @@ The system does not connect to brokers or execute real orders.
 | Backtesting with real market data | Not enabled; data and execution assumptions need further validation |
 | Historical membership and delisted-security coverage | Not available; survivorship bias remains unresolved |
 | FF3/FF4, OLS, rolling beta | Accepted for descriptive attribution; R1–R5 independently verified |
-| ML and purged walk-forward OOS evaluation | Planned for Phase 4 |
+| ML and purged walk-forward OOS evaluation | Passed final synthetic USD validation; no real-market PIT/OOS certification |
 | CAD/FX and persistent paper portfolios | Planned for Phase 5 |
 | Dashboard and V1.0 release | Planned for Phase 6 |
 
@@ -104,14 +108,14 @@ Windows PowerShell:
 
 ```powershell
 py -3.12 -m pip install uv==0.13.6
-py -3.12 -m uv sync --locked --extra data --extra factors --python 3.12
+py -3.12 -m uv sync --locked --extra data --extra factors --extra ml --python 3.12
 ```
 
 macOS / Linux:
 
 ```bash
 python3.12 -m pip install uv==0.13.6
-python3.12 -m uv sync --locked --extra data --extra factors --python 3.12
+python3.12 -m uv sync --locked --extra data --extra factors --extra ml --python 3.12
 ```
 
 Commands below assume `uv` is on PATH. Otherwise use `py -3.12 -m uv` on Windows
@@ -124,8 +128,25 @@ The `data` extra installs yfinance and PyArrow, with dependencies fixed in
 using the standard library. Full adapter tests, live data, and Parquet need the
 extra. The `factors` extra installs locked NumPy, SciPy, statsmodels and matplotlib.
 With dependencies cached, use `uv sync --locked --extra data --extra factors --offline`.
+The `ml` extra adds locked scikit-learn and XGBoost; models run on CPU with one
+thread and a fixed seed. Include `--extra ml` for Phase 4 tests and examples.
 
 ## Quick Start
+
+Run the offline **synthetic USD** ML experiment:
+
+```bash
+uv run --locked --offline prd config validate --kind ml --config configs/example_ml.toml
+uv run --locked --offline prd ml run --config configs/example_ml.toml
+```
+
+The report compares all predeclared models, Cash, Buy-and-Hold, Equal-weight and
+Momentum. It saves every outer/inner fold, training preprocessing statistics,
+OOS prediction, excluded label, target, order, fill, position and NAV in
+`outputs/ml/<run_id>/`. Final holdout never tunes parameters or selects a winner.
+Lasso predicts continuous price returns; its scores are not probabilities.
+These are software validation results, **not real-market trading evidence**.
+See [Model validation](docs/MODEL_VALIDATION.md) and [Phase 4 report](docs/PHASE_4_REPORT.md).
 
 Run offline synthetic factor research (96 known-answer observations):
 
@@ -233,7 +254,7 @@ usable data remains; review failures and quarantined observations.
 
 ## Testing
 
-Install the locked environment with the `data` and `factors` extras, then run:
+Install the locked environment with the `data`, `factors` and `ml` extras, then run:
 
 ```bash
 uv lock --check --offline
@@ -243,8 +264,10 @@ uv run --locked --offline ruff format --check .
 uv run --locked --offline prd config validate --kind research --config configs/example_research_offline.toml
 uv run --locked --offline prd config validate --kind factors --config configs/example_factors.toml
 uv run --locked --offline prd research run
-uv build --offline --no-build-isolation --out-dir dist/phase3
-uv run --locked --offline python scripts/verify_distribution.py dist/phase3 --with-factors
+uv run --locked --offline prd config validate --kind ml --config configs/example_ml.toml
+uv run --locked --offline prd ml run
+uv build --offline --no-build-isolation --out-dir dist/phase4
+uv run --locked --offline python scripts/verify_distribution.py dist/phase4 --with-factors --with-ml
 ```
 
 Phase 2 acceptance recorded **208 passing tests**, including Phase 0–1
@@ -271,6 +294,20 @@ The initial Phase 3 suite passed 270 tests; R1–R4 added 28 regression cases.
 The R5 fix adds 32 time-alignment cases, bringing the suite to **330 tests**;
 all original tests are retained.
 
+Phase 4 final verification and independent review evidence are recorded in
+[Phase 4 acceptance](docs/PHASE_4_REPORT.md). The user has authorized its commit,
+safe merge, private push and CI verification; actual remote results are recorded there after execution.
+The local suite passes **425 tests** (the original 330 plus 95 Phase 4 cases).
+Independent review found no actionable defects within synthetic USD validation.
+Its 3,024 fold checks cover 144 combinations of label horizon 1–12, gap 0/2/10,
+safety embargo 0/3, and expanding/100-date rolling windows. They test boundaries,
+not 3,024 fitted models or independent market experiments. Additional acceptance
+tests perturb outer-validation labels and both holdout features and labels.
+All preprocessing is fitted within training folds. Lasso is a return regressor
+with L1 shrinkage; the explicit selector is VarianceThreshold. Classifier scores
+remain uncalibrated. Repeated synthetic holdout runs validate software and do not
+establish an untouched real research holdout.
+
 ## Project Structure
 
 ```text
@@ -290,8 +327,12 @@ src/portfolio_research_desk/
     factor_config.py, factor_cli.py,
     factor_workflow.py,
     factor_reporting.py                 Factor service, CLI and audit reports
+    ml_data.py, ml_validation.py         Features, labels and purged global-date folds
+    ml_models.py, ml_workflow.py         Fold-local pipelines and nested experiments
+    ml_config.py, ml_cli.py,
+    ml_reporting.py                     ML configuration, CLI and audit reports
     resources/                          Fixed synthetic data and defaults
-configs/                                Editable Phase 0–2 TOML examples
+configs/                                Editable Phase 0–4 TOML examples
 tests/                                  Offline unit/integration/regression tests
 scripts/                                Distribution verification
 docs/                                   Plan, architecture, policy, acceptance logs
@@ -328,8 +369,8 @@ artifacts are excluded from Git. Downloaded real market data is not distributed.
   stored separately. This does not prove historical tradable raw prices.
   Screening windows with corporate actions require review.
 - **Research scope:** authoritative exchange calendars, a corporate-action
-  ledger, real-data execution validation, and a complete OOS framework are not
-  provided yet. Real observations remain descriptive research inputs, separate
+  ledger and real-data execution validation are not provided yet. The Phase 4
+  OOS framework is exercised on synthetic data only. Real observations remain descriptive inputs, separate
   from the validated synthetic backtest. No strategy returns or model performance
   are claimed from these examples.
 - **Screening conventions:** dollar volume approximates mean `close * volume`;
@@ -359,12 +400,13 @@ local integration evidence.
 | 1 | Synthetic universe-to-execution vertical slice | Completed locally |
 | 2 | Real-data research adapters, cache, universe modes, screening | Completed locally |
 | 3 | Kenneth French factors, FF3/FF4, OLS, rolling beta | Accepted for ex-post descriptive research |
-| 4 | Baselines, ML, purged time-series validation, OOS comparison | Planned |
+| 4 | Baselines, ML, purged time-series validation, OOS comparison | Passed final local synthetic validation and independent review |
 | 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Planned |
 | 6 | Dashboard, documentation, product validation, V1.0 release | Planned |
 
 `main` holds accepted Phases 0–3; `phase-2-data-universe` retains Phase 2
 history, and `codex/phase-3-factor-diagnostics` retains Phase 3 history.
+Phase 4 uses `codex/phase-4-ml-walk-forward`; final Git/CI evidence is in its acceptance report.
 Future phases use separate feature branches and require
 explicit acceptance. The initial GitHub upload is a development checkpoint,
 not a V1.0 release.

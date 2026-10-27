@@ -1,5 +1,25 @@
 # Phase 0 架构决策
 
+## Phase 4 — 合成 ML 与时序验证（最终本地技术验收通过）
+
+`ml_config → ml_data → ml_validation → ml_models → ml_workflow → ml_reporting`。
+CLI 只调用服务；无供应商/UI 进入模型、组合或执行核心。
+
+- 保留所有 Phase 0–3 接口；仅在 run_backtest 增加可选 SignalProvider，默认动量逻辑不变。
+- FeatureRow/LabelRow 分离，保留源区间、可得/已知时间；只允许显式 synthetic 面板。
+- 全局日期分组，expanding/rolling、整日期 interval purge、gap/前置安全 embargo；训练标签
+  必须结束且已知于验证首日之前。内层 TimeSeriesSplit 同样按日期并再次 purge。
+- Imputer/Scaler/VarianceThreshold/模型折内 fit；小型固定网格，外层评价和调参隔离。
+- 开发期冻结 winner/参数后单次 final fit；开发标签跨 Holdout 的评价也排除。
+- prior/Logistic/Lasso/RF/XGBoost CPU；单类分类训练显式 prior fallback；Lasso 是连续回归。
+- 模型只生成分数，复用既有 Top-K、约束、整股、next-open 和 Decimal 账本；保留成本比较。
+- 可选 ml extra，精确版本由 uv 解析；基础包仍无需第三方库运行 Phase 0–2。
+- JSON/CSV/HTML、不覆盖、输入/折/预测/账本/哈希/最后完成标记。详细定义见 MODEL_VALIDATION.md。
+- 真实 PIT、历史成员/退市/公司行为/日历尚未解决，禁止宣称真实 OOS；Phase 3 因子不进入信号。
+- 独立审查无可操作发现；用户已授权本阶段正式提交/安全合并/普通Private Push与真实CI检查，不进入Phase5。
+- 最终补充外层标签与Holdout特征/标签隔离，未改生产算法；Lasso为训练内回归，非独立筛选器。
+- 方案hash只证明运行内冻结内容，不代表真实研究预注册；合成Holdout已反复使用作软件测试。
+
 > Phase 3 已通过用户验收，仅限事后描述性因子研究；R1–R5 均已独立复核。以下文字保留阶段上下文。
 
 ## Phase 3 — 因子诊断服务

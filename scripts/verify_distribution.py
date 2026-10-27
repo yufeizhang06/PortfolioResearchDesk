@@ -19,6 +19,9 @@ def main() -> None:
         action="store_true",
         help="Install locked factor extra and verify Phase 3.",
     )
+    parser.add_argument(
+        "--with-ml", action="store_true", help="Install locked ML extra and verify Phase 4."
+    )
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
     archives = list(args.dist.resolve().glob("*.tar.gz"))
@@ -129,6 +132,11 @@ def main() -> None:
                     "Base installation should explain the missing factors extra: "
                     f"exit={missing.returncode}, stderr={missing.stderr}"
                 )
+            missing_ml = subprocess.run(
+                [str(console), "ml", "run"], cwd=root, capture_output=True, text=True
+            )
+            if missing_ml.returncode != 2 or "ml extra" not in missing_ml.stderr:
+                raise RuntimeError("Base installation should explain the missing ml extra.")
             if args.with_factors:
                 # Reuse the exact locked wheel URLs populated by the initial sync.
                 # A requirements export would need separate registry-index metadata
@@ -193,6 +201,74 @@ def main() -> None:
                     raise RuntimeError("Installed FF4 did not recover the theoretical coefficient.")
                 if not (factor_dir / "rolling.svg").is_file():
                     raise RuntimeError("Installed factor charts are missing.")
+            if args.with_ml:
+                subprocess.run(
+                    [
+                        args.uv,
+                        "sync",
+                        "--project",
+                        str(project),
+                        "--locked",
+                        "--offline",
+                        "--extra",
+                        "ml",
+                        "--no-dev",
+                        "--no-install-project",
+                        "--inexact",
+                        "--python",
+                        str(python),
+                    ],
+                    check=True,
+                    env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(environment)},
+                )
+                ml_run = subprocess.run(
+                    [
+                        str(python),
+                        "-I",
+                        "-m",
+                        "portfolio_research_desk",
+                        "ml",
+                        "run",
+                        "--output-dir",
+                        str(root / f"ml-{index}"),
+                        "--run-id",
+                        "installed",
+                    ],
+                    cwd=root,
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+                ml_payload = json.loads(ml_run.stdout)
+                ml_dir = Path(ml_payload["report_directory"])
+                if ml_payload["phase"] != 4 or ml_payload["credible_real_market_oos"] is not False:
+                    raise RuntimeError("Installed Phase 4 scope metadata failed.")
+                if not (ml_dir / "run.json").is_file() or not (ml_dir / "folds.json").is_file():
+                    raise RuntimeError("Installed Phase 4 audit bundle is incomplete.")
+                if set(ml_payload["metrics"]["holdout"]) != {
+                    "dummy",
+                    "logistic",
+                    "lasso",
+                    "random_forest",
+                    "xgboost",
+                }:
+                    raise RuntimeError("Installed Phase 4 model coverage failed.")
+                subprocess.run(
+                    [
+                        str(python),
+                        "-I",
+                        "-c",
+                        "import importlib.metadata as m, json, pathlib, sys; "
+                        "import portfolio_research_desk as p; "
+                        "d=json.loads(m.distribution('portfolio-research-desk')"
+                        ".read_text('direct_url.json')); "
+                        "assert 'archive_info' in d and d['url'].endswith('.whl'); "
+                        "assert pathlib.Path(p.__file__).resolve().is_relative_to("
+                        "pathlib.Path(sys.prefix).resolve())",
+                    ],
+                    cwd=root,
+                    check=True,
+                )
     print(
         "PASS: sdist rebuild, both wheels, clean install and CLI/resources "
         f"on {sys.version.split()[0]}"

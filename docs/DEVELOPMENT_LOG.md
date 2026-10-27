@@ -1,5 +1,46 @@
 # Development Log
 
+## 2026-10-27 — Phase 4 最终验收收尾获授权
+
+- 用户授权核实审查证据、必要补测、正式Commit、安全合并main、普通Private Push及Ubuntu/Windows真实CI检查/修复。
+- 实际fetch核对本地/远程main仍65f1bca，Private与默认main正确；原审查36个生产Python哈希全部一致。
+- 原3024 folds来自144参数组合×7外折×(本折+2内折)，仅边界检查，不是3024市场试验。
+- 明确Lasso为训练内L1收益回归；selector为VarianceThreshold；分类score未校准。
+- 明确合成Holdout已反复运行用于软件验证，程序冻结不证明真实研究中未触碰最终测试集。
+- 补充5模型外层标签翻转及全流程Holdout特征+标签扰动，共6测试通过；生产算法未改。
+- 本轮全量425 passed in32.31s（原330保留+95新增），锁定sync/lock、Ruff lint/format通过。
+- wheel/sdist、sdist离线重建、两个wheel干净venv源码外Phase0–4安装检查全部通过；CLI帮助/三配置/因子与ML运行成功。
+- 26候选文件敏感模式未检出，原计划/原330测试/36生产文件一致，发行包无work/outputs/venv；Git/CI另补实测结果。
+- 不进入Phase5、不发布Release；真实PIT/OOS、历史成员/退市/公司行为/日历等限制全部保留。
+
+## 2026-10-27 — Phase 4 本地完成，独立审查通过，等待用户验收
+
+- 0.5.0，codex/phase-4-ml-walk-forward；main/origin/main/HEAD仍65f1bca，未Commit/Push/进入Phase5。
+- 已实现可追溯特征/标签、按全局日期expanding/rolling、整日期purge、gap/前置安全embargo。
+- prior/Logistic/连续收益Lasso/RF/CPU XGBoost，训练内Pipeline、嵌套TimeSeriesSplit小网格调参。
+- 开发标签跨Holdout排除，开发winner/最终参数冻结后单次Holdout；指标和全模型结果如实保留。
+- ML分数复用既有Top-K/整股/next-open/费用/滑点/现金/NAV，与四类基准及0/1/2倍成本比较。
+- 不可覆盖JSON/CSV/HTML、完整输入/每内外折/拟合统计/预测/目标/订单/成交/持仓/NAV及哈希。
+- 全量最终 **419 passed in 31.33s**，保留原330项，新增89项；禁socket。Ruff、锁定安装与lock通过。
+- wheel/sdist、sdist离线重建、直接/重建wheel的干净venv源码外Phase0–4运行均通过。
+- 独立只读审查重跑114测试；144参数组合、3024内外fold、906990训练行成员及五模型
+  Holdout价格/未来标签扰动无可操作P1/P2/P3发现。报告work/phase4-independent-review/REVIEW.md。
+- 审查后生产源码SHA逐项一致；额外将未来标签单独翻转的五模型检查保留为正式回归测试。
+- 首次XGBoost参数NaN导致严格JSON拒绝，已显式编码参数缺失标记，未放松特征/预测有限性。
+- 新增ml extra由uv解析，原有第三方包版本不变；Python3.12.14/uv0.13.6，元数据/实际拟合验证。
+- 仅合成USD软件验证；真实PIT/成员/退市/日历/公司行为、统计独立性、真实Holdout治理仍待证据。
+- CI配置已扩展但本轮无Commit/Push，Phase4远端Ubuntu/Windows CI尚未执行；不挪用Phase3成功。
+- 命令、实际合成结果、设计差异与限制见PHASE_4_REPORT/MODEL_VALIDATION。停止等待用户验收。
+
+## 2026-10-27 — Phase 4 正式开始（用户授权）
+
+- 完整核对计划、README、AGENTS、开发历史、Phase 3 验收与相关源码；基线 330 passed in 9.35s。
+- 当前为主仓库唯一工作树；远端 Private / main 与本地一致，65f1bca；已从 main 创建 codex/phase-4-ml-walk-forward。
+- 实际读取 GitHub Actions 40597881595，确认准确 SHA 139d17f 两平台 success；不挪用为 Phase 4 CI。
+- 范围：可追溯特征/标签、全局日期划分、purge/gap、嵌套调参、Pipeline、模型指标、合成信号回测与报告。
+- 真实 PIT 与历史成员证据仍不足，只用合成 USD 数据验证。因子诊断禁止进入历史信号。
+- 版本开发至 0.5.0；仅新增本阶段 ml extra，uv 正式解析锁。完成后独立 Code Review，不 Commit/Push/main/Phase5。
+
 ## 2026-10-27 — Phase 3 已验收同步，修复后双平台真实 CI 通过
 
 - 功能提交b929b8f29ca2e0126112241c907dc0b44ddb11a0及CI安装修复139d17f2feb0ebce537399e3c0f145a123db79a6

@@ -1,5 +1,6 @@
 """Deterministic daily event loop: next open execution, close valuation, decision."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Context, Decimal, localcontext
@@ -53,14 +54,29 @@ class BacktestResult:
     dataset_snapshot: MarketDataset
 
 
-def run_backtest(config: BacktestConfig, dataset: MarketDataset | None = None) -> BacktestResult:
-    """Run one fixed, non-ML strategy; no fitting or OOS-performance claim."""
+SignalProvider = Callable[[datetime], tuple[Signal, ...] | None]
+
+
+def run_backtest(
+    config: BacktestConfig,
+    dataset: MarketDataset | None = None,
+    signal_provider: SignalProvider | None = None,
+) -> BacktestResult:
+    """Run momentum or injected audited signals through the same execution engine.
+
+    A provider returns None to hold, an empty tuple to target cash, or a complete
+    signal panel to rebalance. Fitting remains outside the execution engine.
+    """
     # Prevent a caller's Decimal context from silently changing an experiment.
     with localcontext(Context(prec=28)):
-        return _run(config, dataset if dataset is not None else load_backtest_dataset())
+        return _run(
+            config, dataset if dataset is not None else load_backtest_dataset(), signal_provider
+        )
 
 
-def _run(config: BacktestConfig, dataset: MarketDataset) -> BacktestResult:
+def _run(
+    config: BacktestConfig, dataset: MarketDataset, signal_provider: SignalProvider | None
+) -> BacktestResult:
     validate_dataset(dataset)
     if config.lookback_sessions >= len(dataset.sessions) - 1:
         raise DataError(
@@ -90,6 +106,10 @@ def _run(config: BacktestConfig, dataset: MarketDataset) -> BacktestResult:
         "No ML, Walk-Forward training or final holdout evaluation in Phase 1.",
         "Cash benchmark: zero interest. Annualized return/volatility/Sharpe unavailable.",
     ]
+    if signal_provider is not None:
+        warnings[4] = (
+            "Injected research signals; see caller's fold audit and synthetic limitations."
+        )
     for index, session in enumerate(dataset.sessions):
         current = tuple(b for b in bars if b.session_date == session.session_date)
         executed = execute_orders(state, pending, current, session, config)
@@ -134,8 +154,23 @@ def _run(config: BacktestConfig, dataset: MarketDataset) -> BacktestResult:
         state = PortfolioState(session.decision_at, state.cash, state.positions)
         pending = ()
         if index >= config.lookback_sessions:
-            signals = momentum_signals(bars, assets, session.decision_at, config.lookback_sessions)
-            target = build_target(signals, config)
+            signals = (
+                momentum_signals(bars, assets, session.decision_at, config.lookback_sessions)
+                if signal_provider is None
+                else signal_provider(session.decision_at)
+            )
+            if signals is None:
+                continue
+            if signals and (
+                set(s.asset for s in signals) != set(assets)
+                or any(s.decision_at != session.decision_at for s in signals)
+            ):
+                raise DataError("Injected signals require the current complete configured panel.")
+            target = (
+                build_target(signals, config)
+                if signals
+                else TargetPortfolio(session.decision_at, (), ONE)
+            )
             pending = propose_orders(state, target, current)
             decisions.append(DecisionRecord(session.decision_at, signals, target, pending))
     final_cancel = execute_orders(state, pending, (), None, config)

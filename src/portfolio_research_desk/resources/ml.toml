@@ -1,0 +1,16 @@
+# Fixed synthetic USD fixture. No PIT/real-market performance claim.
+schema_version = 4
+mode = "ml"
+expected_kind = "synthetic"
+sessions = 320
+horizon = 5
+min_train_dates = 100
+validation_dates = 20
+holdout_dates = 40
+gap_dates = 1
+embargo_dates = 1
+max_train_dates = 0
+inner_splits = 2
+inner_test_dates = 15
+seed = 42
+models = ["dummy", "logistic", "lasso", "random_forest", "xgboost"]

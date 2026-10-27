@@ -14,6 +14,8 @@ from portfolio_research_desk.domain import jsonable
 from portfolio_research_desk.errors import ProjectError
 from portfolio_research_desk.factor_cli import execute_factor_command, register_factor_commands
 from portfolio_research_desk.factor_config import load_factor_config
+from portfolio_research_desk.ml_cli import execute_ml_command, register_ml_commands
+from portfolio_research_desk.ml_config import load_ml_config
 from portfolio_research_desk.reporting import write_report
 from portfolio_research_desk.research_config import load_research_config
 from portfolio_research_desk.sample import summarize_sample
@@ -27,7 +29,7 @@ def main(argv: list[str] | None = None) -> int:
         prog="prd",
         description=(
             "PortfolioResearchDesk: Phase 0 inspection; Phase 1 simulation; "
-            "Phase 2 data; Phase 3 factors."
+            "Phase 2 data; Phase 3 factors; Phase 4 synthetic ML."
         ),
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -42,7 +44,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     validate.add_argument(
         "--kind",
-        choices=("offline", "backtest", "research", "factors"),
+        choices=("offline", "backtest", "research", "factors", "ml"),
         default="offline",
         help="Configuration schema; default: offline (Phase 0).",
     )
@@ -66,8 +68,21 @@ def main(argv: list[str] | None = None) -> int:
     )
     register_data_commands(commands)
     register_factor_commands(commands)
+    register_ml_commands(commands)
     args = parser.parse_args(argv)
     try:
+        if args.command == "ml":
+            print(json.dumps(jsonable(execute_ml_command(args)), indent=2, sort_keys=True))
+            return 0
+        if args.command == "config" and args.kind == "ml":
+            print(
+                json.dumps(
+                    {"phase": 4, "config": load_ml_config(args.config).snapshot()},
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
+            return 0
         if args.command == "research":
             payload, exit_code = execute_factor_command(args)
             print(json.dumps(jsonable(payload), indent=2, sort_keys=True, ensure_ascii=True))

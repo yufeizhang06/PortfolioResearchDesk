@@ -4,9 +4,10 @@
 
 - 用户已验收 Phase 0–3；Phase 3 的 R1–R5 全部 PASS，仅在事后描述性因子研究范围通过，不是 PIT/OOS 交易策略认证。
 - Private 仓库为 yufeizhang06/PortfolioResearchDesk；Phase 3 已合并上传 main，Ubuntu/Windows 各330测试及构建安装 CI 已实测通过。
-- 本轮已授权 Phase 3 文档收尾、正式 Commit、合并 main、普通 Push 及 Ubuntu/Windows CI 检查和必要修复。
+- 当前用户已授权 Phase 4 最终验收、审查证据核实、必要针对性测试、正式 Commit、安全合并 main、普通 Push 及 Ubuntu/Windows CI 检查和真实问题修复。
+- 当前开发分支 codex/phase-4-ml-walk-forward，基线 main / 65f1bca；仅在确认无阻塞问题后按本轮授权提交和快进合并。
 - 保留已有历史、稳定 main、phase-2-data-universe 和 Phase 3 分支；不 force push，不改变仓库可见性或改其他仓库。
-- 本轮完成后停止；用户再次明确授权前不进入 Phase 4–6，也不创建正式产品 Release。
+- Phase 4 收尾完成后停止；不进入 Phase 5–6，不创建正式产品 Release。
 - 开始先完整阅读 `docs/PROJECT_PLAN.md`、README、本文件及相关已有代码。
 - 用户当前请求决定任务范围；计划书描述的未来功能不等于授权现在实现。
 - 每轮先检查现有文件、Git 状态、Python 环境；不覆盖用户成果，不重置已有改动。

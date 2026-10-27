@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 — Phase 2（2026-10-27）
+
+- Yahoo/yfinance 日线与 native CSV/Parquet Adapter；来源、时间、复权、公司行为字段显式保留。
+- SQLite 索引、不可变校验快照、real/synthetic 隔离、TTL、离线命中、显式刷新与过期选择。
+- 有界重试、限流停止、身份与元数据验证、缺失/重复/异常隔离及逐资产失败记录。
+- 自选列表导入/导出/更新/去重；Nasdaq 官方当前目录；流动性/动量/波动率组合筛选。
+- 统一 UniverseSnapshot、current/user_static/PIT 标签、历史 PIT 阻断、可得时点及未来扰动测试。
+- 统一研究运行报告、CSV 元数据配对、配置/数据/代码/依赖指纹和不可覆盖运行目录。
+- 保留 Phase 0–1 行为；可选 data 依赖锁定；扩展离线 CI 和独立安装验证。
+- 本地 208 测试通过，真实下载与缓存/Parquet 回放已实际运行；远程 CI 未验证。
+- 真实数据仅限描述性研究；历史指数/退市、真实回测、因子及 ML 不在本次交付范围。
+
 ## 0.2.0 — Phase 1（2026-10-27）
 
 - 自选 user_static 股票池、规范化 raw USD 合成行情、明确 session schedule。

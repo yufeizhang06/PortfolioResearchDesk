@@ -1,0 +1,37 @@
+schema_version = 2
+
+[universe]
+mode = "custom"
+assets = [
+  {market="US", exchange="XNAS", symbol="AAPL", currency="USD"},
+  {market="US", exchange="XNAS", symbol="MSFT", currency="USD"},
+]
+
+[data]
+adapter = "yfinance"
+expected_kind = "real"
+start = "2026-10-01"
+end = "2026-10-27" # exclusive; editable research interval
+max_assets = 5
+offline = false
+
+[research]
+as_of = "now"
+require_point_in_time = false
+
+[screening]
+enabled = true
+min_history = 10
+momentum_sessions = 5
+volatility_sessions = 5
+liquidity_sessions = 5
+min_dollar_volume = "1000000"
+
+[storage]
+cache_dir = "../data/cache"
+output_dir = "../outputs/research"
+ttl_hours = 24
+
+[network]
+attempts = 2
+timeout = 10

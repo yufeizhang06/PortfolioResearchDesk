@@ -31,7 +31,7 @@ jobs:
       - name: Install the selected uv version
         run: python -m pip install uv==0.13.6
       - name: Install locked project and developer tools
-        run: uv sync --locked --python "$(python -c 'import sys; print(sys.executable)')"
+        run: uv sync --locked --extra data --python "$(python -c 'import sys; print(sys.executable)')"
       - name: Verify lock
         run: uv lock --check --offline
       - name: Lint and formatting
@@ -47,7 +47,9 @@ jobs:
           uv run --locked --offline prd demo
           uv run --locked --offline prd config validate --kind backtest --config configs/example_backtest.toml
           uv run --locked --offline prd backtest run --config configs/example_backtest.toml --run-id ci-offline
+          uv run --locked --offline prd universe build
+          uv run --locked --offline prd data fetch
       - name: Build distributions with locked backend
-        run: uv build --offline --no-build-isolation --out-dir dist/phase1
+        run: uv build --offline --no-build-isolation --out-dir dist/phase2
       - name: Rebuild sdist and check installed wheel outside source tree
-        run: uv run --locked --offline python scripts/verify_distribution.py dist/phase1
+        run: uv run --locked --offline python scripts/verify_distribution.py dist/phase2

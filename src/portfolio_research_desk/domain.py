@@ -124,11 +124,22 @@ class UniverseSnapshot:
     membership_type: str
     assets: tuple[AssetId, ...]
     source: str
+    available_at: datetime | None = None
+    synthetic: bool | None = None
+    limitations: tuple[str, ...] = ()
+    screening_applied: bool = False
+    point_in_time_verified: bool = False
 
     def __post_init__(self) -> None:
         require_utc(self.as_of)
-        if self.membership_type != "user_static" or not self.assets:
-            raise DataError("Phase 1 accepts a nonempty user_static custom universe only.")
+        if self.membership_type not in {"user_static", "current_snapshot", "point_in_time"}:
+            raise DataError("Unknown universe membership type.")
+        if not self.assets and not self.screening_applied:
+            raise DataError("A base universe must be nonempty.")
+        if self.available_at is not None:
+            require_utc(self.available_at)
+        if self.synthetic is not None and type(self.synthetic) is not bool:
+            raise DataError("Universe synthetic marker must be an explicit boolean.")
         if len(set(self.assets)) != len(self.assets):
             raise DataError("Universe assets must be unique.")
 

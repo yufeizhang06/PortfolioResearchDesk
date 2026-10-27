@@ -2,8 +2,9 @@
 
 ## 当前范围
 
-- 用户已于 2026-10-27 验收 Phase 0 并授权 Phase 1；当前仅实施 Phase 1。
-- Phase 1 完成后停止；用户再次明确确认前禁止进入 Phase 2–6。
+- 用户已验收 Phase 0–2；当前仅授权 Phase 2 Commit、英文 README 与首次 GitHub Private 上传。
+- 保留已有历史，将已验收成果纳入 main，并保留 phase-2-data-universe；不 force push 或改其他仓库。
+- 本轮完成后停止；用户再次明确确认前禁止进入 Phase 3–6，也不创建正式产品 Release。
 - 开始先完整阅读 `docs/PROJECT_PLAN.md`、README、本文件及相关已有代码。
 - 用户当前请求决定任务范围；计划书描述的未来功能不等于授权现在实现。
 - 每轮先检查现有文件、Git 状态、Python 环境；不覆盖用户成果，不重置已有改动。

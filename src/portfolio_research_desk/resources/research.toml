@@ -1,0 +1,28 @@
+schema_version = 2
+
+[universe]
+mode = "custom"
+assets = [
+  {market="US", exchange="XNAS", symbol="SYN_A", currency="USD"},
+  {market="US", exchange="XNAS", symbol="SYN_B", currency="USD"},
+  {market="US", exchange="XNAS", symbol="SYN_C", currency="USD"},
+]
+
+[data]
+adapter = "csv"
+local_file = "packaged"
+expected_kind = "synthetic"
+start = "2024-01-02"
+end = "2024-01-10"
+offline = true
+expected_sessions = ["2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05", "2024-01-08", "2024-01-09"]
+
+[screening]
+enabled = true
+min_history = 3
+momentum_sessions = 1
+min_momentum = "0"
+volatility_sessions = 2
+max_volatility = "10"
+liquidity_sessions = 2
+min_dollar_volume = "1000"

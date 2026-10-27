@@ -1,7 +1,7 @@
 # Phase 0 架构决策
 
 日期：2026-10-27。单一 Python 可安装项目，目标架构见 `PROJECT_PLAN.md`。
-下列 Phase 0 决策保留为历史记录；用户现已授权 Phase 1，新增决策见下节。
+下列 Phase 0–1 决策保留为历史记录；用户现已授权 Phase 2，新增决策见末节。
 
 | 决策 | 原因与影响 |
 |---|---|
@@ -53,3 +53,38 @@
 
 此阶段没有新增 ML、公司行为账本、FX、Paper 状态持久化或数据供应商；也没有创建对应空模块。
 数学和时间契约、手算、数据性质及限制详见 `BACKTEST_ASSUMPTIONS.md`。
+
+## Phase 2 — 数据与统一股票池研究流
+
+版本 0.3.0，Python 3.12 / uv 0.13.6 保持不变。CLI 只注册参数并调用服务：
+
+```text
+research_config -> custom/watchlist/official current directory -> explicit include/exclude
+                -> HistoryAdapter -> immutable cache -> quality -> optional screening
+                -> UniverseSnapshot + audit bundle
+```
+
+`universe build` 与 `data fetch` 共用 `run_research()`；前者在不筛选时无需下载价格，
+后者明确获取价格。配置在运行前检查预算、模式、数据种类及路径，报告保存每个筛选决定。
+不增加 UI、服务框架、任务队列、ML 或后续阶段空模块。
+
+| 决策 | 原因与影响 |
+|---|---|
+| 独立 `Observation/History` | 可精确保留供应商小数、缺失值、未知事件时刻和来源；不放松已测试的 Phase 1 可执行 PriceBar 契约 |
+| `HistoryAdapter` Protocol | Yahoo 与 CSV/Parquet 产生同一契约；核心筛选不依赖 yfinance/pandas/UI |
+| 可选 `data` extra | yfinance 用于真实日线，PyArrow 用于 Parquet；基础 CSV 和合成研究仍只需标准库；动态导入缺失依赖时明确报错 |
+| `schema_version=2` TOML | 单独 research 配置，保留旧 Phase 0/1 schema 与 CLI；路径相对配置文件解析，未知字段拒绝 |
+| JSON 快照 + SQLite 索引 | 无额外数据库依赖；不可变快照与 SHA-256 固定输入，索引仅查找，不混合 real/synthetic；TTL 与刷新显式 |
+| CSV sidecar / Parquet 内嵌元数据 | 不能丢失数据来源、时间和价格口径；本地文件不是自动可信，native schema 可审计且能精确往返 |
+| Nasdaq 官方当前目录 | 实际可用的美国市场入口；历史指数不可得时保留 current_snapshot 并阻断 PIT 宣称；不误称 Nasdaq-100 |
+| 晚可得拒绝 + 未来扰动测试 | 不依据今天的历史修订和成员身份声称可信 OOS；筛选只校验当时可见数据，未来异常不能改变过去决定 |
+| 窗口公司行为需要复核 | 当前三规则是描述性 price-return/liquidity 口径，不假装已经实现总收益、成交和公司行为账本 |
+
+新增模块：data_contracts（质量与契约）、data_adapters（网络/本地边界）、data_cache（快照）、
+universe（列表与目录）、screening（纯计算）、research_config、research_workflow、data_cli。
+原 domain 的 UniverseSnapshot 只增加有默认值的字段；Phase 1 信号、组合、执行与会计逻辑未改。
+reporting 增加公共 provenance 包装供两条流程复用，旧报告逻辑保留。
+
+输出逐资产 CSV+sidecar、四类 JSON 与最后的 run.json；没有完成标记的目录不得当成成功运行。
+完成标记的 status 仍可为 partial/failed；不是以“文件存在”代替业务验收。
+时间、来源与数学定义详见 `DATA_POLICY.md`；锁定依赖兼容信息、真实探测与验收见 `PHASE_2_REPORT.md`。

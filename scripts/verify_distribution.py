@@ -95,6 +95,26 @@ def main() -> None:
             marker = root / "runs" / f"installed-{index}" / "run.json"
             if not marker.is_file():
                 raise RuntimeError("Installed backtest did not complete its report bundle.")
+            research = subprocess.run(
+                [
+                    str(console),
+                    "universe",
+                    "build",
+                    "--output-dir",
+                    str(root / f"research-{index}"),
+                ],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            phase2 = json.loads(research.stdout)
+            if (
+                phase2["phase"] != 2
+                or phase2["data_kind"] != "synthetic"
+                or phase2["status"] != "complete"
+            ):
+                raise RuntimeError("Installed Phase 2 offline research failed.")
     print(
         "PASS: sdist rebuild, both wheels, clean install and CLI/resources "
         f"on {sys.version.split()[0]}"

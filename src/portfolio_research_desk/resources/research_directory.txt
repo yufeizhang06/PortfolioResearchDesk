@@ -1,0 +1,6 @@
+Symbol|Security Name|Market Category|Test Issue|Financial Status|Round Lot Size|ETF|NextShares
+SYN_A|Self authored synthetic A - Common Stock|Q|N|N|100|N|N
+SYN_B|Self authored synthetic B - Common Stock|Q|N|N|100|N|N
+SYN_C|Self authored synthetic C - Common Stock|Q|N|N|100|N|N
+SYN_ETF|Self authored synthetic ETF|Q|N|N|100|Y|N
+File Creation Time: SYNTHETIC_FIXTURE|||||||

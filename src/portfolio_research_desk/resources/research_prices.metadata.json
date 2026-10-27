@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "history": {
+    "data_kind": "synthetic",
+    "provider": "self_authored_phase2_fixture",
+    "price_basis": "synthetic_raw",
+    "availability_basis": "declared",
+    "retrieved_at": "2024-01-10T00:00:00+00:00",
+    "limitations": [
+      "Self-authored synthetic observations, not actual market evidence."
+    ],
+    "timestamp_basis": "explicit_source_timestamps",
+    "content_sha256": "ee3474d8e902be2f863a8b14f695ee990eae2bae47583786d276f745f0426999"
+  }
+}

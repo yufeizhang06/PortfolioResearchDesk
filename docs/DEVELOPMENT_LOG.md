@@ -101,3 +101,65 @@ Screening。接入前逐项核实来源是否官方、授权、时间可得性�
 - 用户已提供作者姓名和 GitHub noreply 邮箱；本次仅在当前仓库配置该身份，不修改全局配置。
 - 提交的实际 Hash 以 Git 日志为准，不写入它自身包含的文档，避免自引用。
 - 本轮仅本地版本管理；无远端配置、Push、公开仓库或破坏性操作，未进入 Phase 2。
+
+## 2026-10-27 — Phase 2 开始（用户已授权）
+
+- 已核实首次提交为 `86dc6824efa0754aa53e4b5263c4352113339d0c`，起点工作区干净、无远端。
+- 建立本阶段分支 `phase-2-data-universe`；AGENTS 标明仅授权 Phase 2，完成后停止。
+- 完整阅读项目计划、README、协作规范、阶段记录及已实现代码；基线 141 测试通过，无功能阻塞。
+- 目标按 Phase 2：真实/本地 Adapter、缓存与质量、三种 Universe 与组合筛选；
+  保留旧合成回测，真实下载只用于带覆盖限制的描述性研究，不引入后续因子/ML/账户。
+- 来源核实：Yahoo 经第三方 yfinance，不是官方交易所行情；Market 首发 Nasdaq 官方当前目录，
+  无历史指数成分与退市覆盖。精确历史发布时间未知，禁止虚构。
+
+## 2026-10-27 — Phase 2 完成，等待用户验收
+
+### 已完成
+
+- 版本 0.3.0；Python 3.12 / uv 0.13.6 保留，可选 data extra 与真实 uv.lock 解析。
+- 独立 Observation/History 契约；真实数据、synthetic、来源/UTC/复权/公司行为明确分开。
+- yfinance 真实日线、native CSV + checksum sidecar、Parquet 元数据与精确数值往返。
+- 真实 retrieved_at 作为可得时间；日线 event_time 未知，使用明确标注的本地日期上界。
+- SQLite 索引 + 不可变 SHA-256 快照；TTL、offline、refresh、allow-stale、损坏检测与显式修复。
+- 有界超时/重试、HTTP-date/numeric Retry-After、限流停批、缺失/schema/身份错误及逐资产失败。
+- 自选列表导入/导出/保存/读取/更新/去重；官方当前市场目录及成员过滤原因。
+- 流动性、价格动量、历史波动率、历史长度筛选；三模式及 Market/Custom + Screening。
+- current_snapshot/user_static/未验证 PIT 显式契约与历史阻断；未来扰动、晚可得输入测试。
+- 统一 CLI/服务研究流程、质量/筛选/缓存与输入指纹报告、逐资产 CSV 和最后完成标记。
+- README、DATA_POLICY、ARCHITECTURE、CHANGELOG、PHASE_2_REPORT 与 CI/安装验证更新。
+
+### 实际测试与验收
+
+- **208 passed**（原 141 测试保留），最终独立临时目录运行无警告；测试 socket 被禁止。
+- Ruff lint / format、uv lock 检查、锁定 data extra 安装、新旧 CLI/配置/默认样例通过。
+- wheel/sdist 构建、sdist 离线重建、直接与重建 wheel 干净 venv 安装及源码外 Phase 0/1/2 运行通过。
+- 真实 Yahoo AAPL/MSFT 各 18 日观测；官方目录保留 4,328、排除 1,297（当前目录，不是普通股全集）。
+- Custom / Market 组合筛选真实运行 complete；目录 + 两资产离线缓存 3/3 命中。
+- 真实 CSV→Parquet→读取精确一致，CLI check 通过；数据与原始证据均在 Git 忽略目录。
+- 初次旧 pytest 缓存有权限警告，独立本轮目录后消除；首次构建临时目录写失败，
+  经批准以普通本机权限重跑成功。yfinance 上游 Pandas4Warning 保留并记录。
+- 完整命令、哈希、来源与实际证据位置见 `PHASE_2_REPORT.md`，不把接口模拟测试当真实下载。
+
+### 限制与下一阶段
+
+- GitHub Actions 仅配置更新，**远程未验证**；Linux/macOS 未实机验证。
+- 真实数据没有历史 PIT/权威日历/退市/身份演变保证，不声称幸存者偏差已解决或可信 OOS。
+- 无任意格式 CSV 自动映射、市值/行业筛选、真实回测、公司行为账本、FX、因子、ML 或持久账户。
+- Phase 1 业务和数据入口保持 synthetic；真实 History 不被放入已测试的可执行 PriceBar。
+- 原始项目计划未改；本阶段变更未自动提交或 Push，没有远端修改或真实交易。
+- 建议提交：`feat: add market data adapters, cache and universe screening`。
+- Phase 3 依赖可靠的频率/单位/日期/来源契约及诊断性边界；用户明确确认前不启动。
+
+## 2026-10-27 — 用户验收 Phase 2，授权首次 GitHub Private 上传
+
+- 用户已查看并确认 Phase 2 本地验收；本轮范围仅本地提交、英文 README、Private 仓库初始上传及 CI。
+- 保留首次提交 `86dc6824efa0754aa53e4b5263c4352113339d0c` 和现有阶段分支；不重写历史。
+- README 改为英文，列明 Overview、Features、Status、Architecture、Installation、Quick Start、
+  Testing、Structure、Data Limitations、Roadmap；版本保持 0.3.0，不宣称产品或真实回测已完成。
+- 原始 PROJECT_PLAN 和既有开发历史保留；AGENTS 仅更新当前授权范围，Phase 3–6 仍未授权。
+- 重新执行 208 测试、Ruff lint/format、uv.lock 一致性及锁定 data extra 安装，全部通过。
+- 提交前门槛还包括三种配置验证、默认离线流程、构建/独立安装、候选文件与历史敏感模式检查。
+- 本地原先无 Remote；官方便携版 gh 2.103.3 下载并通过官方 SHA-256 校验，工具只在忽略的 work/。
+- 用户通过 GitHub 官方设备授权完成登录；账号为 yufeizhang06，未发现 PortfolioResearchDesk 同名仓库。
+- 目标为 Private `yufeizhang06/PortfolioResearchDesk`，main 保存已验收版本，保留 phase-2-data-universe；
+  不创建 V1.0 Release。实际 Push 和远端 CI 结果在完成后另行补记，不将本地通过当成远端通过。

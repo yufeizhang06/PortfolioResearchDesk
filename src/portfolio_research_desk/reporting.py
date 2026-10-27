@@ -78,6 +78,11 @@ def _table(fields: list[str], rows: list[dict]) -> str:
     return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
 
 
+def collect_provenance() -> dict:
+    """Shared code/version/lock provenance for simulation and research run bundles."""
+    return _provenance()
+
+
 def write_report(result: BacktestResult, output_dir: Path, run_id: str | None = None) -> Path:
     """Reserve a new run directory; run.json is written last as the completion marker.
 

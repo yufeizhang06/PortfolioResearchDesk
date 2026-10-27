@@ -163,3 +163,20 @@ Screening。接入前逐项核实来源是否官方、授权、时间可得性�
 - 用户通过 GitHub 官方设备授权完成登录；账号为 yufeizhang06，未发现 PortfolioResearchDesk 同名仓库。
 - 目标为 Private `yufeizhang06/PortfolioResearchDesk`，main 保存已验收版本，保留 phase-2-data-universe；
   不创建 V1.0 Release。实际 Push 和远端 CI 结果在完成后另行补记，不将本地通过当成远端通过。
+
+## 2026-10-27 — 首次 Push 与真实 CI 问题修复
+
+- Phase 2 Commit：`471b6a253246dd7daa2a326a503c7c02faca00cf`，35 个修改文件，完整版本树 69 文件。
+- 已创建 Private https://github.com/yufeizhang06/PortfolioResearchDesk，描述按用户原文设置。
+- main 与 phase-2-data-universe 首次普通 Push 成功，原始历史保留；两远端提交及文件树与本地一致。
+- Actions 已启用。首次 Push 后未观察到自动运行记录，故在 main 显式 workflow_dispatch 触发现有 CI。
+- 首次真实 CI：https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40543680987。
+  Ubuntu/Windows 都在测试准备阶段失败，Ubuntu 为 105 passed / 103 setup errors。
+- 根因：pyproject 强制 --basetemp=work/pytest-tmp，但 work 被忽略，全新 checkout 没有父目录，
+  pytest 创建该目录时未递归创建父目录。本地已有 work，先前测试未暴露此条件。
+- 修复使用 pytest 默认平台临时目录，并更新 README；没有删除或放宽测试，也不改业务逻辑。
+- 此处保留首次失败记录；后续修复验证和 CI 状态另行补记，不将失败重写为通过。
+- 干净副本复验：无 work 目录开始，离线锁定安装、默认临时目录策略下 **208 passed**、Ruff
+  lint/format、默认研究流程全部通过；uv.lock 检查仍通过。未创建额外业务模块或放宽测试。
+- 本机旧系统 pytest 临时目录有权限残留，验证用任务专用短临时根目录（PYTEST_DEBUG_TEMPROOT），
+  不改系统权限、不删除其他目录，也不在项目配置里写入本机绝对路径；远端使用平台默认目录。

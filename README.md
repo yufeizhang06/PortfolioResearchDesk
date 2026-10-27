@@ -194,7 +194,7 @@ Install the locked environment with the `data` extra, then run:
 
 ```bash
 uv lock --check --offline
-uv run --locked --offline pytest -q --basetemp=work/pytest-local -o cache_dir=work/pytest-cache-local
+uv run --locked --offline pytest -q
 uv run --locked --offline ruff check .
 uv run --locked --offline ruff format --check .
 uv run --locked --offline prd config validate --kind research --config configs/example_research_offline.toml
@@ -206,6 +206,8 @@ Phase 2 local acceptance recorded **208 passing tests**, including Phase 0–1
 regressions. Tests use fixed fixtures and injected transports; pytest-socket
 blocks sockets in the test process. Live source checks are separate manual
 integration checks, not a dependency of CI.
+Pytest uses the platform's default temporary directory; tests do not require a
+pre-existing local work directory.
 
 The distribution check rebuilds a wheel from the sdist, installs both wheels in
 a clean environment, and runs Phase 0–2 commands outside the source tree. CI

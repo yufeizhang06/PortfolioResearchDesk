@@ -1,0 +1,31 @@
+# Known-answer accounting fixture: see docs/BACKTEST_ASSUMPTIONS.md.
+schema_version = 1
+mode = "backtest"
+market = "US"
+data_source = "synthetic"
+log_level = "INFO"
+
+[universe]
+source = "custom"
+membership_type = "user_static"
+symbols = ["SYN_A", "SYN_B", "SYN_C"]
+
+[account]
+base_currency = "USD"
+initial_cash = "100.00"
+
+[strategy]
+name = "momentum_top_k"
+lookback_sessions = 1
+top_k = 1
+
+[portfolio]
+max_position_weight = "1"
+cash_buffer = "0"
+
+[execution]
+fill_policy = "next_session_open"
+fractional_shares = false
+commission_bps = "0"
+fixed_fee = "1.00"
+slippage_bps = "0"

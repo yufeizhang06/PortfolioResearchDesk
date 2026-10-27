@@ -1,0 +1,28 @@
+synthetic = true
+source = "synthetic_v1"
+corporate_actions = "none"
+
+[[sessions]]
+date = "2024-01-02"
+open_at = "2024-01-02T14:30:00Z"
+close_at = "2024-01-02T21:00:00Z"
+[[sessions]]
+date = "2024-01-03"
+open_at = "2024-01-03T14:30:00Z"
+close_at = "2024-01-03T21:00:00Z"
+[[sessions]]
+date = "2024-01-04"
+open_at = "2024-01-04T14:30:00Z"
+close_at = "2024-01-04T21:00:00Z"
+[[sessions]]
+date = "2024-01-05"
+open_at = "2024-01-05T14:30:00Z"
+close_at = "2024-01-05T21:00:00Z"
+[[sessions]]
+date = "2024-01-08"
+open_at = "2024-01-08T14:30:00Z"
+close_at = "2024-01-08T21:00:00Z"
+[[sessions]]
+date = "2024-01-09"
+open_at = "2024-01-09T14:30:00Z"
+close_at = "2024-01-09T21:00:00Z"

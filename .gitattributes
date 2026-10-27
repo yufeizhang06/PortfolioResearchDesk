@@ -1,0 +1,4 @@
+# Keep fixture bytes and their SHA-256 stable across Windows/Linux checkouts.
+* text=auto eol=lf
+# Preserve the original plan's intentional Markdown two-space hard line breaks.
+docs/PROJECT_PLAN.md whitespace=-blank-at-eol

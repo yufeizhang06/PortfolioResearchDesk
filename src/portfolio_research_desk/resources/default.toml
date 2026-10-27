@@ -1,0 +1,6 @@
+# Phase 0 only: no account, strategy, execution or real data settings.
+schema_version = 1
+mode = "offline_sample"
+data_source = "synthetic"
+currency = "USD"
+log_level = "INFO"

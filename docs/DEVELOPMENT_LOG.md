@@ -1,5 +1,18 @@
 # Development Log
 
+## 2026-10-27 — Phase 3 已验收同步，修复后双平台真实 CI 通过
+
+- 功能提交b929b8f29ca2e0126112241c907dc0b44ddb11a0及CI安装修复139d17f2feb0ebce537399e3c0f145a123db79a6
+  均已在Phase3分支提交，完整历史快进进入main，两个分支普通原子Push成功；Phase2仍保留ba26bea。
+- 原Private仓库、默认main和现有历史保留；没有Force Push、改变可见性、创建Release或进入Phase4。
+- 修复前后用同一冷缓存验证旧安装失败/新安装通过；修复后本机330 passed in 11.35s，Ruff/锁/构建通过。
+- 真实成功运行：https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40597881595，准确SHA为139d17f。
+  Ubuntu/Python3.12.15：330 passed in 18.65s；Windows/Python3.12.10：330 passed in 26.71s。
+  两平台Ruff、配置/CLI、合成因子研究、构建、sdist重建与直接/重建wheel的干净安装全部成功。
+- Push未观察到自动触发，本次通过现有workflow_dispatch验证；首次失败40597082932保留，不掩盖冷缓存问题。
+- 验收/README/CHANGELOG/协作状态记录真实提交及CI；最终文档提交后仍核对其自身CI与远端同步，结果见Actions与收尾摘要。
+- 验收范围保持事后描述性研究；数据/PIT/OOS限制不变，完成本轮后停止等待后续明确授权。
+
 ## 2026-10-27 — Phase 3 首次 Push 与真实 CI 安装修复
 
 - 正式功能提交b929b8f29ca2e0126112241c907dc0b44ddb11a0已创建；main快进合并，main与Phase3分支普通Push成功。

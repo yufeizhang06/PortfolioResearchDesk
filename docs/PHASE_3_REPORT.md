@@ -325,7 +325,7 @@ French 修订版本、Adj Close 与 CIZ 再投资、公司行为、退市与身�
 | 已实现 | US FF3/Carhart FF4 日/月来源、单位/RF、同样本比较、OLS/HC3 完整统计、名义尾随窗口、诊断与统一 CLI/报告 |
 | 已通过验证 | R1–R5 全部 PASS；最终独立复核重跑330项测试，21,538个独立时间组合、26组窗口QR对照及晚下载/证据不足/CLI传播验证通过 |
 | 实际源码 | 当前 Python 文件与最终 R5 复审版发行包逐字节一致；收尾不改回归、时间校验或交易逻辑 |
-| Git/CI 收尾 | 在 codex/phase-3-factor-diagnostics 创建正式提交，确认远程基线后合并 main 并普通 Push；真实 CI 结果后续补记 |
+| Git/CI 收尾 | 功能提交b929b8f、CI修复139d17f均已合并main并普通Push；真实Ubuntu/Windows CI通过，见末节 |
 | Known Limitations | 无历史 PIT/公开版本、权威交易日历或退市覆盖认证；Adj Close 为总收益代理，CIZ/公司行为账本等价未认证；HC3不修正序列相关 |
 
 验收不包含真实数据交易回测、策略盈利能力或可信 OOS 声明。来源/事件/时区证据不足继续明确限制为描述性，
@@ -360,3 +360,26 @@ Ruff、CLI与构建均通过。失败不是因子数学或时间校验：锁定s
 以全新任务专用缓存重新锁定安装后，旧验证流程实际失败于同一contourpy错误；同一冷缓存下修复流程完整通过
 sdist重建、两个wheel的干净安装及源码外Phase0–3检查，依然全部离线。证据：
 `work/phase3-closeout/cold-sync.log`、`cold-before.log`、`cold-after.log`。远端修复结果继续按实际运行补记。
+
+### 修复后真实 CI 通过与最终同步
+
+- 功能 Commit：`b929b8f29ca2e0126112241c907dc0b44ddb11a0`，
+  `feat: implement and validate factor research engine`。
+- CI 安装修复 Commit：`139d17f2feb0ebce537399e3c0f145a123db79a6`，
+  `fix: reuse locked wheel cache for isolated factor checks`。
+- 两者已通过保留完整历史的快进合并进入 main；main及Phase3分支已普通原子Push，原Phase2分支仍为ba26bea。
+- 仓库仍为Private，未Force Push、改可见性、创建Release或进入Phase4。
+- 修复后的真实运行：[40597881595](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40597881595)，
+  headRevision精确为139d17f，conclusion=success。
+
+| 平台 | 实际结果 |
+|---|---|
+| Ubuntu / Python3.12.15 | 330 passed in 18.65s；Ruff lint/format、配置/CLI/合成研究、构建、sdist重建、双wheel干净安装通过 |
+| Windows / Python3.12.10 | 330 passed in 26.71s；同上全部通过 |
+
+本轮Push未观察到自动运行，使用现有workflow_dispatch入口实测；不把人工调度混称为Push自动触发已验证。
+首次失败运行40597082932及其日志保留。后续只记录验收与Git/CI文档的提交，其当前状态应查询对应SHA的Actions，
+不把本节139d17f的结果冒充任意后续提交的结果。收尾结束时会再次核对最新提交CI和本地/远程main一致。
+
+验收后限制保持：本模块仅事后描述性因子归因，无PIT发布档案/可信OOS策略认证；未知事件/来源/时区证据明确降级，
+Adj Close/公司行为、权威日历、退市与身份覆盖等第三方数据限制仍未解决。Phase4须用户另行明确授权。

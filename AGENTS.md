@@ -3,7 +3,7 @@
 ## 当前范围
 
 - 用户已验收 Phase 0–3；Phase 3 的 R1–R5 全部 PASS，仅在事后描述性因子研究范围通过，不是 PIT/OOS 交易策略认证。
-- Private 仓库为 yufeizhang06/PortfolioResearchDesk；main 与 Phase 2 已上传，Ubuntu/Windows CI 已实测通过。
+- Private 仓库为 yufeizhang06/PortfolioResearchDesk；Phase 3 已合并上传 main，Ubuntu/Windows 各330测试及构建安装 CI 已实测通过。
 - 本轮已授权 Phase 3 文档收尾、正式 Commit、合并 main、普通 Push 及 Ubuntu/Windows CI 检查和必要修复。
 - 保留已有历史、稳定 main、phase-2-data-universe 和 Phase 3 分支；不 force push，不改变仓库可见性或改其他仓库。
 - 本轮完成后停止；用户再次明确授权前不进入 Phase 4–6，也不创建正式产品 Release。

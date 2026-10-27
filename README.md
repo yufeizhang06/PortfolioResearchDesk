@@ -49,10 +49,14 @@ The system does not connect to brokers or execute real orders.
 | CAD/FX and persistent paper portfolios | Planned for Phase 5 |
 | Dashboard and V1.0 release | Planned for Phase 6 |
 
-Phase 3 is accepted locally; its approved changes are being committed and merged
-from the separate development branch into `main`. The updated Phase 3 CI is
-pending remote execution. Check the repository's Actions page for actual remote
-results; local success alone does not establish them.
+Phase 3 is committed, merged into `main`, and pushed to the existing private
+repository, with its development branch preserved. The
+[verified Phase 3 CI](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40597881595)
+passed on Ubuntu and Windows for commit `139d17f`: 330 tests per platform, Ruff,
+CLI, build, sdist rebuild, and isolated wheel installation checks. The initial
+run exposed a cold-cache installation-check issue; its fix and evidence are
+recorded in the acceptance report. No push-triggered run was observed; this
+verification used `workflow_dispatch`. Check Actions for later commit results.
 The [initial verified CI run](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40544579916)
 passed on both Ubuntu and Windows after the fresh-checkout test configuration fix.
 
@@ -261,8 +265,8 @@ targets Python 3.12 on Ubuntu and Windows. Checkout and dependency installation
 need network access; test and example execution is offline. Remote status is
 established only by actual GitHub Actions runs.
 
-Phase 3 local results and limitations are recorded in
-[Phase 3 acceptance](docs/PHASE_3_REPORT.md); Phase 3 remote CI is unverified.
+Phase 3 acceptance, verified remote CI, and limitations are recorded in
+[Phase 3 acceptance](docs/PHASE_3_REPORT.md).
 The initial Phase 3 suite passed 270 tests; R1–R4 added 28 regression cases.
 The R5 fix adds 32 time-alignment cases, bringing the suite to **330 tests**;
 all original tests are retained.
@@ -359,8 +363,9 @@ local integration evidence.
 | 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Planned |
 | 6 | Dashboard, documentation, product validation, V1.0 release | Planned |
 
-`main` holds the accepted baseline; `phase-2-data-universe` retains Phase 2
-development history. Future phases use separate feature branches and require
+`main` holds accepted Phases 0–3; `phase-2-data-universe` retains Phase 2
+history, and `codex/phase-3-factor-diagnostics` retains Phase 3 history.
+Future phases use separate feature branches and require
 explicit acceptance. The initial GitHub upload is a development checkpoint,
 not a V1.0 release.
 

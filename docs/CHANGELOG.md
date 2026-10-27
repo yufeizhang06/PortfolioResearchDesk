@@ -3,7 +3,9 @@
 ## 0.4.0 — Phase 3（2026-10-27，已通过用户验收）
 
 - 独立审查 R1–R5 全部 PASS，用户正式验收；范围仅事后描述性因子研究，不代表 PIT/OOS 交易策略通过。
-- 已授权本阶段正式 Commit、合并 main 和现有 Private 仓库普通 Push；本阶段远端 CI 状态另按真实执行结果补记。
+- 本阶段已正式 Commit、快进合并 main 并普通 Push 到原 Private 仓库；保留 Phase 2/3 分支和完整历史。
+- CI修复提交139d17f的真实Ubuntu/Windows CI均通过：各330测试、Ruff、CLI、构建、sdist重建与独立安装；
+  运行40597881595为workflow_dispatch，不宣称已验证Push自动触发链路。
 - 首次真实CI发现冷缓存的requirements离线解析缺少registry元数据；安装验证改为直接按锁文件同步到隔离venv，
   保留wheel并核对其来源，全部Phase0–3检查保留；不修改业务、测试或锁定依赖。
 - R5：共享日线质量检查核对已知事件与交易所本地日标签；按来源契约区分显式时间与次日本地零点上界。

@@ -1,5 +1,45 @@
 # Development Log
 
+## 2026-10-28 — Phase 5 最终验收与Private同步获授权
+
+- 用户原则批准最终验收、完整合成演示、必要缺口测试、正式Commit、安全合并main、普通Push及真实双平台CI检查/问题修复。
+- 实际fetch起点main/origin/main/HEAD仍0e4ca96；Private与默认main正确，无其他工作被覆盖。
+- 46生产文件/13独立证据hash全部一致，无需重做独立审查；只新增1项联合回归，生产算法不改。
+- 复用旧动量研究和Paper CLI：3000 CAD→审核→3fills→NAV2994.48；合成价格/FX变化后NAV2949.10。
+- 现金1238.08 CAD/USD0，29股CAD_B/44股USD_A/17股USD_C；成本5.52精确对账，无风险超限或透支。
+- 同订单重试不变，VALUE不新增费用；新Python进程恢复完整账户一致，原始输入/快照/报告均仅本地。
+- 全量609 passed in32.81s，Ruff lint/93文件format、locked sync/lock通过；旧425及183新增不删减。
+- 版本保持0.6.0；正式消息feat: implement CAD portfolio accounting and paper trading；实际提交/Push/CI结果完成后补记。
+- 不连接broker、不真实交易、不Force Push、不改变Private、不开始Phase6、不创建Release。
+
+## 2026-10-28 — Phase 5 本地完成，独立审查修复复验通过，等待用户验收
+
+- 0.6.0，codex/phase-5-cad-paper；HEAD/main/origin/main保持0e4ca96，无暂存/Commit/Push/Release/Phase6。
+- 完成风险/行业/现金/交易限额、USD/CAD历史FX及成本、CAD账本、人工审核计划、SQLite持久Paper和幂等重启。
+- CAD历史synthetic harness与Paper复用planner/模拟/估值；旧USD、Universe、Factor、ML功能保留。
+- 全量608 passed in34.69s（原425保留、新增183）；锁定sync/lock、Ruff lint/93文件format通过。
+- wheel/sdist、sdist离线重建、直接/重建wheel各自干净venv且源码外Phase0–5/资源/恢复检查通过。
+- 独立初审发现高固定费卖单、synthetic混real、同刻公司行为、history估值时钟及native验型缺陷；
+  主代理修复，全部反例正式回归且由独立代理重新核实，不将初版状态写成无发现。
+- 最终独立214测试、1000 Fraction数值、8线程24重复execute（只4事件3fills）通过；无未解决可操作P1/P2/P3。
+- 主代理核对46生产源码和13审查证据hash一致；原425测试文件/原计划不改，32候选文件敏感模式未检出。
+- 默认3000 CAD合成账户3fills，终现金1238.08 CAD/USD0，NAV2994.48；费用/滑点/FX损耗总5.52精确对账。
+- 输入/结果hash、链及ledger_head同事务保存，进程中断恢复、重复成交/费用、尾部删除/算法漂移均有测试。
+- 报告PHASE_5_REPORT、PAPER_TRADING、架构/CHANGELOG/README更新；证据work/phase5-closeout及independent-review。
+- 本地软件验收不等于真实PIT/OOS或市场策略认证；无本阶段远端CI，完整权益/同刻多行动/复杂公司行为仍不支持。
+- 保留全部历史和阶段分支，停止等待用户确认；后续提交/Push/CI或Phase6须另行授权。
+
+## 2026-10-28 — Phase 5 正式开始（用户授权）
+
+- 完整读取协作约定、项目计划、README、开发历史、Phase 4 验收及现有 domain/组合/执行/ML 接口。
+- 起点工作区干净；实际 fetch 验证 main/origin/main 均为 0e4ca9677ed2e53dd2641b0f49157de88030aaa8。
+- 从 main 创建 codex/phase-5-cad-paper；保留各历史分支，不修改 main，不 Commit/Push。
+- Python 3.12.14 / uv 0.13.6，使用 work/bin/uv.exe 与已有锁定环境；不新增第三方依赖。
+- 设计：Decimal CAD 总账、多币种现金、带可得时间的历史 FX、Top-K 保守约束、人工审核计划、
+  SQLite 原子事件账本及重放；USD 原接口保留，新增 CAD 历史模拟和 Paper 复用纯计算。
+- 真实 PIT/成员/退市/日历仍无认证；历史执行入口仅 synthetic。无券商、真实订单或 Phase 6。
+- 完成后安排独立 Code Review，验收命令与实际结果另补，不预写通过状态。
+
 ## 2026-10-27 — Phase 4 最终验收通过，真实双平台 CI 成功
 
 - 功能提交05d190070ddd695c5fa1f72f316a601609c63db5已安全快进main并普通原子Push main/Phase4，完整历史保留。

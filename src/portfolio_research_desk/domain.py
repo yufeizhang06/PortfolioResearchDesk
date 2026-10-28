@@ -18,7 +18,7 @@ BPS = Decimal("10000")
 
 def require_utc(value: datetime) -> None:
     """Require explicit UTC rather than guessing the timezone of naive input."""
-    if value.tzinfo is None or value.utcoffset() != timedelta(0):
+    if not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() != timedelta(0):
         raise DataError("All timestamps must be timezone-aware UTC.")
 
 

@@ -1,0 +1,3 @@
+observed_at,available_at,cad_per_usd,source,synthetic
+2026-01-05T21:00:00+00:00,2026-01-05T21:00:00+00:00,1.35,synthetic_phase5,true
+2026-01-06T14:30:00+00:00,2026-01-06T14:30:00+00:00,1.36,synthetic_phase5,true

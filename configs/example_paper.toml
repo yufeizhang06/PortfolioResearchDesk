@@ -1,0 +1,24 @@
+schema_version = 5
+mode = "paper"
+base_currency = "CAD"
+initial_cash = "3000.00"
+top_k = 5
+
+[limits]
+max_positions = 10
+max_position_weight = "0.20"
+max_sector_weight = "0.40"
+cash_buffer = "0.05"
+max_trade_weight = "0.25"
+max_turnover = "1"
+min_trade_cad = "1"
+max_order_shares = 100000
+max_price_deviation = "0.20"
+max_quote_age_seconds = 604800
+max_fx_age_seconds = 604800
+
+[costs]
+fixed_fee = "0.10"
+commission_bps = "5"
+slippage_bps = "10"
+fx_fee_bps = "20"

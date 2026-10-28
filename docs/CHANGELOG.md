@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 — Phase 5（2026-10-28，最终验收与Git/CI收尾）
+
+- 新增CAD/USD虚拟账户、历史FX可得时间/版本及native CSV、换汇费/舍入、CAD现金/持仓成本/NAV。
+- 可配置持仓数、单票/行业/现金、单笔金额/股数/最小额/总换手、价格偏离和数据年龄限制。
+- Top-K保守等权、显式目标、整股缩单、先卖后买；复用旧Signal/Universe/Target/Order契约。
+- 人工审核绑定plan hash，下一显式session原始open整批模拟，现金不足/数据缺失/风险超限不产生部分成交。
+- SQLite原子事件、输入/结果指纹、hash链/末端记录、重启重放、并发幂等、防重复成交和计费。
+- 入出金、显式换汇、基础拆股/分红、估值历史；公司行为时序与不支持场景显式阻断。
+- CLI paper init/sample/propose/review/simulate/status/expire/apply/export/demo，独立严格配置、JSON/CSV/HTML报告。
+- CAD synthetic history复用同planner/模拟计算；ML审计记录适配器不读标签，真实历史PIT与描述性因子边界保留。
+- 独立初审发现的高固定费卖单、混源、同刻公司行为、估值时钟及输入异常问题均已修复并保留回归。
+- 完整测试、独立复核、构建与安装的最终实测结果见PHASE_5_REPORT；不挪用Phase4远端CI。
+- 版本和uv.lock由uv同步至0.6.0；既有第三方包版本不变，不进入Phase6或创建Release。
+- 最终核实46生产源码/13独立证据一致；新增研究→Paper重估→新进程完整恢复联合回归，全量609 passed。
+- 用户已授权正式Commit/快进main/普通Private Push/真实Ubuntu与Windows CI；准确SHA及实测结果见PHASE_5_REPORT。
+
 ## 0.5.0 — Phase 4（2026-10-27，合成USD软件验收）
 
 - 新增可追溯价格/波动/流动性/相对收益特征、next-open 未来收益标签及可得/已知时间契约。

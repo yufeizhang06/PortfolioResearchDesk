@@ -1,5 +1,27 @@
 # Phase 0 架构决策
 
+## Phase 5 — CAD 风险与持久 Paper（2026-10-28）
+
+`Signal/Universe → SignalBundle → constrained_target/propose_rebalance → manual review →
+simulate_plan → CADState/value_portfolio → SQLite events/replay → reports`。
+
+- 保留旧 USD PortfolioState、Backtesting、Factor、ML 入口；仅提取原 Top-K 等权为共享纯函数。
+- 新 CADState 每币种现金非负、整股/本币与CAD成本；用CAD估值统一检查持仓数、单票/行业、现金及交易限额。
+- FXBook 保存观测/可得时间和版本，过去估值只查当时已知记录；无当前汇率回填。native CSV支持离线历史FX。
+- Decimal固定50位、整分现金、不利价格舍入、佣金/FX费上舍入、FX本金舍入差单独记录；NAV不重复扣累计费用。
+- CAD buy先用既有本币现金，USD不足才按需要兑换；USD卖款保留USD，CAD不足需人工先兑换USD现金。
+- planner固定决策股数，费用后上限缩买单；卖单优先验证允许最大量（固定费用使卖出可行性不同于买入）。
+- 明确下一session、开盘报价、行情/FX/行业可得时间；整批原子模拟，失败持久REJECTED且无部分现金/费用。
+- SignalBundle隔离synthetic和paper_observed；synthetic任意模式禁止混入真实执行输入；CAD历史harness只支持synthetic。
+- 复用现有Signal和Universe契约；ML记录适配器只取已选模型/可得分数，不读取标签；描述性因子禁止进入订单。
+- SQLite单账户文件，BEGIN IMMEDIATE + FULL同步；原输入、经济结果hash、事件链与ledger_head同事务写入。
+- 重放比较逐事件计算结果，不随代码变化悄悄改旧成交；未来语义更改须显式schema迁移。
+- 审核绑定完整plan hash；无资金预留，账户变化使计划过时。错误执行时间戳不写事件、不推进账本时间。
+- 简单split/dividend以唯一事件ID防双计，必须严格后于前一经济状态；拒同刻成交后补权益、同effective多行动、零股/复杂追溯。
+- 配置/CLI只调用服务，基础包无新增第三方依赖。JSON/CSV/HTML完整账本导出，完成marker最后写。
+- 设计与实际限制见 PAPER_TRADING.md；用户已授权Phase5正式Commit/快进main/Private同步与真实CI，
+  不创建Release、不进入Phase6，不扩展真实PIT认证。最终联合回归只复用服务，不修改生产算法。
+
 ## Phase 4 — 合成 ML 与时序验证（合成范围验收、独立审查和双平台CI通过）
 
 `ml_config → ml_data → ml_validation → ml_models → ml_workflow → ml_reporting`。

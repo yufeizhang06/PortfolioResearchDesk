@@ -17,12 +17,19 @@ from portfolio_research_desk.errors import DataError, ExecutionError
 
 
 def build_target(signals: tuple[Signal, ...], config: BacktestConfig) -> TargetPortfolio:
+    return equal_weight_target(
+        signals, config.top_k, config.cash_buffer, config.max_position_weight
+    )
+
+
+def equal_weight_target(signals, top_k, cash_buffer, max_position_weight) -> TargetPortfolio:
+    """Shared ranking/weight rule for legacy backtests and CAD paper planning."""
     if not signals or len({s.asset for s in signals}) != len(signals):
         raise ExecutionError("A unique, nonempty set of signals is required.")
-    if len({s.decision_at for s in signals}) != 1 or config.top_k > len(signals):
+    if len({s.decision_at for s in signals}) != 1 or top_k > len(signals):
         raise ExecutionError("Signals must share one decision time and support top_k.")
-    ranked = sorted(signals, key=lambda s: (-s.score, s.asset))[: config.top_k]
-    weight = min((ONE - config.cash_buffer) / len(ranked), config.max_position_weight)
+    ranked = sorted(signals, key=lambda s: (-s.score, s.asset))[:top_k]
+    weight = min((ONE - cash_buffer) / len(ranked), max_position_weight)
     weights = tuple((signal.asset, weight) for signal in ranked)
     return TargetPortfolio(ranked[0].decision_at, weights, ONE - weight * len(ranked))
 

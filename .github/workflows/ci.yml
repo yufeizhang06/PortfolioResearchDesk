@@ -1,4 +1,4 @@
-name: Offline engineering, backtest, factor and ML checks
+name: Offline engineering, backtest, factor, ML and CAD paper checks
 
 on:
   push:
@@ -53,7 +53,10 @@ jobs:
           uv run --locked --offline prd research run --run-id ci-factors
           uv run --locked --offline prd config validate --kind ml --config configs/example_ml.toml
           uv run --locked --offline prd ml run --run-id ci-ml
+          uv run --locked --offline prd config validate --kind paper --config configs/example_paper.toml
+          uv run --locked --offline prd paper demo --db outputs/paper/ci.sqlite3 --run-id ci-paper
+          uv run --locked --offline prd paper status --db outputs/paper/ci.sqlite3
       - name: Build distributions with locked backend
-        run: uv build --offline --no-build-isolation --out-dir dist/phase4
+        run: uv build --offline --no-build-isolation --out-dir dist/phase5
       - name: Rebuild sdist and check installed wheel outside source tree
-        run: uv run --locked --offline python scripts/verify_distribution.py dist/phase4 --with-factors --with-ml
+        run: uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --with-factors --with-ml

@@ -104,6 +104,56 @@ def main() -> None:
             marker = root / "runs" / f"installed-{index}" / "run.json"
             if not marker.is_file():
                 raise RuntimeError("Installed backtest did not complete its report bundle.")
+            paper_db = root / f"paper-{index}.sqlite3"
+            paper = subprocess.run(
+                [
+                    str(python),
+                    "-I",
+                    "-m",
+                    "portfolio_research_desk",
+                    "paper",
+                    "demo",
+                    "--db",
+                    str(paper_db),
+                    "--output-dir",
+                    str(root / f"paper-reports-{index}"),
+                    "--run-id",
+                    "installed",
+                ],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            paper_payload = json.loads(paper.stdout)
+            record = paper_payload["plans"]["synthetic-demo"]
+            if (
+                paper_payload["phase"] != 5
+                or paper_payload["base_currency"] != "CAD"
+                or paper_payload["event_count"] != 4
+                or record["status"] != "SIMULATED"
+                or len(record["fills"]) != 3
+            ):
+                raise RuntimeError("Installed Phase 5 CAD paper fixture failed.")
+            recovered = subprocess.run(
+                [str(console), "paper", "status", "--db", str(paper_db)],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            recovered_payload = json.loads(recovered.stdout)
+            if recovered_payload["state"] != paper_payload["state"]:
+                raise RuntimeError("Installed paper account failed restart recovery.")
+            if not (Path(paper_payload["report_directory"]) / "run.json").is_file():
+                raise RuntimeError("Installed paper report completion marker missing.")
+            subprocess.run(
+                [str(console), "config", "validate", "--kind", "paper"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
             research = subprocess.run(
                 [
                     str(console),

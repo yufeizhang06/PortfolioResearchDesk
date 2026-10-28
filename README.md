@@ -7,11 +7,11 @@ stock screening, strategy simulation, and portfolio analysis. Its long-term goal
 is a reproducible workflow from universe selection to research signals,
 portfolio construction, backtesting, and paper portfolio review.
 
-**Development version: 0.5.0. Phase 4 final acceptance has passed.**
+**Development version: 0.6.0. Phase 5 final local acceptance and independent review passed; GitHub synchronization is authorized.**
 Phases 0–3 remain accepted; Phase 4 acceptance covers synthetic USD software validation only.
 Phase 3 is accepted for ex-post descriptive factor research after independent
 verification of fixes R1–R5. This is not certification of a PIT trading strategy
-or OOS performance. Phase 4 adds synthetic ML validation; persistent paper accounts remain planned.
+or OOS performance. Phase 5 adds CAD/USD risk, accounting, reviewed paper plans and recovery.
 The system does not connect to brokers or execute real orders.
 
 ## Key Features
@@ -37,10 +37,13 @@ The system does not connect to brokers or execute real orders.
 - **Synthetic ML Validation:** prior/Logistic/Lasso/Random Forest/XGBoost models,
   training-only pipelines, nested date-grouped purged walk-forward tuning, frozen
   final holdout, classification metrics and shared-engine net portfolio comparisons.
+- **CAD Paper Accounts:** USD/CAD cash and integer holdings, available historical FX,
+  conservative conversion costs, risk limits, pending review plans, atomic simulated
+  fills, cash flows, simple splits/dividends, restart replay and idempotent retry.
 
 ## Current Development Status
 
-| Area | Status in v0.5.0 development |
+| Area | Status in v0.6.0 development |
 |---|---|
 | Installable package, CLI, strict TOML configuration | Implemented and locally tested |
 | Custom / Market / Screening and combined modes | Implemented and locally tested |
@@ -50,7 +53,7 @@ The system does not connect to brokers or execute real orders.
 | Historical membership and delisted-security coverage | Not available; survivorship bias remains unresolved |
 | FF3/FF4, OLS, rolling beta | Accepted for descriptive attribution; R1–R5 independently verified |
 | ML and purged walk-forward OOS evaluation | Passed final synthetic USD validation; no real-market PIT/OOS certification |
-| CAD/FX and persistent paper portfolios | Planned for Phase 5 |
+| CAD/FX, risk and persistent paper portfolios | Final synthetic verification and independent review passed; Git/CI closeout in progress |
 | Dashboard and V1.0 release | Planned for Phase 6 |
 
 Phase 3 is committed, merged into `main`, and pushed to the existing private
@@ -132,6 +135,24 @@ The `ml` extra adds locked scikit-learn and XGBoost; models run on CPU with one
 thread and a fixed seed. Include `--extra ml` for Phase 4 tests and examples.
 
 ## Quick Start
+
+Run a new **synthetic 3,000 CAD paper account** (standard library only):
+
+```bash
+uv run --locked --offline prd config validate --kind paper --config configs/example_paper.toml
+uv run --locked --offline prd paper demo --db outputs/paper/demo.sqlite3 --run-id cad-demo
+uv run --locked --offline prd paper status --db outputs/paper/demo.sqlite3
+```
+
+Use a new database and report ID for each demo. The demo performs an explicitly
+scripted synthetic review; normal proposals stay `PENDING_REVIEW` until an explicit
+`paper review --approve --plan-hash ...` precedes `paper simulate`. Simulation is
+atomic: an execution gap, missing FX or insufficient cash rejects the whole batch.
+Restarting `paper status` reconstructs the ledger; repeating the identical simulation
+request cannot fill or charge fees again. See [Paper/CAD guide](docs/PAPER_TRADING.md)
+for the manual workflow, native input schema, accounting and operating limits.
+Phase 5 commit, private synchronization and exact-revision CI evidence are recorded
+in [Phase 5 acceptance](docs/PHASE_5_REPORT.md); CI is confirmed only after an actual run.
 
 Run the offline **synthetic USD** ML experiment:
 
@@ -266,8 +287,9 @@ uv run --locked --offline prd config validate --kind factors --config configs/ex
 uv run --locked --offline prd research run
 uv run --locked --offline prd config validate --kind ml --config configs/example_ml.toml
 uv run --locked --offline prd ml run
-uv build --offline --no-build-isolation --out-dir dist/phase4
-uv run --locked --offline python scripts/verify_distribution.py dist/phase4 --with-factors --with-ml
+uv run --locked --offline prd config validate --kind paper --config configs/example_paper.toml
+uv build --offline --no-build-isolation --out-dir dist/phase5
+uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --with-factors --with-ml
 ```
 
 Phase 2 acceptance recorded **208 passing tests**, including Phase 0–1
@@ -312,6 +334,18 @@ with L1 shrinkage; the explicit selector is VarianceThreshold. Classifier scores
 remain uncalibrated. Repeated synthetic holdout runs validate software and do not
 establish an untouched real research holdout.
 
+Phase 5 now passes **609 tests locally** (the original 425 plus 184 new cases),
+Ruff, locked dependency checks, sdist rebuild and both isolated wheel installations.
+Independent review found actionable edge defects in the initial implementation;
+they were fixed and rechecked with regression tests. Final review has no unresolved
+actionable P1/P2/P3 findings for the frozen synthetic CAD/USD scope. It separately
+ran 214 targeted tests, 1,000 Fraction numerical cases and 24 concurrent retries.
+See [Phase 5 acceptance](docs/PHASE_5_REPORT.md) for evidence and limitations.
+The final acceptance adds a research-to-paper revaluation and fresh-process recovery
+regression. Its 3,000 CAD example executes three fills, marks NAV from 2,994.48 CAD
+to 2,949.10 CAD under explicit synthetic price/FX changes, and restores the complete
+account exactly. These are software checks, not market performance evidence.
+
 ## Project Structure
 
 ```text
@@ -335,8 +369,14 @@ src/portfolio_research_desk/
     ml_models.py, ml_workflow.py         Fold-local pipelines and nested experiments
     ml_config.py, ml_cli.py,
     ml_reporting.py                     ML configuration, CLI and audit reports
+    fx.py, portfolio_risk.py             Available FX, CAD valuation and constraints
+    paper_domain.py, rebalancing.py,
+    paper_execution.py                  CAD contracts, shared planner and pure simulation
+    paper_store.py                      Atomic SQLite events, replay and idempotence
+    paper_config.py, paper_cli.py,
+    paper_reporting.py, paper_sample.py  Paper services, CLI, fixtures and exports
     resources/                          Fixed synthetic data and defaults
-configs/                                Editable Phase 0–4 TOML examples
+configs/                                Editable Phase 0–5 TOML examples
 tests/                                  Offline unit/integration/regression tests
 scripts/                                Distribution verification
 docs/                                   Plan, architecture, policy, acceptance logs
@@ -405,7 +445,7 @@ local integration evidence.
 | 2 | Real-data research adapters, cache, universe modes, screening | Completed locally |
 | 3 | Kenneth French factors, FF3/FF4, OLS, rolling beta | Accepted for ex-post descriptive research |
 | 4 | Baselines, ML, purged time-series validation, OOS comparison | Accepted for synthetic USD software validation; independent review and dual-platform CI passed |
-| 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Planned |
+| 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Final local acceptance and independent review passed; authorized Git/CI closeout |
 | 6 | Dashboard, documentation, product validation, V1.0 release | Planned |
 
 `main` holds Phases 0–4; `phase-2-data-universe` retains Phase 2
@@ -416,6 +456,14 @@ evidence is recorded in its acceptance report.
 Future phases use separate feature branches and require
 explicit acceptance. The initial GitHub upload is a development checkpoint,
 not a V1.0 release.
+
+Phase 5 is developed on `codex/phase-5-cad-paper` from verified `main` commit
+`0e4ca96`. It preserves the legacy USD engines and uses the shared CAD planner
+and simulator in an explicitly synthetic CAD history harness. Real observations
+can be supplied with forward-paper provenance and availability checks; this does
+not certify their historical PIT suitability. The Phase 3 descriptive boundary
+remains enforced. [Phase 5 acceptance](docs/PHASE_5_REPORT.md) records actual local
+checks and review evidence. Phase 6 has not started.
 
 The original [Project Plan](docs/PROJECT_PLAN.md) is preserved. Read the
 [Development Log](docs/DEVELOPMENT_LOG.md), [Changelog](docs/CHANGELOG.md), and

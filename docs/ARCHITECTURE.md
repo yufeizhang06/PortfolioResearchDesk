@@ -21,6 +21,8 @@ simulate_plan → CADState/value_portfolio → SQLite events/replay → reports`
 - 配置/CLI只调用服务，基础包无新增第三方依赖。JSON/CSV/HTML完整账本导出，完成marker最后写。
 - 设计与实际限制见 PAPER_TRADING.md；用户已授权Phase5正式Commit/快进main/Private同步与真实CI，
   不创建Release、不进入Phase6，不扩展真实PIT认证。最终联合回归只复用服务，不修改生产算法。
+- 功能提交8904e11已快进main并Private普通Push；实际CI40759391233在准确SHA上双平台各609测试与完整安装通过。
+  后续文档提交仍按自身SHA核对CI，不能将功能提交结果冒称为任意后续结果。
 
 ## Phase 4 — 合成 ML 与时序验证（合成范围验收、独立审查和双平台CI通过）
 

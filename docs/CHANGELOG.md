@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.0 — Phase 5（2026-10-28，最终验收与Git/CI收尾）
+## 0.6.0 — Phase 5（2026-10-28，已验收并同步Private）
 
 - 新增CAD/USD虚拟账户、历史FX可得时间/版本及native CSV、换汇费/舍入、CAD现金/持仓成本/NAV。
 - 可配置持仓数、单票/行业/现金、单笔金额/股数/最小额/总换手、价格偏离和数据年龄限制。
@@ -15,6 +15,8 @@
 - 版本和uv.lock由uv同步至0.6.0；既有第三方包版本不变，不进入Phase6或创建Release。
 - 最终核实46生产源码/13独立证据一致；新增研究→Paper重估→新进程完整恢复联合回归，全量609 passed。
 - 用户已授权正式Commit/快进main/普通Private Push/真实Ubuntu与Windows CI；准确SHA及实测结果见PHASE_5_REPORT。
+- 功能提交8904e11已快进main并普通原子Push main/Phase5；真实CI40759391233精确该SHA双平台success。
+- Ubuntu3.12.15/Windows3.12.10各609测试、Ruff/CLI/构建/sdist重建/双wheel源码外安装通过；本次workflow_dispatch。
 
 ## 0.5.0 — Phase 4（2026-10-27，合成USD软件验收）
 

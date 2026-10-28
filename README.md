@@ -7,7 +7,7 @@ stock screening, strategy simulation, and portfolio analysis. Its long-term goal
 is a reproducible workflow from universe selection to research signals,
 portfolio construction, backtesting, and paper portfolio review.
 
-**Development version: 0.6.0. Phase 5 final local acceptance and independent review passed; GitHub synchronization is authorized.**
+**Development version: 0.6.0. Phase 5 final acceptance passed; merged and synchronized to the private repository.**
 Phases 0–3 remain accepted; Phase 4 acceptance covers synthetic USD software validation only.
 Phase 3 is accepted for ex-post descriptive factor research after independent
 verification of fixes R1–R5. This is not certification of a PIT trading strategy
@@ -48,12 +48,12 @@ The system does not connect to brokers or execute real orders.
 | Installable package, CLI, strict TOML configuration | Implemented and locally tested |
 | Custom / Market / Screening and combined modes | Implemented and locally tested |
 | Real-data retrieval, local adapters, cache, quality | Implemented; live retrieval and cached replay verified locally |
-| Execution and portfolio accounting | Validated on fixed synthetic USD fixtures |
+| Execution and portfolio accounting | Validated on synthetic USD/CAD fixtures; real-market execution is not certified |
 | Backtesting with real market data | Not enabled; data and execution assumptions need further validation |
 | Historical membership and delisted-security coverage | Not available; survivorship bias remains unresolved |
 | FF3/FF4, OLS, rolling beta | Accepted for descriptive attribution; R1–R5 independently verified |
 | ML and purged walk-forward OOS evaluation | Passed final synthetic USD validation; no real-market PIT/OOS certification |
-| CAD/FX, risk and persistent paper portfolios | Final synthetic verification and independent review passed; Git/CI closeout in progress |
+| CAD/FX, risk and persistent paper portfolios | Accepted for synthetic verification and local paper use; independent review and Ubuntu/Windows CI passed |
 | Dashboard and V1.0 release | Planned for Phase 6 |
 
 Phase 3 is committed, merged into `main`, and pushed to the existing private
@@ -151,8 +151,11 @@ atomic: an execution gap, missing FX or insufficient cash rejects the whole batc
 Restarting `paper status` reconstructs the ledger; repeating the identical simulation
 request cannot fill or charge fees again. See [Paper/CAD guide](docs/PAPER_TRADING.md)
 for the manual workflow, native input schema, accounting and operating limits.
-Phase 5 commit, private synchronization and exact-revision CI evidence are recorded
-in [Phase 5 acceptance](docs/PHASE_5_REPORT.md); CI is confirmed only after an actual run.
+Phase 5 functional commit `8904e11` is merged and pushed. Its
+[verified CI](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40759391233)
+passed on Ubuntu and Windows, including 609 tests per platform and build/install
+checks. It used `workflow_dispatch`; push-triggered execution was not observed.
+See [Phase 5 acceptance](docs/PHASE_5_REPORT.md) and Actions for later documentation revisions.
 
 Run the offline **synthetic USD** ML experiment:
 
@@ -412,8 +415,8 @@ artifacts are excluded from Git. Downloaded real market data is not distributed.
   repair are disabled. Provider OHLC, adjusted close, dividends, and splits are
   stored separately. This does not prove historical tradable raw prices.
   Screening windows with corporate actions require review.
-- **Research scope:** authoritative exchange calendars, a corporate-action
-  ledger and real-data execution validation are not provided yet. The Phase 4
+- **Research scope:** authoritative exchange calendars, complete real-market
+  corporate-action entitlement accounting and real-data execution validation are not provided yet. The Phase 4
   OOS framework is exercised on synthetic data only. Real observations remain descriptive inputs, separate
   from the validated synthetic backtest. No strategy returns or model performance
   are claimed from these examples.
@@ -445,10 +448,10 @@ local integration evidence.
 | 2 | Real-data research adapters, cache, universe modes, screening | Completed locally |
 | 3 | Kenneth French factors, FF3/FF4, OLS, rolling beta | Accepted for ex-post descriptive research |
 | 4 | Baselines, ML, purged time-series validation, OOS comparison | Accepted for synthetic USD software validation; independent review and dual-platform CI passed |
-| 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Final local acceptance and independent review passed; authorized Git/CI closeout |
+| 5 | Portfolio risk, historical FX/CAD, persistent paper accounts | Accepted for synthetic CAD/USD and local paper software; independent review and dual-platform CI passed |
 | 6 | Dashboard, documentation, product validation, V1.0 release | Planned |
 
-`main` holds Phases 0–4; `phase-2-data-universe` retains Phase 2
+`main` holds Phases 0–5; `phase-2-data-universe` retains Phase 2
 history, and `codex/phase-3-factor-diagnostics` retains Phase 3 history.
 Phase 4 commit `05d1900` was fast-forwarded to `main` and both branches were pushed
 to the existing private repository. The Phase 4 branch is retained; actual CI
@@ -457,8 +460,9 @@ Future phases use separate feature branches and require
 explicit acceptance. The initial GitHub upload is a development checkpoint,
 not a V1.0 release.
 
-Phase 5 is developed on `codex/phase-5-cad-paper` from verified `main` commit
-`0e4ca96`. It preserves the legacy USD engines and uses the shared CAD planner
+Phase 5 was developed on retained branch `codex/phase-5-cad-paper` from verified
+`main` commit `0e4ca96`. Functional commit `8904e11` was fast-forwarded into `main`
+and both branches were pushed without rewriting history. It preserves the legacy USD engines and uses the shared CAD planner
 and simulator in an explicitly synthetic CAD history harness. Real observations
 can be supplied with forward-paper provenance and availability checks; this does
 not certify their historical PIT suitability. The Phase 3 descriptive boundary

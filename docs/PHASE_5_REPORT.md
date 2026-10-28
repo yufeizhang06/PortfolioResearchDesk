@@ -2,7 +2,7 @@
 
 日期：2026-10-28（America/Toronto）；开发版0.6.0。
 分支：`codex/phase-5-cad-paper`；稳定基线：`0e4ca9677ed2e53dd2641b0f49157de88030aaa8`。
-本地开发及独立修复复验已完成；用户已原则批准最终验收、正式Commit、安全合并main、Private Push与真实CI。
+Phase5最终验收通过，仅限合成CAD/USD软件及本地Paper流程；功能提交已合并同步，真实双平台CI通过。
 下文608测试/未提交/未运行CI是此前本地验收记录；本轮最终收尾与实际Git/CI结果见末节。
 **仅合成软件验收，不执行真实订单，不创建Release或进入Phase6。**
 
@@ -218,3 +218,39 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --uv
 - 计划正式消息：`feat: implement CAD portfolio accounting and paper trading`。
 - 仅普通提交/快进合并/Push至原Private仓库，保留Phase2/3/4/5和全部历史；准确SHA/远端CI将在成功后记录。
 - Phase6只列后续目标：产品化文档、复现与数据授权检查、可选Dashboard、最终验收；没有开始或创建Release。
+
+### 正式提交、快进合并及 Private 同步
+
+- 功能提交：`8904e112171306c7039a550c5ae91f187b37c9c0`，
+  `feat: implement CAD portfolio accounting and paper trading`；32文件，4218新增/19删除。
+- 暂存内容与32候选文件逐项SHA一致；原25个被跟踪测试文件不变，新增5文件内共184测试；没有删除失败测试。
+- 从Phase5分支正式提交后，main安全快进到同一SHA，main/Phase5普通原子Push成功；远端指针实际查询一致。
+- 原Private、默认main、Phase2 ba26bea、Phase3 65f1bca、Phase4 0e4ca96及全部历史保留；无Force Push或Release。
+- Push后两次未观察到自动运行，读取现有ci.yml为active后，通过其workflow_dispatch显式验证main。
+  不把本次结果称为Push自动触发链路已验证。
+
+### 真实 GitHub Actions 结果
+
+[CI40759391233](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40759391233)
+的准确headSha为`8904e112171306c7039a550c5ae91f187b37c9c0`，event=workflow_dispatch，conclusion=success。
+已读取最终元数据及两个完整job日志，不以本地结果或Phase4日志替代。
+
+| 平台 | 测试实际结果 | 其余实际结果 |
+|---|---|---|
+| Ubuntu / Python3.12.15 | **609 passed in74.01s** | Ruff/93文件format、锁、CLI/合成样例、构建、sdist重建及两个wheel源码外安装通过 |
+| Windows / Python3.12.10 | **609 passed in85.48s** | 同上全部通过 |
+
+Ubuntu job123066893156、Windows job123066892679均success；日志末尾明确两平台各自的
+`PASS: sdist rebuild, both wheels, clean install and CLI/resources`。本轮无CI失败或需修改生产算法的情况。
+上游Node20迁移和Ubuntu runner提示保留，未导致失败；没有为隐藏提示擅自升级依赖/Actions。
+
+证据work/phase5-finalization/：ci-functional-result.json、ci-functional-ubuntu.log、ci-functional-windows.log，
+以及本地full-tests.log、distribution.log、audit.json、post-push-audit.json和scenario/完整JSON快照。
+演示summary.json SHA256：`db96229b77dcb554834eae0c24c6701cf8af22e8354b46b35a112afcb6e09e03`。
+独立审查原13份材料保持未改，46生产文件与冻结hash依旧一致；追加联合回归不改变审查范围或结论。
+
+本节记录功能提交8904e11的真实结果。后续文档收尾提交只改说明，其最新SHA仍须独立检查Actions，
+不能将本节CI冒称任意后续提交结果。最终汇报会给出收尾SHA与其实际CI、远端和干净工作区状态。
+
+**Phase5最终验收与功能同步完成。** 真实PIT/OOS、历史成员/退市/完整公司行为/日历等Known Limitations继续保留。
+Phase6计划为产品化文档、CLI/复现与数据授权验收、可选共享服务Dashboard；需后续授权才开始，当前未实施且不创建Release。

@@ -1,5 +1,18 @@
 # Development Log
 
+## 2026-10-28 — Phase5正式同步，真实双平台CI通过
+
+- 正式提交8904e112171306c7039a550c5ae91f187b37c9c0，feat: implement CAD portfolio accounting and paper trading。
+- 32文件经完整609测试/锁/Ruff/构建/双wheel安装/敏感检查后提交，安全快进main并普通原子Push main/Phase5成功。
+- 远端与本地均8904e11；Private、默认main及Phase2/3/4历史保留，无Force Push/Release。
+- Push后两次无自动run记录，通过现有active workflow_dispatch实测40759391233，准确headSha8904e11、success。
+- Ubuntu/Python3.12.15：609 passed in74.01s；Windows/Python3.12.10：609 passed in85.48s。
+- 两平台Ruff/93文件format、锁/CLI/样例、构建、sdist重建、两个wheel源码外独立安装和Paper恢复全部通过。
+- 读取两个完整job日志与准确SHA，未挪用本地/旧CI；本轮无CI故障或生产算法修复，保留上游Node/runner提醒。
+- 原25测试文件不改；46生产源码与13独立审查证据一致，完整3000 CAD演示恢复/重复不扣费及NAV2949.10对账通过。
+- README/验收/CHANGELOG/架构/AGENTS补记实际结果；其后文档收尾SHA的CI另行实际核查，不冒称8904e11结果适用于任意提交。
+- 本阶段收尾后停止；不开始Phase6、不创建正式Release，不扩大真实PIT/OOS/公司行为/日历认证。
+
 ## 2026-10-28 — Phase 5 最终验收与Private同步获授权
 
 - 用户原则批准最终验收、完整合成演示、必要缺口测试、正式Commit、安全合并main、普通Push及真实双平台CI检查/问题修复。

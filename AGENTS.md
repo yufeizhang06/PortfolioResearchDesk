@@ -9,6 +9,9 @@
 - 已有608本地测试与独立修复复验通过；当前46生产源码/13审查材料hash已核对一致，不重复完整独立审查。
 - 本轮真实CI及Git状态以PHASE_5_REPORT后续实际记录为准，不能挪用Phase4结果。
 - 真实PIT/OOS及完整公司行为不在认证范围。下列Phase4授权/停止范围为历史上下文。
+- Phase5功能提交8904e112171306c7039a550c5ae91f187b37c9c0已快进main并普通Push；
+  实际CI40759391233（准确SHA8904e11）Ubuntu/Windows各609测试及全部构建安装检查通过。
+- 收尾文档提交后的准确SHA/CI仍须单独核查；本阶段结束即停止，不进入Phase6或创建Release。
 
 - Phase 0–4 已完成技术验收；Phase 3 R1–R5仅为事后描述性因子研究，Phase 4仅为合成USD软件验证，均不是可信真实PIT/OOS交易策略认证。
 - Private 仓库为 yufeizhang06/PortfolioResearchDesk；Phase 3 已合并上传 main，Ubuntu/Windows 各330测试及构建安装 CI 已实测通过。

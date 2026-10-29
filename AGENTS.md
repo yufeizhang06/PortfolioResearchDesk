@@ -2,6 +2,11 @@
 
 ## 当前范围
 
+- Phase6功能e49d797已安全快进main并普通Private Push；真实CI40793091056精确该SHA双平台各689测试与完整构建安装通过。
+- 11项用户流程在合成范围PASS；真实PIT/OOS/任意真实池自动回测/Dashboard/broker明确NOT SUPPORTED，证据见PHASE_6_REPORT。
+- 文档收尾也须独立核实准确SHA的真实双平台CI；完成后停止等待用户亲自体验验收。
+
+
 - 本轮用户已正式批准Phase6最终验收、完整离线用户流程、正式Commit、安全合并main、普通Private Push及准确SHA的双平台CI核实/真实问题修复。
 - MIT已确认；保留所有历史和阶段分支，不Force Push、不Public、不创建正式v1.0.0 Release、不真实交易；完成后停止等待用户体验验收。
 - 下方“未Commit/Push、main不变”等记录是Phase6本地交付时的历史状态，本轮实际最终状态以PHASE_6_REPORT收尾记录为准。

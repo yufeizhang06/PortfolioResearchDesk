@@ -1,9 +1,10 @@
 # Phase 6 Acceptance Report — Product Integration & Delivery
 
 Date: 2026-10-28. Version: **0.7.0 development version**.
-Status: final local acceptance passed; safe private Git synchronization and exact-SHA
-remote CI are authorized and being completed. User experience acceptance remains
-reserved for the author; no formal v1.0.0 Release or public visibility is authorized.
+Status: **PASS — final software acceptance and private synchronization completed**.
+Functional commit passed actual Ubuntu/Windows CI; documentation closeout follows
+the same exact-SHA checks. User experience acceptance remains reserved for the
+author. No formal v1.0.0 Release or public visibility is authorized.
 
 ## Scope, baseline and authorization
 
@@ -240,10 +241,55 @@ manual account export is `work/phase6-sync/manual-reports/final/report.html`.
 
 ### Exact-SHA Git and Actions record
 
-Local gates passed; commit/safe synchronization and actual remote CI are the
-remaining authorized closeout actions. This paragraph will be replaced with
-actual SHA/run evidence after execution, never inferred from CI configuration.
-The stable Phase 5 CI run is baseline evidence only and is not reused for Phase 6.
+Functional commit: **`e49d797a5afc078d20a572840709310144ed1855`**,
+`feat: integrate reproducible research and paper workflows` (43 files).
+It was created on the Phase 6 branch, safely fast-forwarded to main and normally
+atomically pushed with the retained Phase 6 branch to the existing Private repo.
+Earlier history and Phase 2–5 branches remain. Committed canonical LF contents
+matched all 43 staged checked files; no generated account/data/tool file entered
+the 158-file repository tree.
+
+Actual [GitHub Actions run 40793091056](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40793091056)
+completed **success**, with headSha exactly equal to that functional commit:
+
+| Platform | Actual Python | Tests from job log | Other required gates |
+|---|---|---|---|
+| Ubuntu | 3.12.15 | **689 passed in 98.28s** | lock, Ruff lint/format, CLI/config/workflow, license inventory, build, sdist rebuild, both-wheel independent install: success |
+| Windows | 3.12.10 | **689 passed in 111.58s** | same required gates: success |
+
+The complete run JSON and both job logs were read and retained under
+`work/phase6-sync/ci-functional*`; counts and installation PASS markers were
+extracted per job rather than inferred from green status. No CI failure or
+production correction was required. Runners warn that checkout/setup-python use
+deprecated Node.js 20 targets now forced to Node.js 24; this did not fail checks
+and remains a future Actions maintenance item.
+
+The run used **workflow_dispatch**: no push-triggered run was observed at the
+post-push check. The configured push trigger is not claimed as verified. Phase 5
+CI is not reused as Phase 6 evidence. This documentation-only closeout preserves
+runtime/test/config/lock contents; its final SHA appears in `git log -1` and must
+also pass its own Ubuntu/Windows run before delivery. The final delivery message
+records that exact latest SHA and run, avoiding a self-referential commit hash in
+this file. [Main Actions history](https://github.com/yufeizhang06/PortfolioResearchDesk/actions?query=branch%3Amain)
+exposes the later documentation revision's result.
+
+The closeout checks local main, origin/main, retained Phase 6 branch and advertised
+remote heads all agree, and checks a clean working tree. Visibility stays PRIVATE,
+default branch main; no force push, public change, formal Release or real order
+is performed. Work stops for the author's hands-on user experience acceptance.
+
+### Distance to formal v1.0.0
+
+The author still needs to test installation, editable configuration, errors,
+review interactions, report navigation and continuing account use personally.
+Reconcile the original Definition of Done with real-data/PIT/calendar/action and
+automatic-universe limitations: validate necessary capabilities or retain an
+explicit supported release scope. Review greedy sizing/cash utilization,
+backup/recovery and migration policy, then check release contents and third-party
+redistribution notices. macOS and automatic push triggering remain unverified;
+Streamlit is optional and deferred. Public visibility and any formal v1.0.0
+Release require separate explicit authorization. See
+[release readiness](RELEASE_READINESS.md).
 
 ## Known limitations and readiness
 
@@ -273,7 +319,7 @@ The stable Phase 5 CI run is baseline evidence only and is not reused for Phase 
   above when actually completed; passing local checks is not remote CI evidence.
   No automatic future scope, public publication or formal release follows.
 
-Conclusion: the Phase 6 **local technical delivery gate** is met within the above
+Conclusion: the Phase 6 **software acceptance gate** is met within the above
 scope. The product can be installed, exercised offline and operated through
 reviewed Paper commands without changing source. This authorized private sync does
 not create a formal release; the author must next perform user experience acceptance.

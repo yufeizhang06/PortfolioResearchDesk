@@ -20,6 +20,12 @@
   and Git results are recorded in PHASE_6_REPORT. No visibility/release action.
 - Retain real PIT, survivorship, corporate-action/calendar and ML OOS limitations.
   Actual test counts, numerical checks and independent review: PHASE_6_REPORT.
+- Final local rerun: 689 tests; all 11 user-workflow items PASS in their synthetic
+  scopes. Unsupported real PIT/OOS, automatic real-universe history, Dashboard and
+  brokers remain explicit. Functional e49d797 safely merged/main and normally
+  pushed with the Phase 6 branch. Actual run 40793091056 passed Ubuntu/Windows
+  (689 tests each), all quality/CLI/build/install gates; workflow_dispatch.
+- No formal v1.0.0 Release or public visibility; stop for author experience acceptance.
 
 
 ## 0.6.0 — Phase 5（2026-10-28，已验收并同步Private）

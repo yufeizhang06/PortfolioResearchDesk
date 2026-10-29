@@ -3,8 +3,8 @@
 A local-first Python desk for equity research, reproducible model experiments,
 portfolio risk checks and reviewed CAD paper trading.
 
-**Development version 0.7.0 · Phase 6 final acceptance.** Local validation is complete;
-the user has authorized safe synchronization to the existing private repository. See the
+**Development version 0.7.0 · Phase 6 software acceptance passed.** Safely merged
+and synchronized to the existing private repository; no formal Release. See the
 [Phase 6 acceptance record](docs/PHASE_6_REPORT.md) for actual validation and status.
 
 This project demonstrates research and software engineering. Synthetic examples
@@ -153,8 +153,13 @@ synthetic inputs; the install checker rebuilds the sdist and tests both wheels i
 separate environments outside the source tree, including workspace/demo/recovery
 and optional full workflows. GitHub Actions is configured for Ubuntu and Windows.
 The final acceptance rerun passed **689 tests** locally, retaining all prior
-regressions. Exact commit, Ubuntu/Windows CI and synchronization evidence are
-recorded in [Phase 6 acceptance](docs/PHASE_6_REPORT.md). macOS is not validated.
+regressions. [Verified Phase 6 CI](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40793091056)
+passed Ubuntu/Windows for functional commit `e49d797`, 689 tests per platform and
+all build/install checks. It used workflow_dispatch; automatic push triggering is
+not verified. Exact SHA, later documentation revisions and evidence are recorded
+in [Phase 6 acceptance](docs/PHASE_6_REPORT.md) and
+[main Actions history](https://github.com/yufeizhang06/PortfolioResearchDesk/actions?query=branch%3Amain).
+macOS is not validated. The next gate is the author's hands-on experience acceptance.
 
 ## Limits, license and next steps
 

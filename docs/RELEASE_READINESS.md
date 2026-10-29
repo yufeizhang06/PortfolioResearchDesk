@@ -11,7 +11,7 @@ visibility and a formal GitHub Release remain outside this authorization.
 | Complete offline workflow and separate manual Paper lifecycle | Required acceptance checks, including restart and exports |
 | All prior tests plus new regression/boundary/E2E tests | Exact counts and commands in PHASE_6_REPORT |
 | Independent Code Review | Report/fix/retest evidence in PHASE_6_REPORT |
-| Linux / Windows CI for Phase 6 | Exact-SHA actual results recorded in PHASE_6_REPORT; configuration alone is not acceptance |
+| Linux / Windows CI for Phase 6 | Functional e49d797 passed run 40793091056, 689 tests/platform and all gates; final documentation SHA is separately checked before delivery |
 | English README, user/developer guides and known limitations | Included in this candidate |
 | Own-code license | MIT confirmed by the user on 2026-10-28; no publication performed |
 | Third-party data and binary redistribution | Separate permissions; no blanket clearance or raw observations shipped |

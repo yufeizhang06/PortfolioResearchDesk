@@ -1,5 +1,18 @@
 # Development Log
 
+## 2026-10-28 — Phase6正式同步与真实双平台CI通过
+
+- 功能提交e49d797a5afc078d20a572840709310144ed1855，feat: integrate reproducible research and paper workflows，43文件。
+- 158文件提交树无账户/行情/cache/work/工具；暂存LF内容与已验收文件一致，历史/Phase2–5保留。
+- Phase6分支正式Commit后安全快进main，普通原子Push main/Phase6成功；Private和默认main不变，无Force Push或Release。
+- 实际CI40793091056精确headSha=e49d797，Ubuntu/Windows均success；已读取两个完整job日志和各步骤。
+- Ubuntu Python3.12.15：689 passed in98.28s；Windows Python3.12.10：689 passed in111.58s。
+- 两平台锁/Ruff/CLI及workflow/许可清单/构建/sdist重建/双wheel独立安装均通过，无CI故障或生产修复。
+- Push后查询无自动run，使用workflow_dispatch；不冒称已实测Push触发链。Node20转Node24提醒保留。
+- 本轮仅文档补齐真实证据、11项PASS与NOT SUPPORTED、v1.0.0差距；文档收尾准确SHA也须实跑CI再交付。
+- 完成后停止，等待用户亲自体验验收；不公开仓库、不正式Release、不扩展后续阶段。
+
+
 ## 2026-10-28 — Phase6最终本地验收通过，准备授权Git同步
 
 - 生产/测试/配置/安装代码与独立审查快照一致，只有MIT与收尾状态文档改变，无未解决阻塞。

@@ -2,6 +2,20 @@
 
 ## 当前范围
 
+- 本轮用户已正式批准Phase6最终验收、完整离线用户流程、正式Commit、安全合并main、普通Private Push及准确SHA的双平台CI核实/真实问题修复。
+- MIT已确认；保留所有历史和阶段分支，不Force Push、不Public、不创建正式v1.0.0 Release、不真实交易；完成后停止等待用户体验验收。
+- 下方“未Commit/Push、main不变”等记录是Phase6本地交付时的历史状态，本轮实际最终状态以PHASE_6_REPORT收尾记录为准。
+
+
+- 2026-10-28：用户正式授权Phase6 Product Integration & Delivery内部开发、测试、Debug、文档和独立Code Review。
+- Phase6分支`codex/phase-6-product-integration`，起点稳定main `2f6b18c6218b8ac9b529c5bc7f69ee875fc252c5`。
+- 用户于2026-10-28确认项目自身代码/合成示例采用MIT；第三方软件与数据权利单独保留。
+- main保持不变，不Commit/Push、不公开仓库、不创建正式v1.0 Release；下文Phase5/4授权为历史记录。
+- Phase6本地完成：0.7.0、689测试、Ruff/锁/构建/双wheel独立安装/干净源码演示通过；独立审查无未解决P1/P2/P3。
+- 验收见docs/PHASE_6_REPORT.md与PHASE_6_CODE_REVIEW.md；Phase6未Commit/Push，远端CI尚未运行，结束后等待用户确认。
+- 本阶段优先CLI/可复现工作流、可读Paper输入、报告索引和开发者导读；不增加模型或放松PIT/模式/审核门槛。
+- 开始实际fetch确认Private/main，基线609测试通过；保留全部历史与Phase2–5分支。
+
 - 2026-10-28：用户原则批准 Phase 5 最终验收，授权证据核实、完整3000 CAD演示、必要缺口测试、
   正式Commit、安全快进合并main、普通Private Push及准确SHA的Ubuntu/Windows CI检查与实际问题修复。
 - Phase 5 分支 `codex/phase-5-cad-paper`，稳定基线 `0e4ca9677ed2e53dd2641b0f49157de88030aaa8`，保留该分支。

@@ -1,0 +1,7 @@
+schema_version = 6
+mode = "synthetic_demo"
+initial_cash_cad = "3000.00"
+top_k = 2
+include_factors = true
+include_ml = true
+output_dir = "../outputs/workflows"

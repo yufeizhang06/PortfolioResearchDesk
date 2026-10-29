@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.7.0 — Phase 6 (2026-10-28, final development acceptance)
+
+- Add offline doctor, exclusive workspace templates and a unified synthetic
+  universe/research/USD backtest/CAD paper lifecycle with local HTML index.
+- Optional independent factor/ML workflows; development-selected ML predictions
+  produce a separate unexecuted pending CAD proposal. No new model or optimizer.
+- Add strict readable Paper snapshots, explicit targets, compact plan/summary,
+  valuation, cash-flow and FX commands; keep native inputs and old commands.
+- Preserve hash-bound manual review, atomic simulation, restart and idempotency;
+  flag recorded NAV stale after economic changes, including same-time events.
+- Verify confined immutable report hashes; preserve incomplete-run evidence.
+- English README, user guide, Architecture & Code Walkthrough, contribution and
+  release-readiness documentation; defer Streamlit without new runtime dependencies.
+- Use user-confirmed MIT for original code/fixtures; package third-party notices and provide
+  an installed metadata inventory without claiming data redistribution clearance.
+- Extend Ubuntu/Windows CI configuration and both-wheel isolated installation
+  checks. The user authorized safe private synchronization; exact-SHA remote CI
+  and Git results are recorded in PHASE_6_REPORT. No visibility/release action.
+- Retain real PIT, survivorship, corporate-action/calendar and ML OOS limitations.
+  Actual test counts, numerical checks and independent review: PHASE_6_REPORT.
+
+
 ## 0.6.0 — Phase 5（2026-10-28，已验收并同步Private）
 
 - 新增CAD/USD虚拟账户、历史FX可得时间/版本及native CSV、换汇费/舍入、CAD现金/持仓成本/NAV。

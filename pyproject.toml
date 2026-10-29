@@ -4,11 +4,16 @@ build-backend = "hatchling.build"
 
 [project]
 name = "portfolio-research-desk"
-version = "0.6.0"
+version = "0.7.0"
 description = "Time-aware equity research and portfolio simulation platform"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 requires-python = ">=3.12,<3.13"
 dependencies = []
+
+[project.urls]
+Repository = "https://github.com/yufeizhang06/PortfolioResearchDesk"
 
 [project.optional-dependencies]
 data = ["yfinance>=0.2.65,<2", "pyarrow>=20,<30"]
@@ -33,6 +38,7 @@ packages = ["src/portfolio_research_desk"]
 include = [
     "/src", "/tests", "/scripts", "/configs", "/docs", "/.github",
     "/README.md", "/AGENTS.md", "/pyproject.toml", "/uv.lock",
+    "/LICENSE", "/THIRD_PARTY_NOTICES.md", "/CONTRIBUTING.md",
     "/.python-version", "/.gitignore", "/.gitattributes",
 ]
 

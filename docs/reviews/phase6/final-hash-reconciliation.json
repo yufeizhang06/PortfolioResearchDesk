@@ -1,0 +1,14 @@
+{
+  "changed_from_original": [
+    "scripts/inspect_licenses.py"
+  ],
+  "added_document_hashes": [
+    "README.md",
+    "docs/USER_GUIDE.md",
+    "docs/CODE_WALKTHROUGH.md",
+    "docs/RELEASE_READINESS.md",
+    "CONTRIBUTING.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "total_reviewed_files": 85
+}

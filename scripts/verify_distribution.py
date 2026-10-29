@@ -20,7 +20,7 @@ def main() -> None:
         help="Install locked factor extra and verify Phase 3.",
     )
     parser.add_argument(
-        "--with-ml", action="store_true", help="Install locked ML extra and verify Phase 4."
+        "--with-ml", action="store_true", help="Install locked ML extra and verify Phase 4/6."
     )
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
@@ -187,6 +187,52 @@ def main() -> None:
             )
             if missing_ml.returncode != 2 or "ml extra" not in missing_ml.stderr:
                 raise RuntimeError("Base installation should explain the missing ml extra.")
+            # Phase 6: the installed entry point creates readable inputs and runs
+            # the entire shared fixture without optional dependencies or the source tree.
+            desk = root / f"desk with spaces {index}"
+
+            def installed(*command, console=console):
+                result = subprocess.run(
+                    [str(console), *map(str, command)],
+                    cwd=root,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                )
+                return json.loads(result.stdout)
+
+            if installed("doctor")["status"] != "ready":
+                raise RuntimeError("Base installation is not ready.")
+            installed("workspace", "init", "--directory", desk)
+            for snapshot in ("decision", "opening", "closing"):
+                installed("paper", "validate-snapshot", "--snapshot", desk / f"{snapshot}.json")
+            product = installed(
+                "workflow", "run", "--config", desk / "workflow.toml", "--run-id", "base"
+            )
+            checked = installed("workflow", "check", "--directory", product["report_directory"])
+            if (
+                checked["status"] != "verified"
+                or not product["components"]["paper_cad"]["retry_identical"]
+            ):
+                raise RuntimeError("Installed product lifecycle or report integrity failed.")
+            if not product["components"]["paper_cad"]["restart_identical"]:
+                raise RuntimeError("Installed product account did not recover.")
+            missing_product = subprocess.run(
+                [
+                    str(console),
+                    "workflow",
+                    "run",
+                    "--with-ml",
+                    "--output-dir",
+                    str(desk / "missing"),
+                ],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            if missing_product.returncode != 2 or (desk / "missing").exists():
+                raise RuntimeError("Missing extras must fail before creating product output.")
             if args.with_factors:
                 # Reuse the exact locked wheel URLs populated by the initial sync.
                 # A requirements export would need separate registry-index metadata
@@ -315,6 +361,36 @@ def main() -> None:
                         "assert 'archive_info' in d and d['url'].endswith('.whl'); "
                         "assert pathlib.Path(p.__file__).resolve().is_relative_to("
                         "pathlib.Path(sys.prefix).resolve())",
+                    ],
+                    cwd=root,
+                    check=True,
+                )
+            if args.with_factors and args.with_ml:
+                integrated = installed(
+                    "workflow",
+                    "run",
+                    "--config",
+                    desk / "workflow.toml",
+                    "--run-id",
+                    "full",
+                    "--with-factors",
+                    "--with-ml",
+                )
+                verified = installed(
+                    "workflow", "check", "--directory", integrated["report_directory"]
+                )
+                if verified["components"]["ml_to_paper"]["status"] != "pending_review":
+                    raise RuntimeError("Installed ML preview bypassed review or did not complete.")
+                # Verify packaged licenses as well as code and sample resources.
+                subprocess.run(
+                    [
+                        str(python),
+                        "-I",
+                        "-c",
+                        "import importlib.metadata as m; "
+                        "d=m.distribution('portfolio-research-desk'); "
+                        "assert d.metadata['License-Expression']=='MIT'; "
+                        "assert len([p for p in d.files if '/licenses/' in str(p)]) >= 2",
                     ],
                     cwd=root,
                     check=True,

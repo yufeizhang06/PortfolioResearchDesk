@@ -8,7 +8,9 @@ from portfolio_research_desk.errors import DataError
 from portfolio_research_desk.paper_config import load_paper_config
 from portfolio_research_desk.paper_reporting import read_native, write_native, write_paper_report
 from portfolio_research_desk.paper_sample import example_inputs
+from portfolio_research_desk.paper_services import simulate_from_snapshot
 from portfolio_research_desk.paper_store import PaperAccount
+from portfolio_research_desk.product_cli import execute_paper_helper, register_paper_helpers
 
 
 def register_paper_commands(commands):
@@ -30,9 +32,21 @@ def register_paper_commands(commands):
         if name in {"init", "demo"}:
             p.add_argument("--config", type=Path)
         if name in {"init", "review", "simulate", "expire"}:
-            p.add_argument("--at", required=True, help="Explicit timezone-aware UTC ISO timestamp.")
-        if name in {"propose", "simulate", "apply"}:
+            p.add_argument(
+                "--at",
+                required=name != "simulate",
+                help="Explicit UTC ISO timestamp; snapshot simulation may carry its own as_of.",
+            )
+        if name in {"propose", "apply"}:
             p.add_argument("--input", type=Path, required=True, help="Versioned native paper JSON.")
+        if name == "simulate":
+            inputs = p.add_mutually_exclusive_group(required=True)
+            inputs.add_argument(
+                "--input", type=Path, help="Legacy native paper JSON; also requires --at."
+            )
+            inputs.add_argument(
+                "--snapshot", type=Path, help="Readable execution snapshot with explicit as_of."
+            )
         if name in {"review", "simulate", "expire"}:
             p.add_argument("--plan-id", required=True)
         if name == "review":
@@ -48,6 +62,7 @@ def register_paper_commands(commands):
             p.add_argument("--run-id")
     sample = sub.add_parser("sample", help="Write fixed synthetic native input files.")
     sample.add_argument("--output-dir", type=Path, required=True)
+    register_paper_helpers(sub)
 
 
 def _at(text):
@@ -63,6 +78,8 @@ def _at(text):
 
 def execute_paper_command(args):
     name = args.paper_command
+    if name in {"plan", "summary", "value", "cash-flow", "convert", "validate-snapshot"}:
+        return execute_paper_helper(args)
     if name == "sample":
         from portfolio_research_desk.errors import ReportError
 
@@ -127,6 +144,14 @@ def execute_paper_command(args):
     elif name == "review":
         view = account.review(args.plan_id, _at(args.at), args.plan_hash, args.approve, args.reason)
     elif name == "simulate":
+        if args.snapshot:
+            return simulate_from_snapshot(
+                account, args.snapshot, args.plan_id, _at(args.at) if args.at else None
+            )
+        if args.at is None:
+            raise DataError(
+                "Native --input requires --at; readable --snapshot includes its own as_of."
+            )
         view = account.execute(args.plan_id, _at(args.at), read_native(args.input))
     elif name == "expire":
         view = account.expire(args.plan_id, _at(args.at))

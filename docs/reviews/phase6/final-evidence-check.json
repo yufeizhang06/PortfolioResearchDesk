@@ -1,0 +1,51 @@
+{
+  "documented_entry_points": [
+    {
+      "command": "prd universe watchlist --help",
+      "status": 0
+    },
+    {
+      "command": "prd paper plan --help",
+      "status": 0
+    },
+    {
+      "command": "prd paper review --help",
+      "status": 0
+    },
+    {
+      "command": "prd paper simulate --help",
+      "status": 0
+    },
+    {
+      "command": "prd paper value --help",
+      "status": 0
+    },
+    {
+      "command": "prd paper cash-flow --help",
+      "status": 0
+    },
+    {
+      "command": "prd paper convert --help",
+      "status": 0
+    },
+    {
+      "command": "prd workflow run --help",
+      "status": 0
+    },
+    {
+      "command": "prd workflow check --help",
+      "status": 0
+    },
+    {
+      "command": "prd config validate --kind workflow --config configs/example_workflow_full.toml",
+      "status": 0
+    }
+  ],
+  "missing_local_links": [
+    [
+      "README.md",
+      "docs/PHASE_6_REPORT.md"
+    ]
+  ],
+  "install_log_pass": true
+}

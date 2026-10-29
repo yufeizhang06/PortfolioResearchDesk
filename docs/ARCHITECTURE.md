@@ -1,4 +1,36 @@
-# Phase 0 架构决策
+# Architecture decisions
+
+## Phase 6 — Product Integration & Delivery (2026-10-28)
+
+`doctor/workspace → workflow services → existing research/backtest/Paper engines →
+local HTML index + immutable hash inventory`.
+
+- 0.7.0 development version. The user authorized final acceptance, safe main
+  integration and private synchronization after local delivery. Visibility changes,
+  broker connections and formal releases remain outside this scope.
+- Reuse existing financial services. Add readable schema 6 Paper transport and
+  compact plan/account operations; retain native schema 5 and prior commands.
+- Separate synthetic demo orchestration from editable daily accounts. A demo
+  review is explicitly scripted; ordinary plans remain pending exact-hash review.
+- Use CLI and self-contained HTML rather than Streamlit: no new runtime
+  dependencies, server or UI-owned account state. Services remain reusable by a
+  future UI with explicit review/idempotency boundaries.
+- The main CAD demo and USD backtest share a short synthetic price fixture;
+  optional factors/ML retain distinct fixtures/evidence scopes. Selected-model
+  ML-to-Paper output is a separate pending preview, not an automatically filled
+  strategy. Factors never enter orders.
+- Missing optional dependencies fail before output reservation. Failures have no
+  workflow completion marker; successful runs are exclusive and fully hashed.
+  Verification detects modification/extra/missing files and rejects unsafe paths
+  and symlinks; it is not a digital signature or a proof of source truth.
+- NAV freshness is based on economic event order, so a same-time cash/conversion
+  event cannot make an old mark look current. Market freshness remains explicit.
+- Base runtime stays standard-library-only; uv-generated lock retains all prior
+  third-party versions. MIT is the user-confirmed own-code license; data/resource
+  rights and installed transitive metadata are separate.
+- See CODE_WALKTHROUGH, USER_GUIDE and PHASE_6_REPORT for source map, algorithms,
+  actual checks, independent review and operating/release limits.
+
 
 ## Phase 5 — CAD 风险与持久 Paper（2026-10-28）
 

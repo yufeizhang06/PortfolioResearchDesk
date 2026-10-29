@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "scope": "mixed CAD/USD readable adapter lifecycle and independent Fraction NAV",
+  "nav_cad": "2929.9000",
+  "fill_count": 2,
+  "event_count": 5,
+  "rejected_without_mutation": [
+    "absent_fx",
+    "future_fx",
+    "absent_sector",
+    "future_sector",
+    "short_target",
+    "bad_sum",
+    "too_large_target"
+  ],
+  "retry_identical": true,
+  "restart_identical": true
+}

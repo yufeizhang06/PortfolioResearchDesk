@@ -1,5 +1,63 @@
 # Development Log
 
+## 2026-10-28 — Phase6最终本地验收通过，准备授权Git同步
+
+- 生产/测试/配置/安装代码与独立审查快照一致，只有MIT与收尾状态文档改变，无未解决阻塞。
+- 本轮689 passed in43.20s、Ruff lint/format、锁/sync通过；不改旧测试、核心算法或依赖版本。
+- 17次实际CLI子进程：自选CSV导入/选择→3资产筛选保留A/B排除C→完整研究/因子/5模型35fold→USD回测与CAD人工审核账户。
+- 独立账户3000CAD→未审核拒绝→确切hash人工批准→2模拟成交→NAV2971.1700；新进程恢复与重复执行完全一致，5事件不重复扣费。
+- 完整workflow63文件验证，Factor Mom系数0.4999999999999997；USD合成10fills与CAD账户分开解释，不夸大真实策略表现。
+- wheel/sdist、sdist离线重建、双wheel源码外干净安装(base/factors/ml/完整workflow)全部PASS；生成报告与账户仅保留work/。
+- 158候选文件敏感模式/禁止文件/文档链接检查通过，MIT正文/2026 Yufei Zhang/打包元数据一致；57依赖无安装版本不符。
+- 原计划hash不变。下一步按授权正式Commit、安全合并main及普通Private Push；远端CI以准确SHA实际结果另补。
+
+## 2026-10-28 — 用户授权Phase6最终验收与Private同步
+
+- 用户已查看Phase6开发/独立审查与MIT，授权最终验收、正式Commit、安全合并main、普通Push、Ubuntu/Windows准确SHA CI核实及必要修复。
+- 已fetch核对现有Private仓库与main基线2f6b18c；85审查hash中仅3份已记录MIT措辞文档变化，生产代码/测试/配置/构建脚本一致。
+- 本轮实际再跑完整测试、离线用户流程和独立安装；结果完成后补记，不提前宣称远端通过。
+- 不Force Push、不改变可见性、不创建正式v1.0.0 Release；完成后停止，等待用户亲自体验验收。
+
+
+## 2026-10-28 — 用户确认 MIT 许可证
+
+- 用户明确选择 MIT；现有 LICENSE 与 pyproject 的 MIT 元数据保持一致，无需修改许可证正文。
+- README、第三方声明、架构、变更记录、发布准备及验收报告将许可证草案更新为用户已确认选择。
+- 第三方软件、Yahoo/Nasdaq/French 数据与资源许可限制不变；未授予额外数据再分发权限。
+- 独立审查原报告/hash保留为历史快照，补充本次仅文档措辞变化说明；金融逻辑、测试与依赖不变。
+- 继续保持未Commit/Push、不修改main、不公开仓库或创建Release。
+
+
+## 2026-10-28 — Phase 6 本地交付与独立审查完成（0.7.0，未提交）
+
+- 增加doctor/workspace/workflow统一入口、严格可读Paper输入、显式目标、计划/摘要/估值/现金/换汇服务。
+- 统一合成演示复用股票池/过去动量/独立USD回测/CAD账户核心；审核、成交、重试、收盘变价变汇率、恢复、报告完成。
+- 可选因子和ML保持独立证据口径；开发选定Logistic的ML→Paper预览保持pending_review且零成交，因子不直接下单。
+- CLI+本地HTML索引/全文件哈希验证；暂缓Streamlit，不增加运行时依赖。原native schema5与所有旧命令保留。
+- 英文README、USER_GUIDE、CODE_WALKTHROUGH、CONTRIBUTING、RELEASE_READINESS、架构/CHANGELOG/验收完善。
+- MIT作为本地未发布许可证草案，THIRD_PARTY_NOTICES区分软件/数据，57锁定依赖元数据无安装版本不符；Windows无Linux专属NCCL。
+- 原609测试两次通过，新增80通过，最终689 passed in46.87s；Ruff lint/format、7种配置与help、锁检查通过。
+- 离线sdist/wheel、sdist重建、双wheel源码外干净venv安装、base与完整factor/ML/Phase6工作流均通过。
+- 无.git/work/.venv的新源码副本在含空格路径locked离线安装，完整流程63文件哈希验证通过；初次依赖配置仍需网络/预置cache。
+- 完整3000 CAD演示：CAD2367.97、USD0、SYN_A37股/SYN_B1股，收盘FX1.30，NAV2971.1700，5事件/2成交，无风险违规，重试恢复一致。
+- 单独独立审查80测试与混合CAD/USD Fraction独算NAV2929.9000通过，异常目标/FX/行业/审核不改变状态。
+- 最终85文件审查hash与工作文件核对；仅许可证脚本格式变化已复核，行业age表述已修正，无未解决可操作P1/P2/P3。
+- 核心限制保留：真实PIT/幸存者/公司行为/日历/OOS未认证，贪心整股规划可能显著低于目标并留下较高现金。
+- CI配置扩展但Phase6远端未运行；main/origin-main/HEAD仍2f6b18c，不Commit/Push/公开/Release，等待用户验收。
+- PHASE_6_REPORT记录完整命令、证据、安装/演示与发布准备；独立报告及hash保存在docs/reviews/phase6。
+
+
+## 2026-10-28 — Phase6正式开始（用户授权，未提交）
+
+- 完整核对AGENTS、PROJECT_PLAN、README、开发历史、Phase5验收及实际CLI/研究/组合/Paper接口。
+- 工作区初始干净，fetch后main/origin/main均2f6b18c6218b8ac9b529c5bc7f69ee875fc252c5，Private/默认main正确。
+- 创建codex/phase-6-product-integration，main和历史分支保留，不Commit/Push/公开仓库/Release。
+- Python3.12.14、uv0.13.6，locked离线sync通过，基线609 passed in33.26s。
+- 目标：环境诊断、工作区模板、统一离线演示、可读Paper输入/摘要/估值入口、报告索引/校验、英文README及代码导读。
+- 取舍：暂不添加Streamlit，使用共享服务CLI和本地HTML索引；基础运行时不新增第三方依赖。
+- 保留真实PIT/OOS/成员/退市/日历/公司行为限制；因子仍描述性，ML验证和Paper明确分支，不把诊断直接当订单。
+- 项目许可证向用户征求偏好，第三方软件/数据许可分别检查；本阶段完成后安排独立审查。
+
 ## 2026-10-28 — Phase5正式同步，真实双平台CI通过
 
 - 正式提交8904e112171306c7039a550c5ae91f187b37c9c0，feat: implement CAD portfolio accounting and paper trading。

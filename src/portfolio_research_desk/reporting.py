@@ -34,7 +34,7 @@ def _provenance() -> dict:
     package = Path(__file__).resolve().parent
     source_hash = hashlib.sha256()
     for path in sorted(package.rglob("*")):
-        if path.is_file() and path.suffix in {".py", ".toml", ".csv"}:
+        if path.is_file() and path.suffix in {".py", ".toml", ".csv", ".json", ".html", ".txt"}:
             source_hash.update(path.relative_to(package).as_posix().encode("utf-8"))
             source_hash.update(b"\0")
             source_hash.update(path.read_bytes())

@@ -68,8 +68,6 @@ implementation details. Software acceptance does not certify market performance.
 ## Installation & Quick Start
 
 Requirements: **Python 3.12.x**, **uv 0.13.6** and Git (or an authorized source ZIP).
-While the repository is private, cloning requires access. Visibility is a separate
-owner decision; these instructions do not change it.
 
 ```bash
 git clone https://github.com/yufeizhang06/PortfolioResearchDesk.git

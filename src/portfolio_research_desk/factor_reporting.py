@@ -2,7 +2,6 @@
 
 import csv
 import hashlib
-import html
 import json
 import re
 from datetime import UTC, datetime
@@ -13,6 +12,7 @@ from uuid import uuid4
 from portfolio_research_desk.domain import fingerprint, jsonable
 from portfolio_research_desk.errors import DataError, ReportError
 from portfolio_research_desk.factor_data import FACTOR_NAMES
+from portfolio_research_desk.factor_report_html import render_factor_report
 from portfolio_research_desk.factor_workflow import FactorRun
 from portfolio_research_desk.reporting import collect_provenance
 
@@ -98,7 +98,8 @@ def _charts(result: FactorRun, directory: Path) -> list[str]:
 
 
 def save_factor_report(result: FactorRun, output_dir: Path, run_id: str | None = None) -> Path:
-    run_id = run_id or f"{datetime.now(UTC):%Y%m%dT%H%M%S}-{uuid4().hex[:12]}"
+    generated_at = datetime.now(UTC)
+    run_id = run_id or f"{generated_at:%Y%m%dT%H%M%S}-{uuid4().hex[:12]}"
     reserved = {"CON", "PRN", "AUX", "NUL"} | {
         f"{p}{i}" for p in ("COM", "LPT") for i in range(1, 10)
     }
@@ -186,74 +187,26 @@ def save_factor_report(result: FactorRun, output_dir: Path, run_id: str | None =
             rolling_rows,
             ["window_start", "window_end", "nobs", "status", "term", "estimate", "reason"],
         )
-        charts = _charts(result, directory)
+        _charts(result, directory)
         limitations = list(result.warnings)
         if result.comparison:
             limitations.extend(
                 w for fit in result.comparison["fits"].values() for w in fit["warnings"]
             )
-        intro = (
-            f"<h1>{html.escape(result.returns.asset.symbol)} factor attribution</h1>"
-            f"<p>Run {html.escape(run_id)} | {result.factors.frequency} | USD | "
-            f"{result.config.expected_kind}</p>"
-            f"<p>Sample: {result.config.start} to exclusive {result.config.end}; "
-            f"{len(result.sample.rows)} common observations; "
-            f"covariance {result.config.covariance}; "
-            f"confidence {result.config.confidence:.1%}. "
-            f"Return basis: {result.config.return_basis}.</p>"
-            f"<p>Factors: {html.escape(result.factors.source)}. Input percent / 100 = decimal. "
-            "Response = stock simple return minus same-period RF; "
-            "Mkt-RF is already excess market return.</p>"
-            f"<p>{html.escape(result.factors.momentum_definition)}</p>"
-            "<p><strong>Ex-post descriptive research. "
-            "No historical signal eligibility or OOS claim.</strong></p>"
-        )
-        table = (
-            "<table><tr>"
-            + "".join(
-                f"<th>{k}</th>"
-                for k in ("Model", "Term", "Estimate", "SE", "t", "p", "CI low", "CI high")
-            )
-            + "</tr>"
-        )
-        for row in coefficients:
-            table += (
-                "<tr>" + "".join(f"<td>{html.escape(str(v))}</td>" for v in row.values()) + "</tr>"
-            )
-        table += "</table>"
-        metrics = (
-            "<h2>Model diagnostics and comparison</h2><pre>"
-            + html.escape(
-                json.dumps(
-                    {
-                        m: {
-                            k: v
-                            for k, v in fit.items()
-                            if k not in {"fitted", "residuals", "coefficients"}
-                        }
-                        for m, fit in result.comparison["fits"].items()
-                    }
-                    if result.comparison
-                    else {"status": "failed", "warnings": limitations},
-                    indent=2,
-                    allow_nan=False,
-                )
-            )
-            + "</pre>"
-        )
-        report = (
-            "<!doctype html><html lang='en'><meta charset='utf-8'><title>Factor research</title>"
-            "<style>body{font:16px sans-serif;max-width:1100px;margin:32px auto;padding:16px}"
-            "td,th{border:1px solid #ddd;padding:7px}table{border-collapse:collapse}"
-            "pre{white-space:pre-wrap}img{width:100%}</style><body>"
-            + intro
-            + table
-            + metrics
-            + "".join(f"<img alt='{name}' src='{name}'>" for name in charts)
-            + "<h2>Warnings and limits</h2><ul>"
-            + "".join(f"<li>{html.escape(w)}</li>" for w in dict.fromkeys(limitations))
-            + "</ul><p>Snapshots, exclusions, residuals and window failures "
-            "are included in JSON/CSV.</p></body></html>"
+        report = render_factor_report(
+            {
+                "config": result.config.snapshot(),
+                "alignment": jsonable(result.sample),
+                "analysis": result.comparison,
+                "rolling": jsonable(result.rolling),
+                "factor_snapshot": jsonable(result.factors),
+                "price_snapshot": jsonable(result.history),
+                "returns": jsonable(result.returns),
+                "quality": jsonable(result.quality),
+                "warnings": result.warnings,
+            },
+            run_id,
+            generated_at,
         )
         with (directory / "report.html").open("x", encoding="utf-8") as stream:
             stream.write(report)
@@ -273,7 +226,7 @@ def save_factor_report(result: FactorRun, output_dir: Path, run_id: str | None =
                 "phase": 3,
                 "run_id": run_id,
                 "status": result.status,
-                "generated_at": datetime.now(UTC),
+                "generated_at": generated_at,
                 "config": result.config.snapshot(),
                 "config_hash": fingerprint(result.config.snapshot()),
                 "provenance": provenance,

@@ -21,6 +21,7 @@ installed license metadata against that lock without a network request.
 | statsmodels, scikit-learn | BSD-3-Clause |
 | Matplotlib | Matplotlib license and bundled notices |
 | XGBoost | Apache-2.0; platform wheels may include additional runtime components |
+| Streamlit (optional GUI) | Apache-2.0; installed separately, with its dependency notices |
 | Hatchling, pytest, Ruff | MIT |
 
 This table summarizes direct dependencies, not all transitive or wheel-bundled
@@ -29,6 +30,13 @@ metadata detection is not a legal compatibility certification. Before distributi
 a bundled environment, retain every installed distribution's license/NOTICE files
 and inspect native libraries and platform-specific dependencies as well. The
 project currently distributes its own source/wheel, not a bundled environment.
+
+The 2026-10-31 publication review checked installed metadata against the lock.
+Peewee 4.5.3 (a transitive data dependency) has sparse license metadata; its installed
+`dist-info/licenses/LICENSE` and [upstream license](https://github.com/coleifer/peewee/blob/master/LICENSE)
+contain the MIT grant. This manual check does not relicense any dependency.
+GUI screenshots contain only results computed from this project's synthetic fixtures;
+their crops omit local workspace paths and do not alter displayed results.
 
 ## Data and external resources
 

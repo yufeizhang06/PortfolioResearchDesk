@@ -22,6 +22,9 @@ def main() -> None:
     parser.add_argument(
         "--with-ml", action="store_true", help="Install locked ML extra and verify Phase 4/6."
     )
+    parser.add_argument(
+        "--with-gui", action="store_true", help="Install locked GUI extra and smoke-test forms."
+    )
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
     archives = list(args.dist.resolve().glob("*.tar.gz"))
@@ -391,6 +394,44 @@ def main() -> None:
                         "d=m.distribution('portfolio-research-desk'); "
                         "assert d.metadata['License-Expression']=='MIT'; "
                         "assert len([p for p in d.files if '/licenses/' in str(p)]) >= 2",
+                    ],
+                    cwd=root,
+                    check=True,
+                )
+            if args.with_gui:
+                subprocess.run(
+                    [
+                        args.uv,
+                        "sync",
+                        "--project",
+                        str(project),
+                        "--locked",
+                        "--offline",
+                        "--extra",
+                        "gui",
+                        "--no-dev",
+                        "--no-install-project",
+                        "--inexact",
+                        "--python",
+                        str(python),
+                    ],
+                    check=True,
+                    env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(environment)},
+                )
+                subprocess.run(
+                    [
+                        str(python),
+                        "-I",
+                        "-c",
+                        "from pathlib import Path; "
+                        "from streamlit.testing.v1 import AppTest; "
+                        "from portfolio_research_desk.gui import launch; "
+                        "assert Path(launch.__file__).is_relative_to("
+                        "Path(__import__('sys').prefix)); "
+                        "entry=Path(launch.__file__).with_name('app.py'); "
+                        "app=AppTest.from_file(str(entry)).run(); "
+                        "assert not app.exception; "
+                        "assert app.title[0].value.startswith('欢迎使用')",
                     ],
                     cwd=root,
                     check=True,

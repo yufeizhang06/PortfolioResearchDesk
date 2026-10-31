@@ -2,14 +2,15 @@
 
 import csv
 import hashlib
-import html
 import json
 import re
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from portfolio_research_desk.domain import fingerprint, jsonable
+from portfolio_research_desk.domain import fingerprint, jsonable, require_utc
 from portfolio_research_desk.errors import DataError, ReportError
+from portfolio_research_desk.paper_report_html import render_account_report
 from portfolio_research_desk.paper_store import loads, wire
 from portfolio_research_desk.reporting import collect_provenance
 
@@ -47,8 +48,10 @@ def read_native(path):
         raise DataError("Cannot read native paper input.") from exc
 
 
-def write_paper_report(account, output_dir, run_id=None):
+def write_paper_report(account, output_dir, run_id=None, *, generated_at=None):
     view, events = account.audit()
+    generated_at = generated_at if generated_at is not None else datetime.now(UTC)
+    require_utc(generated_at)
     run_id = run_id or "paper-" + uuid4().hex[:12]
     reserved = {"CON", "PRN", "AUX", "NUL"} | {
         f"{p}{i}" for p in ("COM", "LPT") for i in range(1, 10)
@@ -68,6 +71,7 @@ def write_paper_report(account, output_dir, run_id=None):
             "account": jsonable(view),
             "provenance": collect_provenance(),
             "plan_hashes": {k: fingerprint(v.plan) for k, v in view.plans.items()},
+            "report_generated_at": generated_at.isoformat(),
         }
         with (directory / "account.json").open("x", encoding="utf-8") as stream:
             json.dump(snapshot, stream, indent=2, sort_keys=True, allow_nan=False)
@@ -121,12 +125,7 @@ def write_paper_report(account, output_dir, run_id=None):
                 (v.as_of.isoformat(), v.nav_cad, v.cash_cad, v.cash_weight, ";".join(v.violations))
                 for v in view.valuations
             )
-        text = (
-            "<html><head><meta charset='utf-8'><title>CAD Paper Account</title></head>"
-            "<body><h1>CAD Paper Account</h1>"
-        )
-        text += "".join("<p>" + html.escape(w) + "</p>" for w in WARNINGS)
-        text += "<pre>" + html.escape(json.dumps(snapshot, indent=2)) + "</pre></body></html>"
+        text = render_account_report(view, events, generated_at, run_id)
         (directory / "report.html").write_text(text, encoding="utf-8")
         hashes = {
             p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(directory.iterdir())

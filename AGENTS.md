@@ -2,6 +2,20 @@
 
 ## 当前范围
 
+- 2026-10-31：用户确认首版 GUI 在 Windows 正常使用，批准本轮 Phase 7 成果保存、完整测试、
+  正式 Commit、安全合并 main、普通 Push 到现有 Private 仓库及准确 SHA 的真实 CI 检查。
+- 本轮还须审查所有可访问分支/标签的完整历史、Actions 日志和候选内容，完善英文 Early Beta
+  README 并验证干净安装。发现真实敏感信息先报告；不擅自改写历史、不 Force Push、不改可见性、
+  不创建正式 Release。完成公开准备报告后停止，等待用户亲自批准公开。
+- 下方 2026-10-29“不 Commit/Push”及首版交付停止规则为前轮历史状态；当前请求优先。
+
+- 2026-10-29：用户已批准 Phase 7 首个 Streamlit GUI 实现，沿用统一报告视觉与 Application
+  Service Layer 方案；优先 Home、Stock Explorer、Research 端到端流程。
+- 开发分支 `codex/phase-7-gui`，报告修改起始备份在本地 ignored
+  `work/phase7-gui-preservation`（18 个文件逐项 SHA-256 一致）。不重置旧成果。
+- 本轮不 Commit/Push、不合并 main、不创建 Release。金融模型、回测、Paper 账本逻辑不改。
+  首版交付并真实本地界面检查后停止，等待用户亲自体验；下方 Phase 6 停止范围为历史记录。
+
 - Phase6功能e49d797已安全快进main并普通Private Push；真实CI40793091056精确该SHA双平台各689测试与完整构建安装通过。
 - 11项用户流程在合成范围PASS；真实PIT/OOS/任意真实池自动回测/Dashboard/broker明确NOT SUPPORTED，证据见PHASE_6_REPORT。
 - 文档收尾也须独立核实准确SHA的真实双平台CI；完成后停止等待用户亲自体验验收。

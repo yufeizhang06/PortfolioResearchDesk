@@ -1,5 +1,49 @@
 # Architecture decisions
 
+## Phase 7 — Unified reporting and GUI planning (2026-10-29, local)
+
+- `report_design.py` extracts the accepted CAD CSS, escaping, display formatters,
+  table/cards and adds research document/inline SVG helpers. CAD output is byte
+  identical for the same audited inputs and timestamp after extraction.
+- `factor_report_html.py`, `ml_report_html.py`, `backtest_report_html.py` consume
+  serialized existing results. Existing writers retain raw JSON/CSV, immutable
+  directories and completion/provenance conventions; only HTML generation changes.
+- Financial engines, account storage, source data, configuration schemas,
+  dependencies and version remain unchanged. Display-only drawdown coordinates
+  use recorded NAV and the existing engine definition; no metric refit is added.
+- Keep failed factor windows, all predeclared ML models, development/holdout
+  separation, frozen selection, benchmark/cost identity and unavailable metrics.
+  Generation/sample/valuation/input-availability times are distinct.
+- `REPORT_DESIGN_STANDARD.md` records the common visual/precision rules;
+  `PHASE_7_REPORT.md` records actual data and visual acceptance evidence.
+- `PHASE_7_GUI_PLAN.md` proposes six Streamlit pages and a shared Application
+  Service Layer. It is a design proposal only: no GUI/dependency/server is added.
+  GUI implementation awaits user confirmation; no commit/push/main change/release.
+
+## CAD Paper report presentation repair (2026-10-29, local acceptance)
+
+- `paper_reporting.py` retains exclusive export directories, exact JSON/CSV audit
+  values and the final hashed completion marker. It adds an injectable UTC
+  `report_generated_at` export timestamp and calls `paper_report_html.py`.
+- The new renderer reads the existing audited view and original valuation-event
+  inputs. It never calls pricing/execution functions or changes account state.
+  NAV, holdings, weights, P&L attribution and costs use recorded results; displayed
+  holdings totals and NAV-minus-net-contributions are explicit presentation sums.
+- Distinguish export time, valuation time, last ledger event and price/FX
+  observation/availability times. Economic events after the last valuation,
+  including same-time cash or conversion events, suppress current NAV/P&L/weights.
+  The last NAV is labeled historical; current unpriced ledger holdings remain visible.
+- Standard-library HTML/CSS and inline SVG provide overview, details and
+  methodology with local audit downloads. No JavaScript, external fonts, chart
+  dependency, server or packaged PDF runtime. Browser A4 printing uses repeated
+  table headers and unbroken rows; long histories continue without truncation.
+- Display rounding uses an isolated Decimal context (money/percent: 2 places;
+  FX: 6). Audit precision, financial contracts and existing CLI remain unchanged.
+  Company names are absent from the ledger, so no issuer names are invented.
+- This original repair covered Paper only. The subsequent Phase 7 section above
+  extends the design to research reports. See REPORTING_UX_ACCEPTANCE for the
+  original CAD acceptance; live Dashboard implementation remains pending.
+
 ## Phase 6 — Product Integration & Delivery (2026-10-28)
 
 `doctor/workspace → workflow services → existing research/backtest/Paper engines →
@@ -191,3 +235,28 @@ reporting 增加公共 provenance 包装供两条流程复用，旧报告逻辑�
 输出逐资产 CSV+sidecar、四类 JSON 与最后的 run.json；没有完成标记的目录不得当成成功运行。
 完成标记的 status 仍可为 partial/failed；不是以“文件存在”代替业务验收。
 时间、来源与数学定义详见 `DATA_POLICY.md`；锁定依赖兼容信息、真实探测与验收见 `PHASE_2_REPORT.md`。
+
+## Phase 7：首个本地 GUI 的应用边界（2026-10-29）
+
+- `app_contracts.py` 只定义行情/因子表单请求与任务引用；`app_services.py` 不依赖 Streamlit。
+  `gui/app.py` 管理工作区与六页导航，`gui/pages.py` 仅输入和展示，`gui/views.py` 复用报告数字格式、
+  metric 和 SVG。遵守已批准 `PHASE_7_GUI_PLAN`，无 REST/ORM/队列或新增领域模型。
+- 服务直接调用 `run_research`、`run_factor_research`、`save_factor_report`、已有自选股 I/O 与
+  `account_summary`。GUI 不调用 CLI 子进程，不复制回归、风险、回测、估值或账本计算。
+  CLI 本轮不迁移，仍调用相同后端。原有金融核心源码未变。
+- 每次采集调用已有质量/缓存契约并写出原生价格 CSV+来源元数据。Factor 只能使用经过任务哈希
+  校验的准确证券价格引用；传递实际文件，不根据 symbol 找另一个数据集。原生 local 路径和输出
+  都约束在用户选定工作区内；不支持真实池自动回测或将事后因子转换为交易信号。
+- yfinance 默认只读缓存；离线注入原 adapter 的阻断 transport 并保留安装版本对应的原 cache
+  identity，避免导入在线供应商及其初始化副作用。网络仅在明确允许时由既有 adapter 发起。
+  没有静默切换数据来源或 synthetic 回退。
+- 每个命令目录排他创建，先写 request，后端完成后最后写 result+全文件哈希。
+  相同 command ID+输入复用结果；输入不同/未完成/损坏时拒绝。显式新实验生成新 ID，
+  跨标签不同 ID 可保存独立研究；本轮没有共享账本写连接或 Paper 写命令。
+- 完成结果从磁盘重读；工作区切换清空草稿、快照和检查状态；无 `st.cache_resource` 或隐式
+  结果缓存。输入错误后保留历史结果并标记。UI 提交不充当金融风险或时间验证器。
+- Home 的示例仍使用原固定 synthetic 工作流：只创建新账户，脚本审核不向用户账户开放。
+  Paper 仅查询；未来写入阶段仍须先落实原子预期 head 校验与幂等验收，不以按钮禁用替代事务。
+- 独立可选 `gui` extra 固定 Streamlit 1.66.1，Python 3.12 与原 scientific extras 实装验证。
+  固定入口监听 127.0.0.1:8501，关闭使用统计；Windows 双击启动，无输入拼接 shell 命令。
+  HTML 打印继续用既有报告，不引入浏览器或 PDF 生产依赖。

@@ -19,9 +19,11 @@ Repository = "https://github.com/yufeizhang06/PortfolioResearchDesk"
 data = ["yfinance>=0.2.65,<2", "pyarrow>=20,<30"]
 factors = ["numpy>=2,<3", "scipy>=1.13,<2", "statsmodels>=0.14,<0.16", "matplotlib>=3.9,<4"]
 ml = ["scikit-learn>=1.7,<2", "xgboost>=3,<4"]
+gui = ["streamlit==1.66.1"]
 
 [project.scripts]
 prd = "portfolio_research_desk.cli:main"
+prd-gui = "portfolio_research_desk.gui.launch:main"
 
 [dependency-groups]
 dev = [
@@ -40,6 +42,7 @@ include = [
     "/README.md", "/AGENTS.md", "/pyproject.toml", "/uv.lock",
     "/LICENSE", "/THIRD_PARTY_NOTICES.md", "/CONTRIBUTING.md",
     "/.python-version", "/.gitignore", "/.gitattributes",
+    "/Start GUI.cmd", "/Setup GUI.cmd",
 ]
 
 [tool.pytest.ini_options]

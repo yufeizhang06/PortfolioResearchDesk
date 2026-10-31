@@ -1,7 +1,6 @@
 """Immutable JSON/CSV/HTML experiment bundle; completion marker is written last."""
 
 import hashlib
-import html
 import importlib.metadata
 import json
 import re
@@ -11,6 +10,7 @@ from uuid import uuid4
 
 from portfolio_research_desk.domain import fingerprint, jsonable
 from portfolio_research_desk.errors import ReportError
+from portfolio_research_desk.ml_report_html import render_ml_report
 from portfolio_research_desk.ml_workflow import MLResult
 from portfolio_research_desk.reporting import _write_csv, _write_json, collect_provenance
 
@@ -90,38 +90,19 @@ def save_ml_report(result: MLResult, output_dir: Path, run_id: str | None = None
             {"strategy": name, **jsonable(bt.metrics)} for name, bt in result.backtests.items()
         ]
         _write_csv(directory / "portfolio_metrics.csv", list(comparison[0]), comparison)
-        contents = (
-            '<!doctype html><html lang="en"><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width"><title>Phase 4 validation</title>'
-            "<style>body{font:15px system-ui;max-width:1200px;margin:32px auto;padding:20px}"
-            "pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf2f7;padding:14px}"
-            ".notice{background:#fff2d6;padding:16px}</style>"
-            "<h1>PortfolioResearchDesk · Phase 4</h1>"
-            '<p class="notice"><b>SYNTHETIC · USD · SOFTWARE VALIDATION.</b> '
-            "No real-market trading strategy or profitability evidence.</p>"
-            f"<p>Run: {html.escape(run_id)} · UTC: {started.isoformat()}</p>"
-            "<h2>Method</h2><p>Fixed trailing price/volatility/liquidity/relative-return features. "
-            "Global-date folds, whole-date purge, gap and safety embargo. "
-            "Nested TimeSeriesSplit; imputer/scaler/variance selection fit on training only. "
-            "Final holdout uses frozen development choices. Next-open execution uses the existing "
-            "integer shares, cash, fees and slippage. Strategies share stage dates; "
-            "equal-weight/buy-hold hold all three assets, momentum and models use Top-2. "
-            "Cash starts each stage independently. No holdout-to-development capital carry.</p>"
-            "<h2>Frozen protocol</h2><pre>"
-            + html.escape(json.dumps(jsonable(result.frozen_plan), indent=2))
-            + "</pre><h2>Classification comparison and coverage</h2><pre>"
-            + html.escape(json.dumps(result.metrics, indent=2))
-            + "</pre><h2>Net portfolio comparison</h2><pre>"
-            + html.escape(json.dumps(comparison, indent=2))
-            + "</pre><h2>Cost sensitivity</h2><pre>"
-            + html.escape(json.dumps(jsonable(result.cost_sensitivity), indent=2))
-            + "</pre><h2>Limitations</h2><ul>"
-            + "".join(f"<li>{html.escape(w)}</li>" for w in result.warnings)
-            + "</ul><h2>Reproducibility</h2><pre>"
-            + html.escape(json.dumps(provenance, indent=2))
-            + "</pre><p>See folds.json for every outer/inner boundary and fitted statistics; "
-            "predictions.csv for each OOS decision, score and label availability. "
-            "portfolios.json contains every target, order, fill, position and NAV.</p></html>"
+        contents = render_ml_report(
+            {
+                "config": result.config.snapshot(),
+                "dataset": jsonable(result.dataset),
+                "metrics": result.metrics,
+                "folds": jsonable(result.folds),
+                "frozen_plan": jsonable(result.frozen_plan),
+                "portfolios": portfolio,
+                "cost_sensitivity": jsonable(result.cost_sensitivity),
+                "warnings": result.warnings,
+            },
+            run_id,
+            started,
         )
         (directory / "report.html").write_text(contents, encoding="utf-8", newline="\n")
         hashes = {

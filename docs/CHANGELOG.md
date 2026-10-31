@@ -1,5 +1,61 @@
 # Changelog
 
+## Unreleased — Phase 7 early-beta publication preparation (2026-10-31)
+
+- Author-confirmed Windows GUI startup/operation; preserve the first Phase 7 scope.
+- Add an English early-beta homepage, actual synthetic-only screenshots, GUI/backend
+  capability matrix, installation instructions, limitations and a separate roadmap.
+- Review all reachable Git history and accessible Actions logs with Gitleaks plus
+  manual path, identity, data-rights and dependency-license checks.
+- Verify fresh Windows setup/start in a path containing spaces without developer
+  tools in the checkout or API keys; add Python-launcher fallback for uv and preserve
+  meaningful launcher error codes.
+- Sync only to the existing private repository after checks; publication requires
+  another owner decision. No visibility change, history rewrite or formal Release.
+
+## Unreleased — Phase 7 first local GUI (2026-10-29)
+
+- Add optional locked Streamlit 1.66.1, local-only launcher and Windows setup/start buttons.
+- Implement Home, versioned watchlists, explicit data acquisition and Factor forms through
+  a UI-independent Application Service Layer. Reuse existing engines and report writers.
+- Bind research to exact saved price snapshots; preserve identity, source clocks, data kind,
+  failed diagnostics, common samples and per-observation alpha units.
+- Add immutable, hash-verified task results, duplicate-command reuse and explicit retry IDs;
+  clear workspace drafts/references on switching. Retain historical results after input errors.
+- Expose only read-only Paper queries; the existing synthetic demo uses an isolated new account.
+  ML/backtest forms and Paper write wizards remain outside this first iteration.
+- Add offline application/AppTest integration tests and installed-wheel GUI smoke checks.
+  No financial/model/accounting calculation changes, commit, push, main merge or Release.
+
+## Unreleased — Phase 7 unified research reports (2026-10-29)
+
+- Adopt the accepted CAD Paper typography, colors, cards, tables, responsive
+  layout and A4 printing as the shared report standard.
+- Replace Factor/ML/Backtesting JSON body dumps with plain-language overviews,
+  comparisons, diagnostic tables, rolling/NAV/drawdown charts and local downloads.
+- Preserve per-period alpha units, all predeclared models, development-frozen
+  selection, holdout boundaries, costs, failed/unavailable results and limitations.
+- Keep engine/account logic and raw financial exports unchanged. Add display-only
+  regressions using actual engine results and inspect saved-run HTML/PDF previews.
+- Add the detailed six-page Streamlit/Application Service Layer proposal; GUI
+  implementation awaits confirmation. No new dependencies or version change.
+- Evidence: PHASE_7_REPORT. Local uncommitted work; no push, main change or release.
+
+## Unreleased — CAD Paper report readability (2026-10-29)
+
+- Replace the account JSON dump with an offline portfolio overview, sector/cash
+  allocation chart, holdings, fills/fees/FX, risk limits and input methodology.
+- Keep original JSON/CSV precision and audit manifests; add explicit UTC report
+  generation metadata and separate valuation/input availability clocks.
+- Display consistent money/percent/FX precision, missing-name explanations and
+  stale/no-valuation states without mixing old NAV and current account changes.
+- Add responsive HTML and A4 print styles. Existing financial logic, CLI, schema 5
+  account payload, dependencies and version 0.7.0 remain unchanged. The new
+  `report_generated_at` field is additive export metadata outside the account payload.
+- Original local acceptance evidence and previews: REPORTING_UX_ACCEPTANCE.
+  The later Phase 7 work above extends research reporting. No commit, push,
+  release or new remote CI run in these local reporting rounds.
+
 ## 0.7.0 — Phase 6 (2026-10-28, final development acceptance)
 
 - Add offline doctor, exclusive workspace templates and a unified synthetic

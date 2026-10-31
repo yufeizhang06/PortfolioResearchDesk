@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from portfolio_research_desk import __version__
 from portfolio_research_desk.backtest import BacktestResult
+from portfolio_research_desk.backtest_report_html import render_backtest_report
 from portfolio_research_desk.domain import ZERO, fingerprint, jsonable
 from portfolio_research_desk.errors import ReportError
 
@@ -232,52 +233,8 @@ def write_report(result: BacktestResult, output_dir: Path, run_id: str | None = 
             ],
             positions,
         )
-        metric_rows = [
-            {
-                "metric": key,
-                "value": str(value)
-                if value is not None
-                else "unavailable (short synthetic sample)",
-            }
-            for key, value in result.metrics.items()
-        ]
-        warning_html = "".join(f"<li>{html.escape(warning)}</li>" for warning in result.warnings)
-        content = (
-            '<!doctype html><html lang="en"><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width">'
-            "<title>PortfolioResearchDesk — Synthetic backtest</title><style>"
-            "body{font:15px system-ui;max-width:1200px;margin:32px auto;"
-            "padding:0 20px;color:#182536}"
-            "table{border-collapse:collapse;width:100%;font-size:13px;margin:16px 0}"
-            "td,th{border:1px solid #cdd6e0;padding:7px;text-align:left}th{background:#edf2f7}"
-            ".notice{background:#fff2d6;padding:16px}code{overflow-wrap:anywhere}</style>"
-            '<h1>PortfolioResearchDesk · Phase 1</h1><p class="notice">'
-            "<strong>SYNTHETIC · USD ONLY.</strong> Accounting and causality verification. "
-            "These results are not historical market evidence or investment advice.</p>"
-            f"<p>Run: <code>{html.escape(run_id)}</code> · Generated UTC: {started.isoformat()}</p>"
-            "<p>Universe: user_static / user_config · as-of: "
-            f"{result.universe.as_of.isoformat()} · "
-            f"Assets: {html.escape(', '.join(a.symbol for a in result.universe.assets))}</p>"
-            "<h2>Method and execution</h2><p>Trailing close momentum, "
-            "Top-K equal targets, integer shares. Decision: scheduled close + 2 minutes. "
-            "Execution: next explicit session open, sells before buys. "
-            "Requests are fixed using known closes; execution may only reduce them "
-            "for cash/weight limits. No model fitting or OOS evaluation. "
-            "No final liquidation; last NAV includes marked holdings.</p>"
-            f"<pre>{html.escape(json.dumps(result.config.snapshot(), indent=2))}</pre>"
-            "<h2>Metrics</h2>"
-            + _table(["metric", "value"], metric_rows)
-            + "<h2>Daily NAV / cash baseline</h2>"
-            + _table(equity_fields, equity)
-            + "<h2>Simulated fills</h2>"
-            + _table(fill_fields, fills)
-            + "<h2>Limitations and data quality</h2><ul>"
-            + warning_html
-            + "</ul>"
-            "<h2>Reproducibility</h2><pre>" + html.escape(json.dumps(metadata, indent=2)) + "</pre>"
-            "<p>See result.json for decisions, input availability times, "
-            "target weights and all order outcomes. "
-            "config_snapshot.json and data_snapshot.json contain the complete inputs.</p></html>"
+        content = render_backtest_report(
+            payload, jsonable(result.dataset_snapshot), run_id, started
         )
         with (directory / "report.html").open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(content)

@@ -1,5 +1,10 @@
 # Architecture decisions
 
+Current status (2026-10-31): the first Phase 7 Streamlit GUI and Application Service
+Layer are implemented and the author confirmed Windows operation. The implementation
+boundary is recorded in the Phase 7 GUI section below; earlier planning/deferred
+statements are historical. Current delivery/CI evidence: [PUBLICATION_REVIEW](PUBLICATION_REVIEW.md).
+
 ## Phase 7 — Unified reporting and GUI planning (2026-10-29, local)
 
 - `report_design.py` extracts the accepted CAD CSS, escaping, display formatters,

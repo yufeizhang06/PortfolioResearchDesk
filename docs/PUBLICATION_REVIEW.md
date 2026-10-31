@@ -4,8 +4,11 @@ Review date: **2026-10-31 (America/Toronto)**. Version **0.7.0**, **Early Beta /
 in Progress**. The author confirmed first-GUI startup and operation on Windows.
 This round authorizes private synchronization, not public visibility or a Release.
 
-**Draft: local audit/checks recorded; candidate commit and exact-SHA remote CI pending.
-This draft is not READY FOR PUBLICATION.**
+**READY FOR PUBLICATION — for an Early Beta source/synthetic-fixture repository.**
+The functional commit and exact-SHA dual-platform CI below passed. The containing
+documentation closeout is separately verified before handoff; its final SHA/CI
+receipt is provided in the handoff instead of self-embedding a commit's own hash.
+Repository visibility remains **PRIVATE**. No Release was created.
 
 ## Scope and preservation
 
@@ -39,7 +42,10 @@ gitleaks dir <downloaded-GitHub-surfaces> --redact --max-archive-depth=2
 Initial scans covered all **13 commits**, **293 complete unique blobs / 158 historical
 paths** (including later changed/deleted versions), and a separate export of tracked
 plus nonignored untracked candidate files. **No secret findings.** Staged/final-commit
-scans are required before push; the working tree is not inferred from historical HEAD.
+scans also passed before push; the working tree was not inferred from historical HEAD.
+After committing Phase 7, the full-history rescan covered **14 commits** with no
+findings; the reachable-object inventory recorded **306 unique blobs**. The final
+documentation closeout is scanned again at handoff. No suppression baseline was used.
 
 Manual checks supplement scanner patterns with all historical filenames, commit
 identity, paths/emails, data provenance, images and distribution contents:
@@ -65,10 +71,13 @@ GitHub says public visibility also exposes
 All **12 existing runs / 12 attempts / 48 log entries** downloaded successfully.
 Gitleaks scanned expanded logs and ZIPs: **no credential findings**. Supplemental
 path matches were all generic hosted `/home/runner/...` paths, manually classified.
-No private email/credentials found. Newly created CI runs must be scanned separately.
+No private email/credentials found. Functional CI **41175396204** subsequently added
+**34 log entries**, all downloaded and scanned with no findings. Supplemental path
+matches were hosted-runner paths. The final closeout run is audited at handoff too.
 
 Starting API inventory: **0 artifacts, issues/PRs, issue comments, commit comments,
 releases, deployments or environments**. Nothing was deleted or made public.
+Actions cache count is **0**; wiki, Pages and Discussions are disabled.
 
 ## Data rights and dependency notices
 
@@ -121,9 +130,22 @@ offline first install with no cached dependencies.
 | Starting complete regression | **742 passed**, 60.35s; all old tests retained |
 | Final regression / Ruff / lock | **742 passed**, 60.34s; Ruff check/format PASS (136 files); 76-package lock check PASS |
 | Current sdist / both wheels / independent installs | PASS: sdist rebuild, direct/rebuilt wheels, full factors/ML workflows and GUI AppTest; `work/public-readiness/distribution-install.log` |
-| Candidate SHA, safe main/private synchronization | Pending |
-| Actual Ubuntu and Windows CI at exact SHA | Pending |
-| New CI logs and final refs | Pending |
+| Functional SHA and synchronization | `88f1104616c489c8896626d10d765100fefd5aea`; main safely fast-forwarded and normally pushed, Phase 7 branch preserved/pushed |
+| Actual exact-SHA Ubuntu CI | **741 passed, 1 skipped**, 108.41s; all CLI/lock/Ruff/build/independent-install/GUI steps successful |
+| Actual exact-SHA Windows CI | **742 passed**, 137.81s; all CLI/lock/Ruff/build/independent-install/GUI steps successful |
+| Functional CI logs | All **34** entries scanned; no secret findings; receipt `reviews/phase7-publication/ci-functional.json` |
+| Branches, tags and visibility | 9 local / 7 remote branches preserved; no tags; repository still Private |
+
+Actual workflow: [41175396204](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41175396204),
+`workflow_dispatch` on **main**, verified against the full SHA above. The Ubuntu
+skip is the Windows-drive-specific path case, not a removed regression. Automatic
+push-triggered runs did not appear during this task; the workflow declares push/PR
+triggers, but only manual triggering is claimed as observed. The CI badge alone is
+not substituted for exact-SHA validation.
+
+Hosted runners emitted nonblocking Node-runtime/Ubuntu-image migration annotations;
+all steps passed on the actual supplied runners. Future runner migrations remain a
+maintenance consideration, not evidence of support for an untested platform.
 
 Tests block external sockets; GUI AppTest alone allows loopback. Commands follow
 README, with `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1` and local uv cache on this host.
@@ -134,9 +156,17 @@ Python/uv failure checks (exit 2) in an isolated directory.
 
 ## Publication decision and limits
 
-**Pending final commit, installation and exact-SHA remote CI.** No visibility change
-is authorized/performed. The owner must personally decide whether to publish this
-repository and its disclosed historical metadata after the final gate results.
+**READY FOR PUBLICATION.** No confirmed credential, private-account, restricted-data
+or source/wheel licensing blocker was found in the reviewed scope. The English
+homepage, clean installation and exact functional SHA passed the recorded gates.
+This recommendation covers an **Early Beta / Work in Progress code repository**;
+it is not a formal v1.0 release or certification of a trading system.
+
+The owner must personally approve any visibility change, including disclosure of
+the existing author attribution and generic historical paths. No history rewrite,
+force push, visibility change, release, log deletion or paid resource was performed.
+The final documentation commit is checked at its own SHA before the handoff reports
+completion; the functional receipt above is not reused as proof for another SHA.
 
 Early-beta limits: local single-user app, partial Chinese GUI, pending screening/
 ML/backtest forms and Paper write wizards; no certified real PIT/OOS or arbitrary

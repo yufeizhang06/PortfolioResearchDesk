@@ -6,6 +6,14 @@ review. Uncommitted/stopping statements below describe earlier rounds.
 Current Git, exact-SHA CI and public-readiness results: [PUBLICATION_REVIEW](PUBLICATION_REVIEW.md).
 Repository visibility and a formal Release remain outside this authorization.
 
+Functional closeout: commit `88f1104616c489c8896626d10d765100fefd5aea` safely
+fast-forwarded to main and normally pushed to the existing Private repository.
+Actual [CI 41175396204](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41175396204)
+passed Windows 742 tests and Ubuntu 741 tests / 1 Windows-specific skip, plus all
+build/installation/GUI checks at that exact SHA. All 34 new CI log entries scanned
+without secret findings. Full-history/data-rights/installation review and remaining
+limits are in PUBLICATION_REVIEW; documentation-head CI is verified separately.
+
 2026-10-29: the author accepted the CAD Paper report visual design and authorized
 Task 1 (unified Factor/ML/Backtesting reporting) and Task 2 (GUI planning only).
 Task 1 implemented and locally verified; Task 2 design delivered for user review.

@@ -1,0 +1,323 @@
+{
+  "run_id": 41175396204,
+  "sha": "88f1104616c489c8896626d10d765100fefd5aea",
+  "branch": "main",
+  "event": "workflow_dispatch",
+  "conclusion": "success",
+  "url": "https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41175396204",
+  "jobs": [
+    {
+      "name": "offline (ubuntu-latest)",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install the selected uv version",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install locked project and developer tools",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify lock",
+          "conclusion": "success"
+        },
+        {
+          "name": "Lint and formatting",
+          "conclusion": "success"
+        },
+        {
+          "name": "Offline tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "CLI and configuration",
+          "conclusion": "success"
+        },
+        {
+          "name": "Inspect installed dependency licenses",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build distributions with locked backend",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rebuild sdist and check installed wheel outside source tree",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "offline (windows-latest)",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install the selected uv version",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install locked project and developer tools",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify lock",
+          "conclusion": "success"
+        },
+        {
+          "name": "Lint and formatting",
+          "conclusion": "success"
+        },
+        {
+          "name": "Offline tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "CLI and configuration",
+          "conclusion": "success"
+        },
+        {
+          "name": "Inspect installed dependency licenses",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build distributions with locked backend",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rebuild sdist and check installed wheel outside source tree",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "log_entries": [
+    {
+      "name": "0_offline (windows-latest).txt",
+      "pytest": [
+        "742 passed in 137.81s (0:02:17)"
+      ],
+      "distribution_install_pass": true
+    },
+    {
+      "name": "offline (windows-latest)/system.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/1_Set up job.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/2_Run actions_checkout@v4.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/3_Run actions_setup-python@v5.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/4_Install the selected uv version.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/5_Install locked project and developer tools.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/6_Verify lock.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/7_Lint and formatting.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/8_Offline tests.txt",
+      "pytest": [
+        "742 passed in 137.81s (0:02:17)"
+      ],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/9_CLI and configuration.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/10_Inspect installed dependency licenses.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/11_Build distributions with locked backend.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/12_Rebuild sdist and check installed wheel outside source tree.txt",
+      "pytest": [],
+      "distribution_install_pass": true
+    },
+    {
+      "name": "offline (windows-latest)/23_Post Run actions_setup-python@v5.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/24_Post Run actions_checkout@v4.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (windows-latest)/25_Complete job.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "1_offline (ubuntu-latest).txt",
+      "pytest": [
+        "741 passed, 1 skipped in 108.41s (0:01:48)"
+      ],
+      "distribution_install_pass": true
+    },
+    {
+      "name": "offline (ubuntu-latest)/system.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/1_Set up job.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/2_Run actions_checkout@v4.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/3_Run actions_setup-python@v5.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/4_Install the selected uv version.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/5_Install locked project and developer tools.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/6_Verify lock.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/7_Lint and formatting.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/8_Offline tests.txt",
+      "pytest": [
+        "741 passed, 1 skipped in 108.41s (0:01:48)"
+      ],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/9_CLI and configuration.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/10_Inspect installed dependency licenses.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/11_Build distributions with locked backend.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/12_Rebuild sdist and check installed wheel outside source tree.txt",
+      "pytest": [],
+      "distribution_install_pass": true
+    },
+    {
+      "name": "offline (ubuntu-latest)/23_Post Run actions_setup-python@v5.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/24_Post Run actions_checkout@v4.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    },
+    {
+      "name": "offline (ubuntu-latest)/25_Complete job.txt",
+      "pytest": [],
+      "distribution_install_pass": false
+    }
+  ],
+  "secret_scan": "no findings"
+}

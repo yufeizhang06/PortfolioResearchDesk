@@ -2,6 +2,12 @@
 
 ## 当前范围
 
+- Phase 7 功能提交 `88f1104616c489c8896626d10d765100fefd5aea` 已安全快进 main 并普通 Private Push；
+  真实 CI `41175396204` 精确该 SHA，Windows 742 passed、Ubuntu 741 passed/1 平台专用 skip，
+  全部构建安装/GUI smoke 通过。公开准备审查见 `docs/PUBLICATION_REVIEW.md`。
+- 文档收尾须单独核实其准确 SHA 的真实 CI 与新增日志；完成后停止，等待用户亲自批准 Public。
+  不改变可见性、不 Force Push、不改写历史、不创建正式 Release。
+
 - 2026-10-31：用户确认首版 GUI 在 Windows 正常使用，批准本轮 Phase 7 成果保存、完整测试、
   正式 Commit、安全合并 main、普通 Push 到现有 Private 仓库及准确 SHA 的真实 CI 检查。
 - 本轮还须审查所有可访问分支/标签的完整历史、Actions 日志和候选内容，完善英文 Early Beta

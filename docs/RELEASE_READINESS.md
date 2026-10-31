@@ -6,6 +6,10 @@ Version **0.7.0**, Early Beta / Work in Progress. The author confirmed that the 
 Windows GUI starts and operates, and authorized private synchronization plus a
 full-history public-readiness review. See [PUBLICATION_REVIEW](PUBLICATION_REVIEW.md)
 for current gate results, exact-SHA CI and the final publication recommendation.
+The reviewed functional commit `88f1104` passed both platforms in actual run
+[41175396204](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41175396204).
+The recommendation is **READY FOR PUBLICATION** for early-beta code/synthetic
+fixtures; documentation closeout is separately checked before handoff.
 No repository visibility change, package upload or formal v1.0 Release is authorized.
 GUI Home/Stock Explorer/Factor forms are implemented; ML/backtest forms and Paper
 writes remain pending. Financial/PIT/OOS limitations are unchanged.

@@ -1,14 +1,17 @@
-# Phase 7 synchronization and publication readiness
+# Historical pre-publication review — 2026-10-31
 
 Review date: **2026-10-31 (America/Toronto)**. Version **0.7.0**, **Early Beta / Work
-in Progress**. The author confirmed first-GUI startup and operation on Windows.
-This round authorizes private synchronization, not public visibility or a Release.
+in Progress**. This is a historical review performed before public visibility;
+the repository is now Public. Inventory counts, local paths and installation/CI
+results below describe that review scope, not the current repository inventory.
+Current capabilities and release evidence: [README](../README.md) and
+[Release Readiness](RELEASE_READINESS.md).
 
-**READY FOR PUBLICATION — for an Early Beta source/synthetic-fixture repository.**
-The functional commit and exact-SHA dual-platform CI below passed. The containing
-documentation closeout is separately verified before handoff; its final SHA/CI
-receipt is provided in the handoff instead of self-embedding a commit's own hash.
-Repository visibility remains **PRIVATE**. No Release was created.
+The review recommended publication of an Early Beta source/synthetic-fixture
+repository. Windows GUI startup/operation was manually confirmed. Functional
+commit `88f1104` passed the dual-platform CI below; documentation commit
+`a1a6863` later passed its own [run 41176056821](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41176056821).
+The repository was Private during the recorded review. No formal Release was created.
 
 ## Scope and preservation
 
@@ -19,12 +22,12 @@ Repository visibility remains **PRIVATE**. No Release was created.
   binary diff. The older 18-file report preservation remains intact.
 - Candidate: unified reports, first GUI/services/tests, English README, synthetic
   screenshots, notices and launcher portability. Financial/model/backtest/risk/ledger
-  logic is unchanged. Preserve all history/branches, fast-forward main and normal
-  private push only. No force push, history rewrite, visibility change or Release.
+  logic was unchanged. Synchronization retained existing history/branches and used
+  a fast-forward and normal push; no history rewrite or Release was part of this review.
 
 ## Git and credential audit
 
-Origin **yufeizhang06/PortfolioResearchDesk / PRIVATE** was checked through the GitHub
+Origin **yufeizhang06/PortfolioResearchDesk** was verified as Private at review time through the GitHub
 API, then fetched normally with tags. At audit start: **6 remote branches, 9 local
 branches, 0 tags, 0 PRs, 13 reachable commits**. Local-only history branches are included.
 
@@ -44,8 +47,8 @@ paths** (including later changed/deleted versions), and a separate export of tra
 plus nonignored untracked candidate files. **No secret findings.** Staged/final-commit
 scans also passed before push; the working tree was not inferred from historical HEAD.
 After committing Phase 7, the full-history rescan covered **14 commits** with no
-findings; the reachable-object inventory recorded **306 unique blobs**. The final
-documentation closeout is scanned again at handoff. No suppression baseline was used.
+findings; the recorded reachable-object inventory listed **306 unique blobs**.
+No suppression baseline was used. These are retained historical receipt counts.
 
 Manual checks supplement scanner patterns with all historical filenames, commit
 identity, paths/emails, data provenance, images and distribution contents:
@@ -56,7 +59,7 @@ identity, paths/emails, data provenance, images and distribution contents:
 | `.env`, environments, caches, SQLite/private accounts, debug logs | No such tracked paths in any starting commit; local work/data/outputs stay ignored |
 | Personal email | Commit metadata uses GitHub `users.noreply.github.com`; no private email in source/history |
 | Author | Existing **Yufei Zhang** attribution stays in commit metadata and will be visible with history |
-| Absolute paths | Phase 0/4 evidence contains generic `C:/Users/Desktop/...` paths, without a personal username or credential; history is not rewritten |
+| Absolute paths | The reviewed Phase 0/4 versions contained generic Windows checkout/runtime paths, without a personal username or credential; those historical versions remain accessible |
 | Screenshots | Actual synthetic GUI; sidebar paths excluded by crop, results unedited |
 | Data | Self-authored synthetic observations/directory/factors; real-input configs contain no downloaded raw data |
 
@@ -73,7 +76,7 @@ Gitleaks scanned expanded logs and ZIPs: **no credential findings**. Supplementa
 path matches were all generic hosted `/home/runner/...` paths, manually classified.
 No private email/credentials found. Functional CI **41175396204** subsequently added
 **34 log entries**, all downloaded and scanned with no findings. Supplemental path
-matches were hosted-runner paths. The final closeout run is audited at handoff too.
+matches were hosted-runner paths. The separate documentation-closeout run is linked above.
 
 Starting API inventory: **0 artifacts, issues/PRs, issue comments, commit comments,
 releases, deployments or environments**. Nothing was deleted or made public.
@@ -134,7 +137,7 @@ offline first install with no cached dependencies.
 | Actual exact-SHA Ubuntu CI | **741 passed, 1 skipped**, 108.41s; all CLI/lock/Ruff/build/independent-install/GUI steps successful |
 | Actual exact-SHA Windows CI | **742 passed**, 137.81s; all CLI/lock/Ruff/build/independent-install/GUI steps successful |
 | Functional CI logs | All **34** entries scanned; no secret findings; receipt `reviews/phase7-publication/ci-functional.json` |
-| Branches, tags and visibility | 9 local / 7 remote branches preserved; no tags; repository still Private |
+| Branches, tags and visibility at review time | 9 local / 7 remote branches preserved; no tags; repository was Private |
 
 Actual workflow: [41175396204](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41175396204),
 `workflow_dispatch` on **main**, verified against the full SHA above. The Ubuntu
@@ -162,11 +165,12 @@ homepage, clean installation and exact functional SHA passed the recorded gates.
 This recommendation covers an **Early Beta / Work in Progress code repository**;
 it is not a formal v1.0 release or certification of a trading system.
 
-The owner must personally approve any visibility change, including disclosure of
-the existing author attribution and generic historical paths. No history rewrite,
-force push, visibility change, release, log deletion or paid resource was performed.
-The final documentation commit is checked at its own SHA before the handoff reports
-completion; the functional receipt above is not reused as proof for another SHA.
+This review did not rewrite history, delete logs or create a Release. Public
+availability preserves author attribution and earlier content in Git history.
+Credential scanning is narrower than editorial/privacy suitability: a clean scan
+does not establish that temporary collaboration text belongs in public guides.
+The listed CI receipts apply only to their exact SHAs, including the separately
+linked documentation revision; later changes require their own validation.
 
 Early-beta limits: local single-user app, partial Chinese GUI, pending screening/
 ML/backtest forms and Paper write wizards; no certified real PIT/OOS or arbitrary

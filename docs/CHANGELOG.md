@@ -1,5 +1,20 @@
 # Changelog
 
+Entries describe their dated development milestones. Current supported behavior
+is in the [README](../README.md#current-development-status); historical stage
+limits do not override later implementations.
+
+## Unreleased — Public documentation maintenance (2026-11-01)
+
+- Replace temporary session instructions with durable agent/contribution guidelines.
+- Remove private task prompts and personal workflow records while retaining
+  technical decisions, numerical evidence and AI-assisted review provenance.
+- Clarify public early-beta status, historical acceptance boundaries and current
+  GUI/backend coverage; make development installation include all four extras.
+- Generalize workstation paths and distinguish unshipped local QA artifacts from
+  repository links. Add a documentation index and public regression entry points.
+- Financial/model/backtest/Paper code, tests, dependencies and licenses are unchanged.
+
 ## Unreleased — Phase 7 early-beta publication preparation (2026-10-31)
 
 - Author-confirmed Windows GUI startup/operation; preserve the first Phase 7 scope.
@@ -10,8 +25,8 @@
 - Verify fresh Windows setup/start in a path containing spaces without developer
   tools in the checkout or API keys; add Python-launcher fallback for uv and preserve
   meaningful launcher error codes.
-- Sync only to the existing private repository after checks; publication requires
-  another owner decision. No visibility change, history rewrite or formal Release.
+- Record pre-publication credential, packaging and installation evidence;
+  public source availability remains separate from a formal product Release.
 
 ## Unreleased — Phase 7 first local GUI (2026-10-29)
 
@@ -25,7 +40,7 @@
 - Expose only read-only Paper queries; the existing synthetic demo uses an isolated new account.
   ML/backtest forms and Paper write wizards remain outside this first iteration.
 - Add offline application/AppTest integration tests and installed-wheel GUI smoke checks.
-  No financial/model/accounting calculation changes, commit, push, main merge or Release.
+  Financial/model/accounting calculations remain unchanged.
 
 ## Unreleased — Phase 7 unified research reports (2026-10-29)
 
@@ -37,9 +52,9 @@
   selection, holdout boundaries, costs, failed/unavailable results and limitations.
 - Keep engine/account logic and raw financial exports unchanged. Add display-only
   regressions using actual engine results and inspect saved-run HTML/PDF previews.
-- Add the detailed six-page Streamlit/Application Service Layer proposal; GUI
-  implementation awaits confirmation. No new dependencies or version change.
-- Evidence: PHASE_7_REPORT. Local uncommitted work; no push, main change or release.
+- Record the six-page Streamlit/Application Service Layer design before the
+  first-GUI implementation above. Reporting-only work adds no runtime dependency.
+- Evidence: [PHASE_7_REPORT](PHASE_7_REPORT.md).
 
 ## Unreleased — CAD Paper report readability (2026-10-29)
 
@@ -53,8 +68,8 @@
   account payload, dependencies and version 0.7.0 remain unchanged. The new
   `report_generated_at` field is additive export metadata outside the account payload.
 - Original local acceptance evidence and previews: REPORTING_UX_ACCEPTANCE.
-  The later Phase 7 work above extends research reporting. No commit, push,
-  release or new remote CI run in these local reporting rounds.
+  The later Phase 7 work above extends research reporting; its CI evidence is
+  recorded separately from these original local visual checks.
 
 ## 0.7.0 — Phase 6 (2026-10-28, final development acceptance)
 
@@ -72,8 +87,7 @@
 - Use user-confirmed MIT for original code/fixtures; package third-party notices and provide
   an installed metadata inventory without claiming data redistribution clearance.
 - Extend Ubuntu/Windows CI configuration and both-wheel isolated installation
-  checks. The user authorized safe private synchronization; exact-SHA remote CI
-  and Git results are recorded in PHASE_6_REPORT. No visibility/release action.
+  checks. Exact-SHA remote CI and Git results are recorded in PHASE_6_REPORT.
 - Retain real PIT, survivorship, corporate-action/calendar and ML OOS limitations.
   Actual test counts, numerical checks and independent review: PHASE_6_REPORT.
 - Final local rerun: 689 tests; all 11 user-workflow items PASS in their synthetic
@@ -81,7 +95,7 @@
   brokers remain explicit. Functional e49d797 safely merged/main and normally
   pushed with the Phase 6 branch. Actual run 40793091056 passed Ubuntu/Windows
   (689 tests each), all quality/CLI/build/install gates; workflow_dispatch.
-- No formal v1.0.0 Release or public visibility; stop for author experience acceptance.
+- These development checks do not constitute a formal v1.0.0 Release.
 
 
 ## 0.6.0 — Phase 5（2026-10-28，已验收并同步Private）
@@ -96,9 +110,8 @@
 - CAD synthetic history复用同planner/模拟计算；ML审计记录适配器不读标签，真实历史PIT与描述性因子边界保留。
 - 独立初审发现的高固定费卖单、混源、同刻公司行为、估值时钟及输入异常问题均已修复并保留回归。
 - 完整测试、独立复核、构建与安装的最终实测结果见PHASE_5_REPORT；不挪用Phase4远端CI。
-- 版本和uv.lock由uv同步至0.6.0；既有第三方包版本不变，不进入Phase6或创建Release。
+- 版本和uv.lock由uv同步至0.6.0；既有第三方包版本不变。
 - 最终核实46生产源码/13独立证据一致；新增研究→Paper重估→新进程完整恢复联合回归，全量609 passed。
-- 用户已授权正式Commit/快进main/普通Private Push/真实Ubuntu与Windows CI；准确SHA及实测结果见PHASE_5_REPORT。
 - 功能提交8904e11已快进main并普通原子Push main/Phase5；真实CI40759391233精确该SHA双平台success。
 - Ubuntu3.12.15/Windows3.12.10各609测试、Ruff/CLI/构建/sdist重建/双wheel源码外安装通过；本次workflow_dispatch。
 
@@ -111,18 +124,17 @@
 - 可选信号入口复用旧回测引擎，与 Cash/Buy-Hold/Equal-weight/Momentum 公平合成净值及成本比较。
 - prd ml run / config validate --kind ml、不可覆盖 JSON/CSV/HTML、快照/账本/代码依赖指纹。
 - ml extra 与 uv.lock 正式解析，CI/双 wheel 源码外验证扩展；真实双平台CI在05d1900通过。
-- 合成 USD 实现验证；无真实 PIT/OOS 认证，不用 Phase 3 事后因子，不进入 Phase 5。
+- 合成 USD 实现验证；无真实 PIT/OOS 认证，不将 Phase 3 事后因子当作历史交易信号。
 - 开发期419 passed；最终补测后425 passed（保留原330，新增95），Ruff/锁/构建/sdist重建/双wheel干净安装通过。
 - 独立审查无可操作P1/P2/P3发现，144组合/3024 folds/906990训练行及五模型未来扰动验证通过。
 - 最终验收核实生产36文件与原审查SHA一致；补6项外层标签/Holdout特征与标签隔离测试，全量425 passed。
-- 用户授权正式Commit/快进合并/Private Push和双平台真实CI检查；实际Git/CI结果按验收报告后续实测记录。
 - 保留Holdout治理限制：程序冻结仅支持合成验证，不宣称真实研究未触碰测试集或校准上涨概率。
-- 正式功能提交05d1900已快进合并main、普通原子Push main/Phase4；仓库仍Private，历史分支保留。
+- 正式功能提交05d1900已快进合并main、普通原子Push main/Phase4；保留原始历史分支。
 - 真实CI40602662692（准确SHA05d1900）Ubuntu/Windows各425测试与全部安装检查通过，使用workflow_dispatch。
 
-## 0.4.0 — Phase 3（2026-10-27，已通过用户验收）
+## 0.4.0 — Phase 3（2026-10-27，已通过软件验收）
 
-- 独立审查 R1–R5 全部 PASS，用户正式验收；范围仅事后描述性因子研究，不代表 PIT/OOS 交易策略通过。
+- 独立审查 R1–R5 全部 PASS；范围仅事后描述性因子研究，不代表 PIT/OOS 交易策略通过。
 - 本阶段已正式 Commit、快进合并 main 并普通 Push 到原 Private 仓库；保留 Phase 2/3 分支和完整历史。
 - CI修复提交139d17f的真实Ubuntu/Windows CI均通过：各330测试、Ruff、CLI、构建、sdist重建与独立安装；
   运行40597881595为workflow_dispatch，不宣称已验证Push自动触发链路。
@@ -144,12 +156,12 @@
 - prd research run、Phase 3 配置、JSON/CSV/HTML/SVG/PNG、输入和代码/依赖指纹。
 - 正交已知答案与误差公式测试、未来扰动、错位/缺失/奇异/零残差/依赖及导出异常测试。
 - yfinance 元数据兼容 Mapping，保留身份验证并避免触发无关的惰性请求。
-- factors 可选依赖由 uv 锁定，扩展 CI/源码外独立安装验证；未执行 Phase 3 远端 CI。
-- 保留 Phase 0–2；不加入 ML、真实回测、FX、持久账户，不自动 Commit 或 Push。
+- factors 可选依赖由 uv 锁定，扩展 CI/源码外独立安装验证；最终远端结果见上述准确 SHA 记录。
+- 保留 Phase 0–2；该阶段不加入 ML、真实回测、FX 或持久账户。
 
 ## 0.3.0 — Phase 2（2026-10-27）
 
-- 用户验收后完成英文 GitHub README、首次 Private 上传；保留 main 与 Phase 2 分支及原始历史。
+- 完成英文 GitHub README 和首次 GitHub 同步；保留 main 与 Phase 2 分支及原始历史。
 - 修复全新 checkout 下 pytest 固定临时父目录缺失；没有修改业务逻辑或删减测试。
 - Ubuntu/Windows 真实 GitHub Actions 均 208 passed，Lint、CLI、构建与独立安装通过。
 - Yahoo/yfinance 日线与 native CSV/Parquet Adapter；来源、时间、复权、公司行为字段显式保留。
@@ -170,12 +182,12 @@
 - 不可覆盖的运行目录、输入/版本指纹、JSON/CSV/HTML 及现金基准。
 - 手算回归、未来扰动、缺失/异常时序、执行和报告异常测试。
 - 保留 Phase 0 CLI；扩展 CI 和 sdist/wheel 独立安装验证。
-- 真实数据依然未接入；用户确认后在 Phase 2 开始，远程 CI 状态单独记录。
+- 此阶段尚未接入真实数据；后续 Phase 2 扩展数据层，远程 CI 状态单独记录。
 
 ## 0.1.0 — Phase 0（2026-10-27）
 
-- 原样收录用户提供的项目计划书；SHA-256 与下载版相同，未修改未来阶段清单。
+- 收录原始项目规划稿；当时副本 SHA-256 与原件一致，路线图任务框保留规划状态。
 - 添加 src 可安装包、CLI 帮助、版本、严格 TOML 配置和内置合成数据摘要。
 - 添加 uv 锁定环境、pytest、Ruff、离线构建和独立安装验证、GitHub Actions。
 - 添加 README、AGENTS.md、架构决策及真实验收记录。
-- 未实现 Phase 1–6，下一阶段须用户确认。
+- 此初始阶段只交付仓库/配置/CLI 基础，后续功能按阶段扩展。

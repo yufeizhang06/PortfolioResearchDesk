@@ -114,9 +114,9 @@ Market + Custom additions + Screening 均支持。没有随机抽样或静默截
 2026-10-27 已实际访问 Yahoo 和 Nasdaq 目录，验证 AAPL/MSFT 下载、三项缓存全命中、
 真实 native CSV/Parquet 无损回放。测试使用固定本地数据及注入 transport，socket 被禁止，
 不依赖 API Key、动态日期或外部服务；其中模拟响应只验证错误路径，不当成真实数据验证。
-后续 Phase 2 的 GitHub Actions 已在 Ubuntu/Windows 实测通过；macOS、完整市场批量、
-历史指数和退市覆盖仍未实测。Phase 3 远端 CI 尚未执行。
-完整命令及结果见 `PHASE_2_REPORT.md`。
+macOS、完整市场批量、历史指数和退市覆盖仍未实测。软件的跨平台验证应按准确 SHA
+读取[验收与 CI 记录](RELEASE_READINESS.md#recorded-software-evidence)，不由数据政策维护
+易过时的执行进度。原始适配器探测命令与结果见 [PHASE_2_REPORT](PHASE_2_REPORT.md)。
 
 ## Phase 3 增量
 

@@ -1,7 +1,10 @@
 # CAD Paper reporting usability repair (2026-10-29)
 
-Status: implemented and locally verified; awaiting the author's visual acceptance.
-Local branch: `codex/paper-report-readability`. No commit, push, release or remote CI run.
+**Historical local acceptance — 2026-10-29.** The static Paper report repair
+was implemented and locally verified on `codex/paper-report-readability`. Later
+shared-report/GUI implementation and exact-SHA CI are recorded in
+[PHASE_7_REPORT](PHASE_7_REPORT.md) and [Release Readiness](RELEASE_READINESS.md).
+This record preserves the original numerical/visual checks, not current task status.
 
 ## Review and scope
 
@@ -112,8 +115,7 @@ latest ledger state does not mean current market quotes or certified historical 
   A4/portrait/100%/background graphics are verified in local Chrome 156. Browser
   font or print settings may change pagination. Longer accounts are not capped
   at two pages or silently truncated.
-- Factor, ML and Backtesting layout migration is deferred; this is a static
-  report dashboard, not a live portfolio application. Real PIT/OOS, tax and
-  corporate-action limitations remain. No new remote-platform claim is made.
-
-Stop here for the author's HTML/PDF experience acceptance.
+- At this original Paper-only checkpoint, Factor/ML/Backtesting migration and
+  the live GUI were still future work. Their subsequent implementation is described
+  in [PHASE_7_REPORT](PHASE_7_REPORT.md). Real PIT/OOS, tax and corporate-action
+  limitations remain; this local visual evidence is not remote CI certification.

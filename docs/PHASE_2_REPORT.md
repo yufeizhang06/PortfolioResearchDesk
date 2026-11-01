@@ -1,9 +1,9 @@
 # Phase 2 本地验收报告
 
 日期：2026-10-27（America/Toronto）。版本 0.3.0，分支 `phase-2-data-universe`。
-**本地结论：Phase 2 功能验收通过，不进入 Phase 3。**
+**历史结论：Phase 2 功能验收通过。** 当前功能与后续阶段见[文档索引](README.md)。
 
-> 后续状态：用户已确认验收，并授权首次 GitHub Private 上传。修复新 checkout 测试目录问题后，
+> 后续验收结果：修复新 checkout 测试目录问题后，
 > Ubuntu/Windows 远程 CI 均实际通过（各 208 tests，含构建和独立安装）。
 > [运行记录](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40544579916)
 > 与失败/修复过程详见 DEVELOPMENT_LOG。以下本地验收命令及实测结果保留原记录。
@@ -132,8 +132,8 @@ uv run --locked --offline prd universe build --config configs/example_market_res
 5. Parquet/CSV 支持本项目 native schema；任意外部 CSV 无可靠元数据时不推断。
    目录含非普通股，行业/市值缺少可得时间，因此未添加此类筛选。
 6. 本地验收时远程 CI 未验证；后续 GitHub 托管 Ubuntu/Windows 已真实通过，macOS 仍未实机验证。
-7. 用户后来授权并完成 Phase 2 Commit 和 Private 上传，保留原始历史；没有真实交易，阶段只到 Phase 2。
+7. 后续完成 Phase 2 提交与同步，保留原始历史；该阶段不包含真实交易。
 
-后续建议为计划书 Phase 3：French 因子输入、单位与频率检查、FF3/FF4 诊断、OLS/rolling beta
-及构造已知答案测试；需用户确认后才开始。当前真实数据不满足历史特征可得性时继续限制为诊断研究。
-建议本阶段本地提交消息：`feat: add market data adapters, cache and universe screening`。
+当时的后续设计为 French 因子输入、单位与频率检查、FF3/FF4 诊断及构造已知答案测试；
+后续实现见 [PHASE_3_REPORT](PHASE_3_REPORT.md)。真实数据不满足历史特征可得性时，
+研究结论仍须限制为描述性诊断。

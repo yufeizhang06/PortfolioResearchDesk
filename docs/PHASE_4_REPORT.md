@@ -1,15 +1,18 @@
 # Phase 4 验收报告 — Machine Learning & Walk-Forward Validation
 
+> 历史验收记录：下文仅描述该阶段列明版本的检查与限制；当前功能见
+> [README](../README.md#current-development-status)，后续证据见[文档索引](README.md)。
+
 日期：2026-10-27（America/Toronto）。开发版 0.5.0。
 分支：`codex/phase-4-ml-walk-forward`；稳定基线 `65f1bca6ac0459c77de598957779db2ddcd7780b`。
-**Phase 4 最终本地技术验收通过，仅限合成 USD 软件验证。用户已授权正式 Commit、安全合并 main、Private Push 和真实 CI 检查；实际 Git/CI 状态见末节。不进入 Phase 5。**
+**历史验收结论：Phase 4 技术验收通过，仅限合成 USD 软件验证。准确 SHA 的 Git/CI 结果见末节；当前功能见[文档索引](README.md)。**
 
 下文 418/419 测试、待验收和未提交状态保留开发历史；本轮最终结果为425测试，见末节。
 
 ## 开始前的独立核查
 
 - 已读取 AGENTS、完整 PROJECT_PLAN、README、DEVELOPMENT_LOG、Phase 3 验收和相关实际源码/测试。
-- 当前路径 `C:/Users/Desktop/Desktop/PortfolioResearchDesk`，是原仓库唯一登记工作树，不是独立审查 Worktree。
+- 验收在原仓库 checkout 中执行；独立审查材料与该 checkout 的文件指纹另行核对。
 - 开始时工作区干净；实际 fetch 后本地 main、origin/main 均为 65f1bca；从该提交创建独立开发分支。
 - 实际 GitHub 查询确认 `yufeizhang06/PortfolioResearchDesk` 为 Private、默认 main。
 - 实际读取 Phase 3 Actions 40597881595：准确 SHA 139d17f、Ubuntu/Windows 均 success。
@@ -19,7 +22,7 @@
 
 ## 范围与验收映射
 
-| 计划/用户要求 | 已实现与验证 |
+| 技术要求 | 已实现与验证 |
 |---|---|
 | FR-05 可追溯 FeatureRow / LabelRow | 时间区间、可得/已知、固定来源/schema、next-open 收益标签、未知尾部排除 |
 | 少量时间序列特征 | 5/20/60 收益、20/60 波动、20 日 log 流动性、固定合成市场相对收益；独立 Fraction 手算 |
@@ -130,14 +133,14 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase4 --uv
 ## 与计划书差异、风险及后续依赖
 
 - 市场代理是固定三合成资产收益均值，不是可投资市场指数；少量特征而非盲目扩因子。
-- 不新增真实行情回测：数据证据不足时按用户要求用合成验证，并在 CLI/HTML/JSON 显著声明。
+- 不新增真实行情回测：数据证据不足时采用合成软件验证，并在 CLI/HTML/JSON 显著声明。
 - 未实施概率校准、置信区间、真实公司行为/日历、CAD/FX、行业约束、Paper 持久化或 UI。
-  这些不能由本阶段测试证明；不进入 Phase 5。
+  这些不能由本阶段测试证明，后续阶段需独立证据。
 - 公开数据/时间契约不能检测把全部时间与未来值一起伪造成自洽输入；仍需来源证据与审查。
 - final plan hash 是审计，不是研究者事先登记证明；反复真实 Holdout 试验会失去独立性。
 - GitHub Actions 已更新 Ubuntu/Windows 的 ml 安装/测试/CLI/发行检查；本轮没有 Commit/Push，
   因此 **Phase 4 远端 CI 尚未运行，macOS 未实机验证**。
-- main/历史/Phase 2/3 分支保持，所有本阶段更改未提交；独立审查结果见末节，等待用户批准。
+- 该本地检查点先于提交与远端 CI；最终独立审查和同步结果见末节。
 
 ## 独立 Code Review 与最终验证
 
@@ -161,10 +164,10 @@ hardlink回退复制、子环境VIRTUAL_ENV提示及源码内缓存提醒保留�
 该轮直接/重建wheel源码外Phase0–4干净安装也已实际通过，日志 `work/phase4-final-distribution.log`。
 最终源码/包清单审计为 `work/phase4-final-audit.json`；未发现work/outputs/venv混入发行物。
 
-当前状态：**Phase4本地实现与独立技术审查完成，等待用户验收**。main与历史阶段分支保持稳定，
-未暂存/Commit/Push/创建Release，不进入Phase5；远端Phase4 CI须未来授权上传后实测。
+该历史检查点完成了 Phase 4 本地实现与独立技术审查；之后的提交和准确 SHA
+远端 CI 结果单独记录于下文，不由本地结果推断。
 
-## 最终验收收尾 — 用户授权的审查证据核实
+## 最终验收 — 审查证据核实
 
 本轮已核对原审查报告、probe_review.py、results.json 及当前源码。36 个生产 Python 文件
 SHA-256 与原审查记录逐项一致，没有生产算法变化；不重新进行整轮独立审查，也不改原审查材料。
@@ -207,19 +210,20 @@ SHA-256 与原审查记录逐项一致，没有生产算法变化；不重新进
   distribution.log末尾明确PASS，未依赖源码editable安装掩盖遗漏；本轮未改发行检查或CI业务逻辑。
 - README所列研究/因子/ML配置、帮助、默认合成因子与显式ML配置CLI均成功；输出只留本地。
 - audit.json确认原计划/原330测试/36生产文件保持、26候选文件敏感模式未检出、发行包源码一致且无本地数据/缓存。
-- 本轮待提交Commit消息：feat: add leak-safe ML and walk-forward validation。
-  按授权保留历史快进合并main并普通原子Push main/Phase4分支；执行结果与真实CI后续补记，不预先声称远端通过。
+- 后续功能提交消息：feat: add leak-safe ML and walk-forward validation。
+  后续实际提交、同步及真实 CI 见下文；保留原始历史。
 - 全部本轮命令证据在work/phase4-closeout/；未产生任何真实交易、付费资源或正式Release。
 
 后续Phase5仅为计划：组合风险/行业集中度、历史USD/CAD与换汇成本、CAD账本、Paper状态持久化、
-幂等模拟订单与重启重放；须另行授权，本轮不开始。真实PIT/历史成员/退市/公司行为和日历缺口仍保留。
+幂等模拟订单与重启重放；后续实现见 [PHASE_5_REPORT](PHASE_5_REPORT.md)。
+真实 PIT/历史成员/退市/公司行为和日历缺口仍保留。
 
 ### 正式提交与 Private 同步
 
 - 功能提交：`05d190070ddd695c5fa1f72f316a601609c63db5`，
   `feat: add leak-safe ML and walk-forward validation`。
 - 26文件的正式提交已从Phase4分支快进合并到main；两个分支普通原子Push成功，远端指针均为该SHA。
-- 实际核对仓库仍Private、默认main；Phase3仍65f1bca、Phase2仍ba26bea，完整历史保留，无Force Push/Release。
+- 该次同步时仓库为 Private、默认分支为 main；Phase 3 为 65f1bca、Phase 2 为 ba26bea，完整历史保留。
 - Push后两次未观察到自动运行，使用已有workflow_dispatch实测；
   [Phase4 CI 40602662692](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40602662692)
   的准确headSha为05d1900、conclusion=success；不混称为Push自动触发验证。
@@ -252,4 +256,4 @@ SHA-256 与原审查记录逐项一致，没有生产算法变化；不重新进
 
 本节记录的是功能提交05d1900的实际CI。后续仅文档提交不改生产/测试/依赖；
 仍须独立核对该最新SHA的Actions，不将本节结果冒充任意后续提交结果。
-最终收尾会确认main/Phase4与远端一致、工作区干净，保留Phase2/3历史、不Force Push、不发布Release。
+最终同步保留 Phase 2/3/4 的分支与原始历史；提交和实际 CI 证据如上。

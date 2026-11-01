@@ -1,34 +1,32 @@
 # Phase 7 — User Experience & GUI Integration
 
-**2026-10-31 update:** the author confirmed Windows GUI startup/operation and
-authorized normal commit/main integration/private push and publication-readiness
-review. Uncommitted/stopping statements below describe earlier rounds.
-Current Git, exact-SHA CI and public-readiness results: [PUBLICATION_REVIEW](PUBLICATION_REVIEW.md).
-Repository visibility and a formal Release remain outside this authorization.
+**Historical acceptance record: 2026-10-29 to 2026-10-31.** Windows GUI
+startup/operation was manually confirmed. The repository is now Public; this
+record separates the original reporting checks, first GUI checks and later CI.
+Current capabilities: [GUI Guide](GUI_GUIDE.md) and [README](../README.md).
+Exact-SHA CI and current release position: [Release Readiness](RELEASE_READINESS.md).
 
 Functional closeout: commit `88f1104616c489c8896626d10d765100fefd5aea` safely
-fast-forwarded to main and normally pushed to the existing Private repository.
+fast-forwarded to main and normally pushed; the repository was Private at that time.
 Actual [CI 41175396204](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/41175396204)
 passed Windows 742 tests and Ubuntu 741 tests / 1 Windows-specific skip, plus all
 build/installation/GUI checks at that exact SHA. All 34 new CI log entries scanned
 without secret findings. Full-history/data-rights/installation review and remaining
 limits are in PUBLICATION_REVIEW; documentation-head CI is verified separately.
 
-2026-10-29: the author accepted the CAD Paper report visual design and authorized
-Task 1 (unified Factor/ML/Backtesting reporting) and Task 2 (GUI planning only).
-Task 1 implemented and locally verified; Task 2 design delivered for user review.
-This paragraph records the earlier planning round. The later GUI implementation
-authorization and acceptance are recorded below; no commit, push, main merge or release.
+On 2026-10-29 the reporting work unified Factor/ML/Backtesting presentation and
+produced the GUI design. Those local checks preceded the first GUI implementation
+and the later functional commit/CI recorded above.
 
-## Starting state and preservation
+## Reporting baseline and preservation — 2026-10-29
 
-HEAD and local main are Phase 6 closeout `30049898b042b85acb29b5d7cda1c48545fb3016`.
-Work continues on `codex/paper-report-readability`, preserving the seven accepted,
+The reporting baseline was Phase 6 closeout `30049898b042b85acb29b5d7cda1c48545fb3016`.
+Work used `codex/paper-report-readability`, preserving the seven existing,
 uncommitted CAD report files. Before refactoring, file copies, a binary diff and
 SHA-256 inventory were saved under ignored `work/phase7-preservation/`. The backup
 contains eight files: the seven accepted files plus this newly started phase record.
 No reset/stash/branch switch was performed. Remote heads/CI are not inferred from
-local tracking refs. HEAD and main remain unchanged at the SHA above.
+local tracking refs. The reporting-only checks preceded the later Phase 7 commit.
 
 ## Implementation plan
 
@@ -144,35 +142,26 @@ browser printing can disable its default URL/date headers.
 
 ## Review artifacts
 
-- [Open report review index](../outputs/phase7-review/delivery/html/index.html)
-- [Factor HTML](../outputs/phase7-review/delivery/html/factor/report.html) ·
-  [A4 PDF, 3 pages](../outputs/phase7-review/delivery/pdf/factor.pdf)
-- [ML HTML](../outputs/phase7-review/delivery/html/ml/report.html) ·
-  [A4 PDF, 5 pages](../outputs/phase7-review/delivery/pdf/ml.pdf)
-- [Backtesting HTML](../outputs/phase7-review/delivery/html/backtest/report.html) ·
-  [A4 PDF, 3 pages](../outputs/phase7-review/delivery/pdf/backtest.pdf)
-- [GUI architecture and workflows](PHASE_7_GUI_PLAN.md)
+The original generated review bundles remained in ignored local output paths:
 
-Review assets and source preservation copies are local/ignored, not packaged or
-committed. New ordinary CLI/workflow runs use the integrated presentation; the
-saved-run preview was produced by the local acceptance helper:
+| Local artifact | Recorded visual check |
+|---|---|
+| `outputs/phase7-review/delivery/html/` | Paper/Factor/ML/Backtesting HTML and the local review index |
+| `outputs/phase7-review/delivery/pdf/factor.pdf` | A4, 3 pages |
+| `outputs/phase7-review/delivery/pdf/ml.pdf` | A4, 5 pages |
+| `outputs/phase7-review/delivery/pdf/backtest.pdf` | A4, 3 pages |
 
-```text
-.venv/Scripts/python.exe work/phase7_render_saved.py outputs/phase7-review/delivery/html
-node work/phase7_print.cjs outputs/phase7-review/delivery/html outputs/phase7-review/delivery/pdf
-```
+These generated assets and the original local rendering/printing helpers are not
+shipped. Reproduce current report output using the packaged synthetic workflow in
+the [README](../README.md#complete-synthetic-demo-without-an-api-key), then open or
+print the generated HTML. Browser printing is a QA/export option, not a production
+Python dependency. The [GUI design](PHASE_7_GUI_PLAN.md) remains available in source.
 
-The first command exclusively reserves a new review directory. Use a new path to
-repeat it. The Node helper uses the available local Chrome/Playwright only for QA;
-production report export has no PDF/browser dependency.
+## Reporting-check limitations — 2026-10-29
 
-## Limitations and stopping point
-
-These checks are local Windows evidence, not new GitHub Actions or Ubuntu CI.
-No remote operation was performed. The current branch remains
-`codex/paper-report-readability`; no commit, push, main modification or release.
-Original Phase 6 historical CI records remain in PHASE_6_REPORT and are not
-reused as evidence for uncommitted Phase 7 changes.
+These original checks were local Windows evidence. Later Phase 7 Ubuntu/Windows
+CI is recorded at the top of this report and in [Release Readiness](RELEASE_READINESS.md).
+Original Phase 6 CI is not reused as evidence for a different revision.
 
 Factor is ex-post; synthetic ML/backtesting do not certify real-market PIT/OOS or
 profitability. Source availability is recorded metadata, not independent historic
@@ -180,15 +169,15 @@ publication proof. The current USD engine supplies no annualized return/volatili
 Sharpe estimate, and its baseline is cash. Reports display those limits clearly.
 PDF page counts describe these fixtures; longer histories paginate naturally.
 
-Stop here for user report acceptance and confirmation of the GUI implementation
-scope. The proposed service layer and GUI pages have not been implemented.
+The subsequent implementation below added the proposed service layer and the
+first GUI journey; broader planned forms remain outside that first scope.
 
-## First GUI implementation — authorized 2026-10-29
+## First GUI implementation — 2026-10-29
 
-The author approved the existing GUI plan and requested the first runnable Home →
-Stock Explorer → Research journey, then a stop for hands-on acceptance. The design
-language is unchanged. Development moved to `codex/phase-7-gui`; HEAD and main stay
-`30049898b042b85acb29b5d7cda1c48545fb3016`. No commit/push/merge/release or remote CI.
+The first runnable Home → Stock Explorer → Research journey followed the existing
+GUI design and shared report language. Development used `codex/phase-7-gui` from
+`30049898b042b85acb29b5d7cda1c48545fb3016`; local implementation checks preceded
+the functional commit and exact-SHA CI listed at the top.
 
 ### Preservation and implemented scope
 
@@ -293,16 +282,13 @@ report/PDF acceptance remains above; the GUI's read-only preview has no active
 relative audit links, while the downloaded HTML bundle retains working local links
 and its original A4 print styles. No production browser/PDF dependency was added.
 
-### Limits and hand-off
+### First-GUI limits
 
 Only the first journey is complete. Screening UI, ML/backtest forms, Paper writes,
 background/cancel jobs, automatic refresh and a general index of pre-existing CLI
 reports are deferred. Real-data live requests were not made in this acceptance;
 native-real/monthly contracts rely on existing backend validation and tests.
 Local-only app has no multi-user/authentication or cloud deployment scope.
-No new Ubuntu/GitHub Actions claim; CI configuration includes GUI tests for a later
-authorized push. The project remains uncommitted on the local GUI branch.
-
-Use `Start GUI.cmd`, or open the running [local GUI](http://127.0.0.1:8501).
-See [GUI_GUIDE](GUI_GUIDE.md). Stop after this first version and wait for the author's
-hands-on experience; no next-stage development is started.
+The local checks above and the later dual-platform CI are separate evidence.
+Current startup instructions are in [GUI_GUIDE](GUI_GUIDE.md); use `Start GUI.cmd`
+and open the loopback URL only while the local application is running.

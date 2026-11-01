@@ -1,23 +1,22 @@
 # Phase 6 Acceptance Report — Product Integration & Delivery
 
 Date: 2026-10-28. Version: **0.7.0 development version**.
-Status: **PASS — final software acceptance and private synchronization completed**.
-Functional commit passed actual Ubuntu/Windows CI; documentation closeout follows
-the same exact-SHA checks. User experience acceptance remains reserved for the
-author. No formal v1.0.0 Release or public visibility is authorized.
+Historical status: **PASS — final software acceptance and synchronization completed**.
+This record describes Phase 6 at its listed revisions. The repository is now
+Public; the current optional GUI and release position are in the
+[README](../README.md) and [Release Readiness](RELEASE_READINESS.md).
+Functional and documentation revisions have separate exact-SHA CI evidence.
 
-## Scope, baseline and authorization
+## Historical scope and baseline
 
 - Read AGENTS, the full original PROJECT_PLAN, DEVELOPMENT_LOG, README, Phase 5
   acceptance evidence, actual source/interfaces, environment and Git status first.
 - Stable main / origin/main / branch HEAD before final synchronization:
   `2f6b18c6218b8ac9b529c5bc7f69ee875fc252c5` (accepted v0.6.0).
 - New development branch: `codex/phase-6-product-integration`, created from stable main.
-  Initial working tree was clean. Development was delivered uncommitted; the user
-  subsequently authorized final acceptance, commit and private synchronization.
-- Private repository remains `yufeizhang06/PortfolioResearchDesk`. Normal commits,
-  safe main integration and normal push are now authorized after acceptance;
-  force push, visibility change, formal Release and broker actions are excluded.
+  The initial working tree was clean. Local development checks preceded final
+  acceptance, commit and synchronization. The repository was Private at that date;
+  no broker integration or formal Release was part of Phase 6.
 - Original PROJECT_PLAN SHA-256 remains
   `1f208c70b41aeaecfac45f1e38bcd2d3ff674f6eb1868352b45fd9eb40f752bb`.
 - Baseline tests before development: **609 passed in 33.26s**. Existing tests and
@@ -170,11 +169,11 @@ inspection verified the allowlist excludes it. Isolated sync warned about an
 inherited VIRTUAL_ENV; the explicit target environment and wheel origin assertions
 proved installation stayed isolated, with no editable-source substitution.
 
-## Final acceptance and private synchronization — 2026-10-28
+## Final acceptance and synchronization — 2026-10-28
 
-The user explicitly approved this acceptance, commit, safe main integration,
-normal private push and exact-SHA Ubuntu/Windows CI verification. No blocker was
-found in preflight: all reviewed production/test/config/build files match the
+Final acceptance included source reconciliation, normal main integration and
+exact-SHA Ubuntu/Windows CI verification. No blocker was found in preflight:
+all reviewed production/test/config/build files matched the
 independent snapshot. The three post-review MIT wording changes were recorded;
 this closeout changes documentation only. No old test or financial algorithm is
 modified. The independent report is preserved verbatim, with this later acceptance
@@ -267,28 +266,26 @@ and remains a future Actions maintenance item.
 The run used **workflow_dispatch**: no push-triggered run was observed at the
 post-push check. The configured push trigger is not claimed as verified. Phase 5
 CI is not reused as Phase 6 evidence. This documentation-only closeout preserves
-runtime/test/config/lock contents; its final SHA appears in `git log -1` and must
-also pass its own Ubuntu/Windows run before delivery. The final delivery message
-records that exact latest SHA and run, avoiding a self-referential commit hash in
-this file. [Main Actions history](https://github.com/yufeizhang06/PortfolioResearchDesk/actions?query=branch%3Amain)
-exposes the later documentation revision's result.
+runtime/test/config/lock contents. Documentation revision
+`30049898b042b85acb29b5d7cda1c48545fb3016` passed its own
+[run 40793964115](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40793964115).
+That result applies to the historical closeout SHA, not later documentation edits.
 
-The closeout checks local main, origin/main, retained Phase 6 branch and advertised
-remote heads all agree, and checks a clean working tree. Visibility stays PRIVATE,
-default branch main; no force push, public change, formal Release or real order
-is performed. Work stops for the author's hands-on user experience acceptance.
+The closeout reconciled local/remote main and the retained Phase 6 branch, with
+a clean working tree. The repository was Private at that checkpoint. That
+synchronization did not create a formal Release or any real order.
 
 ### Distance to formal v1.0.0
 
-The author still needs to test installation, editable configuration, errors,
-review interactions, report navigation and continuing account use personally.
+Product acceptance also requires installation, editable-configuration, error,
+review-interaction, report-navigation and continuing-account usability checks.
 Reconcile the original Definition of Done with real-data/PIT/calendar/action and
 automatic-universe limitations: validate necessary capabilities or retain an
 explicit supported release scope. Review greedy sizing/cash utilization,
 backup/recovery and migration policy, then check release contents and third-party
 redistribution notices. macOS and automatic push triggering remain unverified;
-Streamlit is optional and deferred. Public visibility and any formal v1.0.0
-Release require separate explicit authorization. See
+Streamlit was deferred in Phase 6 and added in Phase 7; a formal v1.0.0 Release
+is separate from public source availability. See
 [release readiness](RELEASE_READINESS.md).
 
 ## Known limitations and readiness
@@ -321,5 +318,5 @@ Release require separate explicit authorization. See
 
 Conclusion: the Phase 6 **software acceptance gate** is met within the above
 scope. The product can be installed, exercised offline and operated through
-reviewed Paper commands without changing source. This authorized private sync does
-not create a formal release; the author must next perform user experience acceptance.
+reviewed Paper commands without changing source. These software checks do not
+create a formal release or certify real-market strategy performance.

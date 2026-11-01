@@ -1,11 +1,14 @@
 # Phase 3 验收报告 — Factor Research & Diagnostics
 
+> 历史验收记录：下文仅描述该阶段列明版本的检查与限制；当前功能见
+> [README](../README.md#current-development-status)，后续证据见[文档索引](README.md)。
+
 日期：2026-10-27（America/Toronto）。版本：0.4.0。
 分支：`codex/phase-3-factor-diagnostics`，基线 `ba26bea`。
-**用户已正式批准 Phase 3 验收；R1–R5 全部 PASS。验收范围仅事后描述性因子研究，不是 PIT/OOS 交易策略认证。**
+**历史验收结论：R1–R5 全部 PASS。范围仅事后描述性因子研究，不是 PIT/OOS 交易策略认证。**
 
 下方 270/298/330 测试、历史待验收状态及初次下载记录保留审查过程；当前验收与 Git/CI 收尾状态见末节。
-本轮获授权 Commit、合并 main、普通 Push 及 CI 验证；尚未进入 Phase 4。
+后续阶段与当前功能见[文档索引](README.md)，不由本阶段的局部状态推断。
 
 ## 已实现与要求映射
 
@@ -128,10 +131,10 @@ uv run --locked --offline prd research run --config configs/example_factors_real
    `1f208c70b41aeaecfac45f1e38bcd2d3ff674f6eb1868352b45fd9eb40f752bb`。
 8. main 和既有阶段分支指针保留；此阶段变更留在独立分支工作区，未暂存、Commit 或 Push。
 
-后续 Phase 4 须用户另行授权。其前置条件包括 FeatureRow/LabelRow 的观测/可得/已知时间，
+后续 ML 的前置条件包括 FeatureRow/LabelRow 的观测/可得/已知时间，
 按全局日期划分、purge 和折内预处理；本阶段的因子诊断不能自动充当这些证明。
 
-## 独立审查整改 — 等待第二次独立审查
+## 独立审查整改 — 第二次审查前的检查点
 
 ### 审查材料与范围
 
@@ -220,10 +223,10 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase3-reme
 - 日频不猜测缺失于双方数据中的交易日，权威日历仍未提供。本轮未新增市场日历适配器。
 - 历史发布版本、Adj Close 与 French CIZ 再投资口径、公司行为账本、退市/PIT 覆盖仍受原限制。
   HC3 不修正序列相关，无 HAC、聚类或多重检验校正。
-- Phase 3 正式验收继续暂缓，等待用户安排第二次独立审查；本地通过不等于远端 CI 通过。
+- 该轮本地整改后尚需第二次独立审查；其结果见后续小节。本地通过不等于远端 CI 通过。
   未 Commit、Push、触发远端 CI 或进入 Phase 4。
 
-## 第二次审查 R5 整改 — 等待专项独立复核
+## 第二次审查 R5 整改 — 专项复核前的检查点
 
 ### 原始证据、根因与范围
 
@@ -312,12 +315,12 @@ uv run --locked --offline --no-sync python -B scripts/verify_distribution.py wor
 French 修订版本、Adj Close 与 CIZ 再投资、公司行为、退市与身份覆盖、HC3 不修正序列相关等限制全部保留。
 
 版本仍为未验收的 0.4.0；开发分支 `codex/phase-3-factor-diagnostics`，main 保持原样。
-未 Commit、Push、触发远端 CI 或进入 Phase 4。**R5 本地整改完成，停止等待专项独立复核；不是自行通过正式验收。**
+**该检查点仅表示 R5 本地整改完成；后续专项独立复核和远端 CI 结果见下文。**
 
-## 最终独立复核与用户验收 — 2026-10-27
+## 最终独立复核与验收 — 2026-10-27
 
-用户正式批准 Phase 3 在**事后描述性因子研究**范围通过验收，并授权本阶段文档收尾、正式 Commit、
-合并 main、现有 Private 仓库普通 Push 和 Ubuntu/Windows CI 检查及必要修复。Phase 4 未获授权。
+Phase 3 在**事后描述性因子研究**范围通过验收，随后完成文档、提交与同步，
+并执行准确 SHA 的 Ubuntu/Windows CI。该结论不包括后续 ML 阶段。
 前文待审查及未提交状态均为历史记录，不代表本节之后的当前状态。
 
 | 类别 | 当前结论 |
@@ -368,7 +371,7 @@ sdist重建、两个wheel的干净安装及源码外Phase0–3检查，依然全
 - CI 安装修复 Commit：`139d17f2feb0ebce537399e3c0f145a123db79a6`，
   `fix: reuse locked wheel cache for isolated factor checks`。
 - 两者已通过保留完整历史的快进合并进入 main；main及Phase3分支已普通原子Push，原Phase2分支仍为ba26bea。
-- 仓库仍为Private，未Force Push、改可见性、创建Release或进入Phase4。
+- 该次同步时仓库为 Private；保留原始历史，未创建正式 Release。
 - 修复后的真实运行：[40597881595](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40597881595)，
   headRevision精确为139d17f，conclusion=success。
 
@@ -382,4 +385,5 @@ sdist重建、两个wheel的干净安装及源码外Phase0–3检查，依然全
 不把本节139d17f的结果冒充任意后续提交的结果。收尾结束时会再次核对最新提交CI和本地/远程main一致。
 
 验收后限制保持：本模块仅事后描述性因子归因，无PIT发布档案/可信OOS策略认证；未知事件/来源/时区证据明确降级，
-Adj Close/公司行为、权威日历、退市与身份覆盖等第三方数据限制仍未解决。Phase4须用户另行明确授权。
+Adj Close/公司行为、权威日历、退市与身份覆盖等第三方数据限制仍未解决；
+后续合成 ML 验收见 [PHASE_4_REPORT](PHASE_4_REPORT.md)。

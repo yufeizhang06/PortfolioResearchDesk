@@ -132,10 +132,16 @@ ledger. Back up closed files; do not edit tables to recover an account.
 
 ## Design decisions and extending safely
 
-No Streamlit is added: CLI services and self-contained HTML already cover this
-local workload. A future UI should call the same services and explicitly model
-review/idempotency, never hold an account's financial truth in UI session state.
-No new optimizer/model/provider dependency is necessary for Phase 6.
+The optional Streamlit UI calls the same backend workflows as the CLI.
+`app_contracts.py` defines form requests/references; `app_services.py` validates and
+orchestrates saved tasks without importing Streamlit. `gui/app.py` owns navigation,
+`gui/pages.py` collects input and displays results, and `gui/views.py` shares report
+formatters. Financial/account truth stays in the existing services and stored
+results, not UI session state. Paper GUI views are read-only; write wizards remain
+pending concurrency/version safeguards. See [GUI Guide](GUI_GUIDE.md).
+
+The earlier Phase 6 integration used CLI/self-contained HTML only; Phase 7 added
+the optional GUI without replacing the financial engines.
 
 To add a provider, implement the existing History adapter and preserve provenance;
 do not bypass time/currency/identity contracts. To add a signal, return a validated

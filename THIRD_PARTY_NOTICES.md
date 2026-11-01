@@ -2,8 +2,8 @@
 
 The root MIT license covers this project's original code, documentation and
 synthetic fixtures. It does not grant rights to market data, third-party code,
-trademarks or external resources. The user confirmed MIT for this project on
-2026-10-28. The repository remains private; MIT does not change its visibility.
+trademarks or external resources. Keep each applicable upstream license and
+notice when redistributing third-party components.
 
 ## Dependencies
 

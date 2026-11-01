@@ -1,5 +1,8 @@
 # Phase 5 验收报告 — Portfolio Risk, CAD/FX & Paper Trading
 
+> 历史验收记录：下文仅描述该阶段列明版本的检查与限制；当前功能见
+> [README](../README.md#current-development-status)，后续证据见[文档索引](README.md)。
+
 日期：2026-10-28（America/Toronto）；开发版0.6.0。
 分支：`codex/phase-5-cad-paper`；稳定基线：`0e4ca9677ed2e53dd2641b0f49157de88030aaa8`。
 Phase5最终验收通过，仅限合成CAD/USD软件及本地Paper流程；功能提交已合并同步，真实双平台CI通过。
@@ -105,7 +108,7 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --uv
 
 ## 独立 Code Review 与修复记录
 
-用户要求的独立代理采用只读审查，独立材料保存在work/phase5-independent-review/。
+独立 AI 代理采用只读审查，独立材料保存在work/phase5-independent-review/。
 审查可写自己的probe/报告，不修改生产或正式测试。
 
 初审找到并已修复、各有正式回归：
@@ -131,7 +134,7 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --uv
 - 本地单账户SQLite逐事件完整重放，没有跨主机/网络盘、海量事件性能、外部签名或灾难恢复认证。
 - 成本收益归因不是组合时间加权收益/税务ACB；无复杂优化、波动协方差/VaR/校准概率或收益承诺。
 - 多项目标受限时保留现金或显式不可行，不强行冒险；USD收益留USD、CAD不足要先显式兑换。
-- Phase6仍需用户单独授权；本轮不开始Dashboard/产品化/Release。真实数据链路仍需来源/PIT/日历/公司行为证据。
+- 产品化和 GUI 是后续阶段；真实数据链路仍需来源/PIT/日历/公司行为证据。
 
 ## 最终验收记录
 
@@ -169,9 +172,9 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --uv
 隔离安装VIRTUAL_ENV不匹配提醒说明明确指定了新venv，实际wheel来源和sys.prefix断言通过，未用editable掩盖缺文件。
 最终文档补记后再次构建，核对归档生产源码与已独立安装/审查的46文件逐项一致；不为仅文档变化重复模型实验。
 
-上述为最初本地验收快照，未提交/CI未运行状态保留作历史记录。本轮用户已另行授权Git与CI收尾。
+上述为最初本地验收快照；其后的实际提交、同步及 CI 结果单独记录于下文。
 
-## 最终验收与 Private GitHub 同步（2026-10-28，用户授权）
+## 最终验收与 GitHub 同步（2026-10-28 历史记录）
 
 ### 证据和当前文件核实
 
@@ -186,7 +189,8 @@ uv run --locked --offline python scripts/verify_distribution.py dist/phase5 --uv
 复用momentum_signals、SignalBundle、现有CAD planner/execution和Paper CLI，无新生产实现。
 两个合成历史收盘生成1-session动量，决策2026-01-05 21:02 UTC；按已知价格/FX和约束生成目标。
 三资产各20%、现金40%；固定整数股订单默认PENDING_REVIEW。
-依据本次用户对合成验收演示的授权，脚本显式记录审核与plan hash（21:03 UTC），下一session开盘才模拟成交。
+合成演示脚本显式记录审核与 plan hash（21:03 UTC），下一 session 开盘才模拟成交；
+这不代替普通 Paper 计划的人工审核。
 此脚本审核只用于软件验收，不冒称真实人工投资决策或PIT/OOS表现。
 
 | 环节 | 实际计算/检查 |
@@ -250,7 +254,9 @@ Ubuntu job123066893156、Windows job123066892679均success；日志末尾明确�
 独立审查原13份材料保持未改，46生产文件与冻结hash依旧一致；追加联合回归不改变审查范围或结论。
 
 本节记录功能提交8904e11的真实结果。后续文档收尾提交只改说明，其最新SHA仍须独立检查Actions，
-不能将本节CI冒称任意后续提交结果。最终汇报会给出收尾SHA与其实际CI、远端和干净工作区状态。
+不能将本节 CI 冒称任意后续提交结果。文档收尾提交 `2f6b18c` 的独立记录为
+[CI 40760724730](https://github.com/yufeizhang06/PortfolioResearchDesk/actions/runs/40760724730)。
 
 **Phase5最终验收与功能同步完成。** 真实PIT/OOS、历史成员/退市/完整公司行为/日历等Known Limitations继续保留。
-Phase6计划为产品化文档、CLI/复现与数据授权验收、可选共享服务Dashboard；需后续授权才开始，当前未实施且不创建Release。
+当时的后续设计为产品化文档、CLI/复现与数据权利验收及可选共享服务 GUI；
+后续实现见 [PHASE_6_REPORT](PHASE_6_REPORT.md) 和 [PHASE_7_REPORT](PHASE_7_REPORT.md)。

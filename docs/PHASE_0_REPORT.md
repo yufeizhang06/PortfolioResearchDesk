@@ -1,13 +1,12 @@
 # Phase 0 实施与验收记录
 
 日期：2026-10-27（America/Toronto）。范围：仅 Phase 0。
-本文件保留 Phase 0 的历史验收状态；用户已确认进入 Phase 1，当前状态见 `DEVELOPMENT_LOG.md`。
-用户指定项目目录：`C:\Users\Desktop\Desktop\PortfolioResearchDesk`。
+本文件保留 Phase 0 的历史验收状态；当前安装和功能范围见 [README](../README.md)，
+后续阶段证据见[开发历史](DEVELOPMENT_LOG.md)。
 
 ## 初始检查
 
-- 初始聊天工作区只有空 `work/`、`outputs/`；没有已有代码、README、AGENTS.md、Git 仓库。
-- 用户随后指定桌面同名项目文件夹，检查确认该目录为空，未覆盖用户文件。
+- 初始项目目录为空；建立包、CLI、配置、测试和文档基础。
 - 下载版计划书全文 864 行，已完整阅读并原样复制为 `docs/PROJECT_PLAN.md`。
 - 原件/副本 SHA-256 均为
   `1F208C70B41AEAECFAC45F1E38BCD2D3FF674F6EB1868352B45FD9EB40F752BB`。
@@ -23,7 +22,7 @@
 - [x] pytest、Ruff、GitHub Actions 的 Windows/Ubuntu 离线执行步骤。
 - [x] sdist/wheel 构建、sdist 离线重建 wheel、独立 venv 安装与目录外 CLI/资源验证。
 - [x] README Quick Start、AGENTS.md、架构决策、CHANGELOG、忽略规则。
-- [ ] 用户确认后才进入 Phase 1；当前未实施。
+- Phase 1 在后续实现；此处仅记录 Phase 0 验收范围。
 
 ## 环境与版本选择
 
@@ -45,7 +44,7 @@ Python 3.12 官方维护计划见 `ARCHITECTURE.md` 中官方链接，未追求�
 桌面文件夹验收后可直接调用虚拟环境，无需系统 PATH 或激活脚本：
 
 ```powershell
-Set-Location 'C:\Users\Desktop\Desktop\PortfolioResearchDesk'
+Set-Location '<repo>'
 .\.venv\Scripts\prd.exe --help
 .\.venv\Scripts\prd.exe config validate --config configs/example_offline.toml
 .\.venv\Scripts\prd.exe demo
@@ -54,15 +53,10 @@ Set-Location 'C:\Users\Desktop\Desktop\PortfolioResearchDesk'
 .\.venv\Scripts\ruff.exe format --check .
 ```
 
-`work/bin/uv.exe` 是本次实际下载的 uv 工具副本，属于 Git 忽略的本地工具。未来新机器安装见 README。
-若重新创建环境，本机可用的 Python 完整路径为：
-
-```text
-C:\Users\Desktop\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe
-```
-
-例如 `& .\work\bin\uv.exe sync --locked --python '<上面的实际 Python 路径>'`。
-首次无缓存同步需要网络。应用升级可能改变附带 Python 路径，不将其硬编码进项目或 CI。
+原验收使用 Git 忽略的本地 uv 工具和已有 Python 3.12 解释器。新安装应使用
+[README](../README.md#installation--quick-start) 的公开流程，例如
+`uv sync --locked --python 3.12`；首次无缓存同步需要网络。
+`<repo>` 表示当前 clone 根目录，项目不依赖开发机器的缓存运行时布局。
 
 ## 实际验收
 
@@ -115,10 +109,8 @@ scripts/verify_distribution.py
 资源缺失/损坏/空数据/重复/异常 OHLCV/时间戳、错误退出码及 stdout/stderr 边界。
 pytest-socket 本身的预期警告由测试显式断言，不全局屏蔽警告。
 
-过程中的真实问题：系统 PATH 缺 Python；沙箱默认网络禁止下载，需要授权网络步骤；
-首次 Ruff 有换行错误，修正后复查通过。未为警告调整整个 Python 环境。
-迁移时 Git 账户所有权不同，使用单次命令作用域的 safe.directory，未修改全局配置。
-桌面首次 pytest 因系统临时目录的账户权限冲突出现 11 passed / 34 setup errors，
+原验收期间发现缺少 PATH 工具、Ruff 换行错误和临时目录权限问题，修正后复查通过；
+未为单个警告调整整个 Python 环境。首次 pytest 因临时目录权限出现 11 passed / 34 setup errors，
 将 pytest 临时目录明确配置为项目 `work/pytest-tmp` 后重新验收；该目录每次测试会清理。
 临时构建曾提示缓存处于源码树内；sdist 明确限制收录目录，最终目录构建缓存放在项目外，
 并检查分发包中没有 work、缓存或私密文件。
@@ -126,10 +118,10 @@ pytest-socket 本身的预期警告由测试显式断言，不全局屏蔽警告
 ## 差异、限制和下一阶段依赖
 
 - 计划书 YAML 是目标示例；Phase 0 选择 TOML + 标准库严格校验，减少依赖，未改变未来产品目标。
-- 原始计划书任务框保持原样；本文件维护 Phase 0 完成状态，避免修改用户规格。
+- 原始计划书任务框保持规划状态；本文件单独记录 Phase 0 的实际完成范围。
 - 没有占位未来命令、空 domain 模块、ML/策略/回测/账户/FX/UI/真实订单。
 - 合成 UTC 21:00/21:01 是 fixture 假设，不是真实日历/发布时间验证；没有完整反泄漏检测器。
 - 尚未验证 yfinance、French 因子、FX 或其他外部数据源；没有真实投资表现。
 - GitHub Actions 配置已编写；远端工作流尚未执行，不能宣称已通过。Linux 本轮未实机运行。
-- Phase 1 仅建议在用户确认后开始：离线最小信号→等权→下一交易日模拟成交→现金/净值与手算对照。
-  上述功能尚未实施。
+- 当时的后续设计为离线最小信号→等权→下一交易日模拟成交→现金/净值与手算对照；
+  后续实现结果见[开发历史](DEVELOPMENT_LOG.md#phase-1-implementation-and-local-acceptance--2026-10-27)。

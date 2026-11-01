@@ -3,7 +3,8 @@
 Current status (2026-10-31): the first Phase 7 Streamlit GUI and Application Service
 Layer are implemented and the author confirmed Windows operation. The implementation
 boundary is recorded in the Phase 7 GUI section below; earlier planning/deferred
-statements are historical. Current delivery/CI evidence: [PUBLICATION_REVIEW](PUBLICATION_REVIEW.md).
+statements are historical. Current capability and exact-SHA evidence:
+[README](../README.md#current-development-status) and [Release Readiness](RELEASE_READINESS.md).
 
 ## Phase 7 — Unified reporting and GUI planning (2026-10-29, local)
 
@@ -21,9 +22,9 @@ statements are historical. Current delivery/CI evidence: [PUBLICATION_REVIEW](PU
   Generation/sample/valuation/input-availability times are distinct.
 - `REPORT_DESIGN_STANDARD.md` records the common visual/precision rules;
   `PHASE_7_REPORT.md` records actual data and visual acceptance evidence.
-- `PHASE_7_GUI_PLAN.md` proposes six Streamlit pages and a shared Application
-  Service Layer. It is a design proposal only: no GUI/dependency/server is added.
-  GUI implementation awaits user confirmation; no commit/push/main change/release.
+- `PHASE_7_GUI_PLAN.md` records the original six-page design. The later first
+  GUI implements a subset through shared services; its actual boundary is in the
+  Phase 7 GUI section below and the README capability matrix.
 
 ## CAD Paper report presentation repair (2026-10-29, local acceptance)
 
@@ -47,16 +48,15 @@ statements are historical. Current delivery/CI evidence: [PUBLICATION_REVIEW](PU
   Company names are absent from the ledger, so no issuer names are invented.
 - This original repair covered Paper only. The subsequent Phase 7 section above
   extends the design to research reports. See REPORTING_UX_ACCEPTANCE for the
-  original CAD acceptance; live Dashboard implementation remains pending.
+  original CAD acceptance; the first GUI was added in the later Phase 7 implementation.
 
 ## Phase 6 — Product Integration & Delivery (2026-10-28)
 
 `doctor/workspace → workflow services → existing research/backtest/Paper engines →
 local HTML index + immutable hash inventory`.
 
-- 0.7.0 development version. The user authorized final acceptance, safe main
-  integration and private synchronization after local delivery. Visibility changes,
-  broker connections and formal releases remain outside this scope.
+- 0.7.0 development integration, initially CLI/HTML only; the optional GUI was
+  added in Phase 7. No broker or real-order execution is part of this architecture.
 - Reuse existing financial services. Add readable schema 6 Paper transport and
   compact plan/account operations; retain native schema 5 and prior commands.
 - Separate synthetic demo orchestration from editable daily accounts. A demo
@@ -100,8 +100,8 @@ simulate_plan → CADState/value_portfolio → SQLite events/replay → reports`
 - 审核绑定完整plan hash；无资金预留，账户变化使计划过时。错误执行时间戳不写事件、不推进账本时间。
 - 简单split/dividend以唯一事件ID防双计，必须严格后于前一经济状态；拒同刻成交后补权益、同effective多行动、零股/复杂追溯。
 - 配置/CLI只调用服务，基础包无新增第三方依赖。JSON/CSV/HTML完整账本导出，完成marker最后写。
-- 设计与实际限制见 PAPER_TRADING.md；用户已授权Phase5正式Commit/快进main/Private同步与真实CI，
-  不创建Release、不进入Phase6，不扩展真实PIT认证。最终联合回归只复用服务，不修改生产算法。
+- 设计与实际限制见 PAPER_TRADING.md；该阶段不扩展真实 PIT 认证。最终联合回归
+  只复用服务，不修改生产算法，准确 SHA 的 CI 证据见 PHASE_5_REPORT。
 - 功能提交8904e11已快进main并Private普通Push；实际CI40759391233在准确SHA上双平台各609测试与完整安装通过。
   后续文档提交仍按自身SHA核对CI，不能将功能提交结果冒称为任意后续结果。
 
@@ -121,7 +121,7 @@ CLI 只调用服务；无供应商/UI 进入模型、组合或执行核心。
 - 可选 ml extra，精确版本由 uv 解析；基础包仍无需第三方库运行 Phase 0–2。
 - JSON/CSV/HTML、不覆盖、输入/折/预测/账本/哈希/最后完成标记。详细定义见 MODEL_VALIDATION.md。
 - 真实 PIT、历史成员/退市/公司行为/日历尚未解决，禁止宣称真实 OOS；Phase 3 因子不进入信号。
-- 独立审查无可操作发现；用户已授权本阶段正式提交/安全合并/普通Private Push与真实CI检查，不进入Phase5。
+- 独立审查无可操作发现；实际提交和准确 SHA 的 CI 证据见 PHASE_4_REPORT。
 - 最终补充外层标签与Holdout特征/标签隔离，未改生产算法；Lasso为训练内回归，非独立筛选器。
 - 方案hash只证明运行内冻结内容，不代表真实研究预注册；合成Holdout已反复使用作软件测试。
 
@@ -153,7 +153,7 @@ factor_analysis → factor_reporting`，CLI 仅调用同一服务，不复制数
 方法、数值边界及月末日历契约见 FACTOR_RESEARCH.md；不实现 Phase 4 的标签或模型训练。
 
 日期：2026-10-27。单一 Python 可安装项目，目标架构见 `PROJECT_PLAN.md`。
-下列 Phase 0–1 决策保留为历史记录；用户现已授权 Phase 2，新增决策见末节。
+下列 Phase 0–1 决策保留为历史记录；Phase 2 数据层扩展见对应小节。
 
 | 决策 | 原因与影响 |
 |---|---|

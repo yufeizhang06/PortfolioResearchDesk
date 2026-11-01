@@ -61,13 +61,13 @@ combined investment-performance claim.
 | Reports & Settings | Current GUI results, integrity checks and ZIP | Legacy CLI reports remain at their original locations |
 
 The author has confirmed that the first GUI starts and operates on Windows.
-See [Publication Review](docs/PUBLICATION_REVIEW.md) for synchronization, exact-SHA
-CI and public-readiness evidence, and [Phase 7 Report](docs/PHASE_7_REPORT.md) for
-implementation details. Software acceptance does not certify market performance.
+Use the [documentation index](docs/README.md) for user guides, technical contracts
+and historical acceptance records. [Release Readiness](docs/RELEASE_READINESS.md)
+links the exact-SHA CI evidence. Software acceptance does not certify market performance.
 
 ## Installation & Quick Start
 
-Requirements: **Python 3.12.x**, **uv 0.13.6** and Git (or an authorized source ZIP).
+Requirements: **Python 3.12.x**, **uv 0.13.6** and Git (or a source ZIP).
 
 ```bash
 git clone https://github.com/yufeizhang06/PortfolioResearchDesk.git
